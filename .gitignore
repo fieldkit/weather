@@ -1,0 +1,9 @@
+*.csv
+*.tsv
+*.xml
+*.bak
+*.kicad_pcb-bak
+*_saved_*.sch
+.gradle
+build
+gitdeps

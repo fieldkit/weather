@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath group: 'com.github.jlewallen.arduino', name: 'arduino-gradle', version: '1.0'
+    }
+}
+
+apply plugin: 'com.github.jlewallen.arduino'
+
+import com.github.jlewallen.arduino.*
+
+model {
+    components {
+        collector(ArduinoComponentSpec) {
+            userCppSourcesFlags = System.env.JOB_NAME == null ? "" : "-DBUILD_JOB='$System.env.JOB_NAME' -DBUILD_COMMIT='$System.env.GIT_COMMIT'"
+            boards = [ "adafruit:samd:adafruit_feather_m0" ]
+            libraries = [
+                "Wire",
+                "https://github.com/sparkfun/SparkFun_HTU21D_Breakout_Arduino_Library.git",
+                "https://github.com/sparkfun/MPL3115A2_Breakout.git",
+                "https://github.com/mikalhart/TinyGPSPlus.git",
+                "https://github.com/adafruit/RTClib.git"
+            ]
+        }
+    }
+}
+
+// vim: set ft=groovy:

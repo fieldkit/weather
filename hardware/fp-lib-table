@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name RocketScreamKicadLibrary)(type KiCad)(uri C:\Users\jlewallen\OneDrive\EE\osh\RocketScreamKicadLibrary\RocketScreamKicadLibrary.pretty)(options "")(descr ""))
+  (lib (name fk-weather)(type KiCad)(uri "$(KIPRJMOD)")(options "")(descr ""))
+  (lib (name logos)(type KiCad)(uri "$(KIPRJMOD)\\logos.pretty")(options "")(descr ""))
+)
