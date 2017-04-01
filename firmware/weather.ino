@@ -6,6 +6,9 @@
 #include <SparkFunHTU21D.h>
 #include <TinyGPS++.h>
 #include <RTClib.h>
+#include <DHT.h>
+
+#define PIN_DHT 16
 
 MPL3115A2 myPressure;
 HTU21D myHumidity;
@@ -98,6 +101,8 @@ float windgustmph_10m = 0; // [mph past 10 minutes wind gust mph ]
 int windgustdir_10m = 0; // [0-360 past 10 minutes wind gust direction]
 float humidity = 0; // [%]
 float temperature = 0; // [temperature F]
+float outsideTemperature = 0;
+float outsideHumidity = 0;
 float rainin = 0; // [rain inches over the past hour)] -- the accumulated rainfall in the past 60 min
 volatile float dailyrainin = 0; // [rain inches so far today in local time]
 float pressure = 0;
@@ -275,9 +280,14 @@ void calculate_weather() {
         }
     }
 
+    DHT dht(PIN_DHT, DHT22);
+    dht.begin();
+
     humidity = myHumidity.readHumidity();
+    outsideHumidity = dht.readHumidity();
 
     temperature = myPressure.readTemp();
+    outsideTemperature = dht.readTemperature();
 
     rainin = 0;
 
@@ -377,6 +387,10 @@ void print_weather() {
     PRINT_VALUE_FLT(humidity, 1);
     PRINT_LABEL(",temp=");
     PRINT_VALUE_FLT(temperature, 1);
+    PRINT_LABEL(",humidity=");
+    PRINT_VALUE_FLT(outsideHumidity, 1);
+    PRINT_LABEL(",temp=");
+    PRINT_VALUE_FLT(outsideTemperature, 1);
     PRINT_LABEL(",rainin=");
     PRINT_VALUE_FLT(rainin, 2);
     PRINT_LABEL(",dailyrainin=");
