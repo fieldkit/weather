@@ -1620,7 +1620,7 @@ F 0 "L3" H 13725 7150 50  0000 L CNN
 F 1 "100 to 1k above 10MHz" H 13725 7050 50  0000 L CNN
 F 2 "Resistors_SMD:R_0603_HandSoldering" V 13580 7100 50  0001 C CNN
 F 3 "" H 13650 7100 50  0001 C CNN
-F 4 "732-1592-1-ND" H 0   0   50  0001 C CNN "spn1"
+F 4 "710-742792641" H 0   0   50  0001 C CNN "spn1"
 F 5 "mouser" H 0   0   50  0001 C CNN "supplier1"
 	1    13650 7100
 	0    1    1    0   
@@ -1633,7 +1633,7 @@ F 0 "L4" H 13725 7400 50  0000 L CNN
 F 1 "100 to 1k above 10MHz" H 13725 7300 50  0000 L CNN
 F 2 "Resistors_SMD:R_0603_HandSoldering" V 13580 7350 50  0001 C CNN
 F 3 "" H 13650 7350 50  0001 C CNN
-F 4 "732-1592-1-ND" H 0   0   50  0001 C CNN "spn1"
+F 4 "710-742792641" H 0   0   50  0001 C CNN "spn1"
 F 5 "mouser" H 0   0   50  0001 C CNN "supplier1"
 	1    13650 7350
 	0    1    1    0   
