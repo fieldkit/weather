@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/jlewallen/conservify/fk-weather/hardware/fk-weather.sch)
-    (date "Wed 23 Aug 2017 01:54:15 PM PDT")
+    (date "Wed 23 Aug 2017 02:02:31 PM PDT")
     (tool "Eeschema 4.0.7-e1-6374~58~ubuntu16.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -642,7 +642,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 597B0179))
     (comp (ref L3)
-      (value "100 to 1k above 10MHz")
+      (value WE-CBF)
       (footprint Resistors_SMD:R_0603_HandSoldering)
       (fields
         (field (name spn1) 710-742792641)
@@ -651,7 +651,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 597B1AF6))
     (comp (ref L4)
-      (value "100 to 1k above 10MHz")
+      (value WE-CBF)
       (footprint Resistors_SMD:R_0603_HandSoldering)
       (fields
         (field (name spn1) 710-742792641)
@@ -1031,10 +1031,10 @@
         (pin (num 5) (name VDD) (type input))
         (pin (num 6) (name SDA) (type input)))))
   (libraries
-    (library (logical fk-weather-rescue)
-      (uri /home/jlewallen/conservify/fk-weather/hardware/fk-weather-rescue.lib))
     (library (logical fk-weather-cache)
-      (uri /home/jlewallen/conservify/fk-weather/hardware/fk-weather-cache.lib)))
+      (uri /home/jlewallen/conservify/fk-weather/hardware/fk-weather-cache.lib))
+    (library (logical fk-weather-rescue)
+      (uri /home/jlewallen/conservify/fk-weather/hardware/fk-weather-rescue.lib)))
   (nets
     (net (code 1) (name "Net-(C4-Pad1)")
       (node (ref U1) (pin 6))
