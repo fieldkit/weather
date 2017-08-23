@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/jlewallen/conservify/fk-weather/hardware/fk-weather.sch)
-    (date "Fri 18 Aug 2017 10:35:36 AM PDT")
+    (date "Wed 23 Aug 2017 01:54:15 PM PDT")
     (tool "Eeschema 4.0.7-e1-6374~58~ubuntu16.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -449,7 +449,7 @@
       (tstamp 597907B2))
     (comp (ref J1)
       (value MICRO-USB)
-      (footprint RocketScreamKicadLibrary:MICRO-USB)
+      (footprint conservify:MICRO-USB)
       (libsource (lib fk-weather-cache) (part MICRO-USB))
       (sheetpath (names /) (tstamps /))
       (tstamp 5979086D))
