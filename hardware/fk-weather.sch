@@ -396,24 +396,24 @@ $EndComp
 $Comp
 L 3V3 #PWR015
 U 1 1 5611121D
-P 7000 1400
-F 0 "#PWR015" H 7000 1250 50  0001 C CNN
-F 1 "3V3" H 7000 1540 50  0000 C CNN
-F 2 "" H 7000 1400 60  0000 C CNN
-F 3 "" H 7000 1400 60  0000 C CNN
-	1    7000 1400
-	1    0    0    -1  
+P 6800 1900
+F 0 "#PWR015" H 6800 1750 50  0001 C CNN
+F 1 "3V3" H 6800 2040 50  0000 C CNN
+F 2 "" H 6800 1900 60  0000 C CNN
+F 3 "" H 6800 1900 60  0000 C CNN
+	1    6800 1900
+	0    -1   -1   0   
 $EndComp
 $Comp
 L GND #PWR016
 U 1 1 561119A2
-P 7000 2000
-F 0 "#PWR016" H 7000 1750 50  0001 C CNN
-F 1 "GND" H 7000 1850 50  0001 C CNN
-F 2 "" H 7000 2000 60  0000 C CNN
-F 3 "" H 7000 2000 60  0000 C CNN
-	1    7000 2000
-	1    0    0    -1  
+P 7000 1350
+F 0 "#PWR016" H 7000 1100 50  0001 C CNN
+F 1 "GND" H 7000 1200 50  0001 C CNN
+F 2 "" H 7000 1350 60  0000 C CNN
+F 3 "" H 7000 1350 60  0000 C CNN
+	1    7000 1350
+	-1   0    0    1   
 $EndComp
 $Comp
 L RESISTOR R2
@@ -1690,11 +1690,11 @@ Text Label 4350 3450 0    50   ~ 0
 SWCLK
 Text Label 4350 1950 0    50   ~ 0
 RESET
-Text Label 7650 1500 0    50   ~ 0
-SWDIO
-Text Label 7650 1600 0    50   ~ 0
-SWCLK
 Text Label 7650 1900 0    50   ~ 0
+SWDIO
+Text Label 7650 1800 0    50   ~ 0
+SWCLK
+Text Label 7750 1500 0    50   ~ 0
 RST
 Text Label 3900 1500 0    50   ~ 0
 RST
@@ -1943,21 +1943,9 @@ Wire Wire Line
 Wire Wire Line
 	1800 2850 1800 2750
 Wire Wire Line
-	7000 1400 7000 1500
-Wire Wire Line
-	7000 1500 7100 1500
-Wire Wire Line
-	7100 1600 7000 1600
-Wire Wire Line
-	7000 1600 7000 2000
-Wire Wire Line
-	7100 1900 7000 1900
-Wire Wire Line
 	7100 1700 7000 1700
 Wire Wire Line
 	7600 1500 7900 1500
-Wire Wire Line
-	7900 1600 7600 1600
 Wire Wire Line
 	7900 1900 7600 1900
 Wire Wire Line
@@ -2298,7 +2286,6 @@ Connection ~ 3850 1500
 Connection ~ 1650 2250
 Connection ~ 1950 2250
 Connection ~ 1800 2750
-Connection ~ 7000 1900
 Connection ~ 7000 1700
 Connection ~ 11550 1400
 Connection ~ 11100 2200
@@ -2327,9 +2314,6 @@ Connection ~ 12500 7900
 Connection ~ 11150 7900
 Connection ~ 11150 7300
 Connection ~ 12500 6650
-NoConn ~ 7100 1800
-NoConn ~ 7600 1700
-NoConn ~ 7600 1800
 NoConn ~ 8850 1500
 NoConn ~ 8850 1400
 NoConn ~ 8850 3250
@@ -2395,4 +2379,18 @@ Wire Wire Line
 	1400 8700 1400 8650
 Wire Wire Line
 	1400 8650 1650 8650
+Wire Wire Line
+	7900 1800 7600 1800
+NoConn ~ 7600 1700
+NoConn ~ 7600 1600
+NoConn ~ 7100 1600
+Wire Wire Line
+	7000 1800 7100 1800
+Wire Wire Line
+	7000 1350 7000 1800
+Wire Wire Line
+	7000 1500 7100 1500
+Connection ~ 7000 1500
+Wire Wire Line
+	7100 1900 6800 1900
 $EndSCHEMATC
