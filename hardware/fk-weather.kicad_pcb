@@ -2,7 +2,7 @@
 
   (general
     (links 180)
-    (no_connects 41)
+    (no_connects 0)
     (area 106.352905 47.75 165.914286 159.377948)
     (thickness 1.6)
     (drawings 18)
@@ -1201,7 +1201,7 @@
   )
 
   (module RocketScreamKicadLibrary:TS-018 (layer F.Cu) (tedit 599DEE3B) (tstamp 5977A131)
-    (at 153.2763 99.861 270)
+    (at 153.4636 99.8592 270)
     (tags SPST)
     (path /56091122)
     (fp_text reference SW1 (at 0 -3.175 270) (layer F.SilkS) hide
@@ -4042,6 +4042,9 @@
   (segment (start 140.716 103.378) (end 140.726233 103.378) (width 0.254) (layer F.Cu) (net 13))
   (segment (start 140.726233 103.378) (end 141.892031 102.212202) (width 0.254) (layer F.Cu) (net 13))
   (via (at 140.716 103.378) (size 0.5) (drill 0.3) (layers F.Cu B.Cu) (net 13))
+  (segment (start 151.7136 101.5342) (end 150.8096 101.5342) (width 0.254) (layer F.Cu) (net 15))
+  (segment (start 150.8096 101.5342) (end 150.2556 100.9802) (width 0.254) (layer F.Cu) (net 15))
+  (segment (start 150.2556 100.9802) (end 150.2556 100.3403) (width 0.254) (layer F.Cu) (net 15))
   (segment (start 152.527 95.5059) (end 152.527 92.827) (width 0.254) (layer F.Cu) (net 15))
   (segment (start 152.527 92.827) (end 151.638 91.938) (width 0.254) (layer F.Cu) (net 15))
   (segment (start 151.638 91.938) (end 151.638 90.634) (width 0.254) (layer F.Cu) (net 15))
@@ -4051,8 +4054,6 @@
   (segment (start 149.6193 97.7773) (end 150.2556 97.7773) (width 0.254) (layer F.Cu) (net 15))
   (segment (start 147.32 97.7695) (end 148.9075 97.7695) (width 0.254) (layer F.Cu) (net 15))
   (segment (start 150.2556 97.7773) (end 150.2556 100.3403) (width 0.254) (layer F.Cu) (net 15))
-  (segment (start 150.2556 100.3403) (end 151.4513 101.536) (width 0.254) (layer F.Cu) (net 15))
-  (segment (start 151.4513 101.536) (end 151.5263 101.536) (width 0.254) (layer F.Cu) (net 15))
   (segment (start 141.605 130.937) (end 141.605 135.984196) (width 0.254) (layer F.Cu) (net 16))
   (segment (start 141.605 135.984196) (end 144.2212 138.600396) (width 0.254) (layer F.Cu) (net 16))
   (segment (start 151.892 139.319) (end 153.3525 139.319) (width 0.254) (layer F.Cu) (net 16))
@@ -4082,7 +4083,6 @@
   (segment (start 137.922 117.475) (end 138.557 116.84) (width 0.2032) (layer F.Cu) (net 16))
   (segment (start 140.335 116.876426) (end 138.593426 116.876426) (width 0.2032) (layer B.Cu) (net 16))
   (segment (start 141.605 116.876426) (end 140.335 116.876426) (width 0.2032) (layer B.Cu) (net 16))
-  (segment (start 140.335 116.876426) (end 140.335 116.459) (width 0.2032) (layer B.Cu) (net 16))
   (segment (start 138.872 118.17553) (end 138.872 117.155) (width 0.2032) (layer F.Cu) (net 16))
   (segment (start 138.872 117.155) (end 138.557 116.84) (width 0.2032) (layer F.Cu) (net 16))
   (segment (start 138.593426 116.876426) (end 138.557 116.84) (width 0.2032) (layer B.Cu) (net 16))
