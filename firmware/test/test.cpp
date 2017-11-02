@@ -39,7 +39,7 @@ private:
     uint8_t read8(uint8_t a) {
         Wire.beginTransmission(address);
         Wire.write(a);
-        Wire.endTransmission(true);
+        Wire.endTransmission(false);
 
         Wire.requestFrom((uint8_t)address, (uint8_t)1);
         return Wire.read();
@@ -62,6 +62,11 @@ public:
     void setup() {
         SPI.begin();
         Wire.begin();
+
+        pinMode(13, OUTPUT);
+        pinMode(A3, OUTPUT);
+        pinMode(A4, OUTPUT);
+        pinMode(A5, OUTPUT);
     }
 
     void sht31() {
@@ -96,7 +101,7 @@ public:
     }
 
     void bno055() {
-        Adafruit_BNO055 bno(55, BNO055_ADDRESS_A);
+        Adafruit_BNO055 bno(55, BNO055_ADDRESS_B);
 
         if (!bno.begin()) {
             Serial.println("test: BNO055 FAILED");
@@ -116,6 +121,13 @@ public:
         }
     }
 
+    void leds(bool on) {
+        digitalWrite(13, on ? HIGH : LOW);
+        digitalWrite(A3, on ? HIGH : LOW);
+        digitalWrite(A4, on ? HIGH : LOW);
+        digitalWrite(A5, on ? HIGH : LOW);
+    }
+
 };
 
 void setup() {
@@ -123,25 +135,11 @@ void setup() {
 
     Check check;
     check.setup();
-
-    pinMode(13, OUTPUT);
-    pinMode(A3, OUTPUT);
-    pinMode(A4, OUTPUT);
-    pinMode(A5, OUTPUT);
-
-    digitalWrite(13, HIGH);
-    digitalWrite(A3, HIGH);
-    digitalWrite(A4, HIGH);
-    digitalWrite(A5, HIGH);
+    check.leds(false);
 
     while (!Serial) {
         delay(100);
     }
-
-    digitalWrite(13, LOW);
-    digitalWrite(A3, LOW);
-    digitalWrite(A4, LOW);
-    digitalWrite(A5, LOW);
 
     Serial.println("test: Begin");
 
@@ -165,10 +163,13 @@ void setup() {
     */
 
     while (true) {
-        check.mpl3115a2();
-        check.tsl2591();
-        check.sht31();
+        check.leds(false);
+        // check.mpl3115a2();
+        // check.tsl2591();
+        // check.sht31();
         check.bno055();
+
+        check.leds(true);
         delay(2000);
     }
     // check.max4466();
