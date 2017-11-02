@@ -1,0 +1,1 @@
+clear; cmake ../ && make && sudo ~/tools/bin/flasher --binary fk-weather-test.bin --port /dev/ttyACM1 --tail-inactivity 3
