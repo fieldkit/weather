@@ -1,10 +1,17 @@
 #include <Wire.h>
 #include <SPI.h>
+#include <wiring_private.h>
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <Adafruit_TSL2561_U.h>
 #include <Adafruit_MPL3115A2.h>
+#include <Adafruit_TSL2591.h>
+
+Adafruit_TSL2591 tsl(2591);
+
+TwoWire myWire1(&sercom1, 11, 13);
+TwoWire myWire2(&sercom2, 4, 3);
 
 class Adafruit_SHT31 {
 private:
@@ -39,7 +46,7 @@ private:
     uint8_t read8(uint8_t a) {
         Wire.beginTransmission(address);
         Wire.write(a);
-        Wire.endTransmission(false);
+        Wire.endTransmission(true);
 
         Wire.requestFrom((uint8_t)address, (uint8_t)1);
         return Wire.read();
@@ -51,8 +58,11 @@ public:
     }
 
    bool begin() {
+       if (tsl.begin()) {
+           return true;
+       }
        uint8_t value = read8(0x12);
-       Serial.println(value);
+       Serial.println(value, HEX);
        return value == 0x50;
    }
 };
@@ -62,6 +72,14 @@ public:
     void setup() {
         SPI.begin();
         Wire.begin();
+
+        myWire1.begin();
+        myWire2.begin();
+
+        pinPeripheral(11, PIO_SERCOM);
+        pinPeripheral(13, PIO_SERCOM);
+        pinPeripheral(4, PIO_SERCOM_ALT);
+        pinPeripheral(3, PIO_SERCOM_ALT);
 
         pinMode(13, OUTPUT);
         pinMode(A3, OUTPUT);
@@ -101,7 +119,7 @@ public:
     }
 
     void bno055() {
-        Adafruit_BNO055 bno(55, BNO055_ADDRESS_B);
+        Adafruit_BNO055 bno(55, BNO055_ADDRESS_A, &myWire1);
 
         if (!bno.begin()) {
             Serial.println("test: BNO055 FAILED");
@@ -129,6 +147,20 @@ public:
     }
 
 };
+
+void advancedRead(void) {
+    // More advanced data read example. Read 32 bits with top 16 bits IR, bottom 16 bits full spectrum
+    // That way you can do whatever math and comparisons you want!
+    uint32_t lum = tsl.getFullLuminosity();
+    uint16_t ir, full;
+    ir = lum >> 16;
+    full = lum & 0xFFFF;
+    Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
+    Serial.print(F("IR: ")); Serial.print(ir);  Serial.print(F("  "));
+    Serial.print(F("Full: ")); Serial.print(full); Serial.print(F("  "));
+    Serial.print(F("Visible: ")); Serial.print(full - ir); Serial.print(F("  "));
+    Serial.print(F("Lux: ")); Serial.println(tsl.calculateLux(full, ir));
+}
 
 void setup() {
     Serial.begin(115200);
@@ -164,13 +196,16 @@ void setup() {
 
     while (true) {
         check.leds(false);
-        // check.mpl3115a2();
-        // check.tsl2591();
-        // check.sht31();
+
         check.bno055();
+        check.mpl3115a2();
+        check.tsl2591();
+        check.sht31();
+
+        advancedRead();
 
         check.leds(true);
-        delay(2000);
+        delay(500);
     }
     // check.max4466();
 
