@@ -1,4 +1,4 @@
-update=Fri 15 Sep 2017 10:01:22 AM PDT
+update=Mon 27 Nov 2017 01:49:04 PM PST
 version=1
 last_client=kicad
 [cvpcb]
@@ -43,3 +43,4 @@ LibDir=
 LibName1=fk-weather-rescue
 LibName2=conn
 LibName3=/home/jlewallen/conservify/kicad/conservify
+LibName4=/home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary
