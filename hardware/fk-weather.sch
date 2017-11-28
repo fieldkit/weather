@@ -2,7 +2,6 @@ EESchema Schematic File Version 2
 LIBS:fk-weather-rescue
 LIBS:conn
 LIBS:conservify
-LIBS:RocketScreamKicadLibrary
 LIBS:fk-weather-cache
 EELAYER 25 0
 EELAYER END
@@ -1784,40 +1783,6 @@ F 3 "" H 6650 3150 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X04 J4
-U 1 1 59BCDA28
-P 7300 3750
-F 0 "J4" H 7300 4000 50  0000 C CNN
-F 1 "CONN_01X04" V 7400 3750 50  0000 C CNN
-F 2 "Socket_Strips:Socket_Strip_Straight_1x04_Pitch2.54mm" H 7300 3750 50  0001 C CNN
-F 3 "" H 7300 3750 50  0001 C CNN
-F 4 "0" H 7300 4100 50  0001 C CNN "price"
-	1    7300 3750
-	1    0    0    -1  
-$EndComp
-$Comp
-L 3V3 #PWR061
-U 1 1 59BCEEAB
-P 6750 3600
-F 0 "#PWR061" H 6750 3450 50  0001 C CNN
-F 1 "3V3" H 6750 3740 50  0000 C CNN
-F 2 "" H 6750 3600 60  0000 C CNN
-F 3 "" H 6750 3600 60  0000 C CNN
-	1    6750 3600
-	1    0    0    -1  
-$EndComp
-$Comp
-L GND #PWR062
-U 1 1 59BCF3C6
-P 6750 3700
-F 0 "#PWR062" H 6750 3450 50  0001 C CNN
-F 1 "GND" H 6750 3550 50  0001 C CNN
-F 2 "" H 6750 3700 60  0000 C CNN
-F 3 "" H 6750 3700 60  0000 C CNN
-	1    6750 3700
-	0    1    1    0   
-$EndComp
-$Comp
 L GND #PWR063
 U 1 1 59CBF65F
 P 12850 2000
@@ -2214,10 +2179,6 @@ Text Label 15550 6050 0    60   ~ 0
 D13
 Text Label 2350 3650 0    50   ~ 0
 D13
-Text Label 6800 3900 0    50   ~ 0
-D6
-Text Label 6800 3800 0    50   ~ 0
-D5
 Text Label 8100 3150 2    50   ~ 0
 SDA
 Text Label 7900 3050 2    50   ~ 0
@@ -2770,14 +2731,6 @@ Wire Wire Line
 	15000 5700 15000 5800
 Wire Wire Line
 	7100 3150 6650 3150
-Wire Wire Line
-	7100 3700 6750 3700
-Wire Wire Line
-	6750 3800 7100 3800
-Wire Wire Line
-	7100 3900 6750 3900
-Wire Wire Line
-	6750 3600 7100 3600
 Wire Wire Line
 	12850 1850 13100 1850
 Wire Wire Line
