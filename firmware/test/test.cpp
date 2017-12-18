@@ -7,12 +7,14 @@
 #include <Adafruit_TSL2561_U.h>
 #include <Adafruit_MPL3115A2.h>
 #include <Adafruit_TSL2591.h>
+#include <Adafruit_SHT31.h>
 
 Adafruit_TSL2591 tsl(2591);
 
 TwoWire myWire1(&sercom1, 11, 13);
 TwoWire myWire2(&sercom2, 4, 3);
 
+/*
 class Adafruit_SHT31 {
 private:
     uint8_t address;
@@ -21,7 +23,7 @@ private:
     uint8_t read8(uint8_t a) {
         Wire.beginTransmission(address);
         Wire.write(a);
-        Wire.endTransmission(true);
+        Wire.endTransmission(false);
 
         Wire.requestFrom((uint8_t)address, (uint8_t)1);
         return Wire.read();
@@ -34,9 +36,11 @@ public:
 
     bool begin() {
         uint8_t value = read8(0x12);
+        Serial.println(value);
         return value == 0x50;
     }
 };
+*/
 
 class Adafruit_TSL25911FN {
 private:
@@ -88,12 +92,14 @@ public:
     }
 
     void sht31() {
-        Adafruit_SHT31 sensor(0x44);
+        Adafruit_SHT31 sensor;
         if (!sensor.begin()) {
             Serial.println("test: SHT31 FAILED");
         }
         else {
             Serial.println("test: SHT31 PASSED");
+            Serial.println(sensor.readTemperature());
+            Serial.println(sensor.readHumidity());
         }
     }
 
