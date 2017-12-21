@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <wiring_private.h>
+#include <cstdarg>
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
@@ -10,220 +11,43 @@
 #include <Adafruit_SHT31.h>
 #include <SerialFlash.h>
 
-const uint8_t PIN_FLASH_CS = 5;
+#include "debug.h"
+#include "AnalogSampling.h"
 
-Adafruit_TSL2591 tsl(2591);
-
-TwoWire myWire1(&sercom1, 11, 13);
-TwoWire myWire2(&sercom2, 4, 3);
-
-class Adafruit_TSL25911FN {
-private:
-    uint8_t address;
-
-private:
-    uint8_t read8(uint8_t a) {
-        Wire.beginTransmission(address);
-        Wire.write(a);
-        Wire.endTransmission(true);
-
-        Wire.requestFrom((uint8_t)address, (uint8_t)1);
-        return Wire.read();
-    }
+class ModuleHardware {
+public:
+    static constexpr uint8_t PIN_FLASH_CS = 5;
+    static constexpr uint8_t PIN_MAX4466 = A1;
 
 public:
-    Adafruit_TSL25911FN(uint8_t address) {
-        this->address = address;
-    }
-
-   bool begin() {
-       if (tsl.begin()) {
-           return true;
-       }
-       uint8_t value = read8(0x12);
-       Serial.println(value, HEX);
-       return value == 0x50;
-   }
-};
-
-class Check {
-private:
-    const char * id2chip(const unsigned char *id) {
-        if (id[0] == 0xEF) {
-            // Winbond
-            if (id[1] == 0x40) {
-                if (id[2] == 0x14) return "W25Q80BV";
-                if (id[2] == 0x15) return "W25Q16DV";
-                if (id[2] == 0x17) return "W25Q64FV";
-                if (id[2] == 0x18) return "W25Q128FV";
-                if (id[2] == 0x19) return "W25Q256FV";
-            }
-        }
-        if (id[0] == 0x01) {
-            // Spansion
-            if (id[1] == 0x02) {
-                if (id[2] == 0x16) return "S25FL064A";
-                if (id[2] == 0x19) return "S25FL256S";
-                if (id[2] == 0x20) return "S25FL512S";
-            }
-            if (id[1] == 0x20) {
-                if (id[2] == 0x18) return "S25FL127S";
-            }
-            if (id[1] == 0x40) {
-                if (id[2] == 0x15) return "S25FL116K";
-            }
-        }
-        if (id[0] == 0xC2) {
-            // Macronix
-            if (id[1] == 0x20) {
-                if (id[2] == 0x18) return "MX25L12805D";
-            }
-        }
-        if (id[0] == 0x20) {
-            // Micron
-            if (id[1] == 0xBA) {
-                if (id[2] == 0x20) return "N25Q512A";
-                if (id[2] == 0x21) return "N25Q00AA";
-            }
-            if (id[1] == 0xBB) {
-                if (id[2] == 0x22) return "MT25QL02GC";
-            }
-        }
-        if (id[0] == 0xBF) {
-            // SST
-            if (id[1] == 0x25) {
-                if (id[2] == 0x02) return "SST25WF010";
-                if (id[2] == 0x03) return "SST25WF020";
-                if (id[2] == 0x04) return "SST25WF040";
-                if (id[2] == 0x41) return "SST25VF016B";
-                if (id[2] == 0x4A) return "SST25VF032";
-            }
-            if (id[1] == 0x25) {
-                if (id[2] == 0x01) return "SST26VF016";
-                if (id[2] == 0x02) return "SST26VF032";
-                if (id[2] == 0x43) return "SST26VF064";
-            }
-        }
-        return "(unknown chip)";
-    }
+    TwoWire bno055Wire{ &sercom1, 11, 13 };
+    Adafruit_SHT31 sht31Sensor;
+    Adafruit_MPL3115A2 mpl3115a2Sensor;
+    Adafruit_TSL2591 tsl2591Sensor{ 2591 };
+    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &bno055Wire };
+    SerialFlashChip serialFlash;
+    AnalogSampler audioSampler;
 
 public:
     void setup() {
         SPI.begin();
         Wire.begin();
 
-        myWire1.begin();
-        myWire2.begin();
+        bno055Wire.begin();
 
         pinPeripheral(11, PIO_SERCOM);
         pinPeripheral(13, PIO_SERCOM);
-        pinPeripheral(4, PIO_SERCOM_ALT);
-        pinPeripheral(3, PIO_SERCOM_ALT);
 
-        pinMode(13, OUTPUT);
         pinMode(A3, OUTPUT);
         pinMode(A4, OUTPUT);
         pinMode(A5, OUTPUT);
-    }
 
-    void sht31() {
-        Adafruit_SHT31 sensor;
-        if (!sensor.begin()) {
-            Serial.println("test: SHT31 FAILED");
-        }
-        else {
-            Serial.println("test: SHT31 PASSED");
-            Serial.println(sensor.readTemperature());
-            Serial.println(sensor.readHumidity());
-        }
-    }
+        pinMode(PIN_MAX4466, INPUT);
 
-    void mpl3115a2() {
-        Adafruit_MPL3115A2 sensor;
-        if (!sensor.begin()) {
-            Serial.println("test: MPL3115A2 FAILED");
-        }
-        else {
-            Serial.println("test: MPL3115A2 PASSED");
-        }
-    }
-
-    void tsl2591() {
-        Adafruit_TSL25911FN tsl(0x29);
-
-        if (!tsl.begin()) {
-            Serial.println("test: TSL25911FN FAILED");
-        }
-        else {
-            Serial.println("test: TSL25911FN PASSED");
-        }
-    }
-
-    void bno055() {
-        Adafruit_BNO055 bno(55, BNO055_ADDRESS_A, &myWire1);
-
-        if (!bno.begin()) {
-            Serial.println("test: BNO055 FAILED");
-        }
-        else {
-            Serial.println("test: BNO055 PASSED");
-        }
-    }
-
-    void max4466() {
-        pinMode(A1, INPUT);
-
-        while (true) {
-            float value = analogRead(A1);
-            Serial.println(value);
-            delay(100);
-        }
-    }
-
-    void flashMemory() {
-        Serial.println("test: Checking flash memory...");
-
-        if (!SerialFlash.begin(PIN_FLASH_CS)) {
-            Serial.println("test: Flash memory FAILED");
-            return;
-        }
-
-        uint8_t buffer[256];
-
-        SerialFlash.readID(buffer);
-        if (buffer[0] == 0) {
-            Serial.println("test: Flash memory FAILED");
-            return;
-        }
-
-        uint32_t chipSize = SerialFlash.capacity(buffer);
-        if (chipSize == 0) {
-            Serial.println("test: Flash memory FAILED");
-            return;
-        }
-
-        Serial.println("Read Chip Identification:");
-        Serial.print("  JEDEC ID:     ");
-        Serial.print(buffer[0], HEX);
-        Serial.print(" ");
-        Serial.print(buffer[1], HEX);
-        Serial.print(" ");
-        Serial.println(buffer[2], HEX);
-        Serial.print("  Part Nummber: ");
-        Serial.println(id2chip(buffer));
-        Serial.print("  Memory Size:  ");
-        Serial.print(chipSize);
-        Serial.println(" bytes");
-        Serial.print("  Block Size:   ");
-        uint32_t blockSize = SerialFlash.blockSize();
-        Serial.print(blockSize);
-        Serial.println(" bytes");
-
-        Serial.println("test: Flash memory PASSED");
+        audioSampler.setup();
     }
 
     void leds(bool on) {
-        digitalWrite(13, on ? HIGH : LOW);
         digitalWrite(A3, on ? HIGH : LOW);
         digitalWrite(A4, on ? HIGH : LOW);
         digitalWrite(A5, on ? HIGH : LOW);
@@ -231,69 +55,182 @@ public:
 
 };
 
-void advancedRead(void) {
-    // More advanced data read example. Read 32 bits with top 16 bits IR, bottom 16 bits full spectrum
-    // That way you can do whatever math and comparisons you want!
-    uint32_t lum = tsl.getFullLuminosity();
-    uint16_t ir, full;
-    ir = lum >> 16;
-    full = lum & 0xFFFF;
-    Serial.print(F("[ ")); Serial.print(millis()); Serial.print(F(" ms ] "));
-    Serial.print(F("IR: ")); Serial.print(ir);  Serial.print(F("  "));
-    Serial.print(F("Full: ")); Serial.print(full); Serial.print(F("  "));
-    Serial.print(F("Visible: ")); Serial.print(full - ir); Serial.print(F("  "));
-    Serial.print(F("Lux: ")); Serial.println(tsl.calculateLux(full, ir));
-}
+class Sensors {
+private:
+    ModuleHardware *hw;
+
+public:
+    Sensors(ModuleHardware &hw) : hw(&hw) {
+    }
+
+public:
+    void takeReading() {
+        auto started = millis();
+
+        auto shtTemperature = hw->sht31Sensor.readTemperature();
+        auto shtHumidity = hw->sht31Sensor.readHumidity();
+
+        auto pressurePascals = hw->mpl3115a2Sensor.getPressure();
+        auto altitudeMeters = hw->mpl3115a2Sensor.getAltitude();
+        auto mplTempCelsius = hw->mpl3115a2Sensor.getTemperature();
+        auto pressureInchesMercury = pressurePascals / 3377.0;
+
+        auto fullLuminosity = hw->tsl2591Sensor.getFullLuminosity();
+        auto ir = fullLuminosity >> 16;
+        auto full = fullLuminosity & 0xFFFF;
+        auto lux = hw->tsl2591Sensor.calculateLux(full, ir);
+
+        uint8_t system = 0, gyro = 0, accel = 0, mag = 0;
+        hw->bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
+
+        sensors_event_t event;
+        hw->bnoSensor.getEvent(&event);
+
+        debugfln("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
+        debugfln("sensors: ir(%d) full(%d) visible(%d) lux(%d)", ir, full, full - ir, lux);
+        debugfln("sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
+
+        hw->audioSampler.log();
+    }
+};
+
+class Check {
+private:
+    ModuleHardware *hw;
+
+public:
+    Check(ModuleHardware &hw) : hw(&hw) {
+    }
+
+public:
+    bool sht31() {
+        if (!hw->sht31Sensor.begin()) {
+            debugfln("test: SHT31 FAILED");
+            return false;
+        }
+
+        debugfln("test: SHT31 PASSED");
+        return true;
+    }
+
+    bool mpl3115a2() {
+        if (!hw->mpl3115a2Sensor.begin()) {
+            debugfln("test: MPL3115A2 FAILED");
+            return false;
+        }
+
+        debugfln("test: MPL3115A2 PASSED");
+        return true;
+    }
+
+    bool tsl2591() {
+        if (!hw->tsl2591Sensor.begin()) {
+            debugfln("test: TSL25911FN FAILED");
+            return false;
+        }
+
+        debugfln("test: TSL25911FN PASSED");
+        return true;
+    }
+
+    bool bno055() {
+        if (!hw->bnoSensor.begin()) {
+            debugfln("test: BNO055 FAILED");
+            return false;
+        }
+
+        hw->bnoSensor.setExtCrystalUse(true);
+
+        debugfln("test: BNO055 PASSED");
+        return true;
+    }
+
+    void max4466() {
+    }
+
+    bool flashMemory() {
+        debugfln("test: Checking flash memory...");
+
+        if (!hw->serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
+            debugfln("test: Flash memory FAILED");
+            return false;
+        }
+
+        uint8_t buffer[256];
+        hw->serialFlash.readID(buffer);
+        if (buffer[0] == 0) {
+            debugfln("test: Flash memory FAILED");
+            return false;
+        }
+
+        uint32_t chipSize = hw->serialFlash.capacity(buffer);
+        if (chipSize == 0) {
+            debugfln("test: Flash memory FAILED");
+            return false;
+        }
+
+        debugfln("test: Flash memory PASSED");
+        return true;
+    }
+
+    bool check() {
+        auto failures = false;
+        if (!flashMemory()) {
+            failures = true;
+        }
+        if (!bno055()) {
+            failures = true;
+        }
+        if (!mpl3115a2()) {
+            failures = true;
+        }
+        if (!tsl2591()) {
+            failures = true;
+        }
+        if (!sht31()) {
+            failures = true;
+        }
+
+        return !failures;
+    }
+
+    void failed() {
+        while (true) {
+            hw->leds(false);
+            delay(100);
+            hw->leds(true);
+            delay(100);
+        }
+    }
+
+};
 
 void setup() {
     Serial.begin(115200);
-
-    Check check;
-    check.setup();
-    check.leds(false);
 
     while (!Serial) {
         delay(100);
     }
 
-    Serial.println("test: Begin");
+    debugfln("test: Setup");
 
-    /*
-    Serial.print("Address: ");
-    Serial.println(MPL3115A2_ADDRESS, HEX);
+    ModuleHardware hw;
+    hw.setup();
 
-    {
-        uint8_t value = read8(MPL3115A2_WHOAMI);
-        Serial.println(value);
+    debugfln("test: Begin");
+
+    Check check(hw);
+    if (!check.check()) {
+        check.failed();
     }
 
-    {
-        uint8_t value = read8(MPL3115A2_REGISTER_STATUS);
-        Serial.println(value);
-    }
+    debugfln("test: Done");
+
+    Sensors sensors(hw);
 
     while (true) {
-    delay(100);
+        sensors.takeReading();
     }
-    */
-
-    while (true) {
-        check.leds(false);
-
-        check.flashMemory();
-        check.bno055();
-        check.mpl3115a2();
-        check.tsl2591();
-        check.sht31();
-
-        advancedRead();
-
-        check.leds(true);
-        delay(500);
-    }
-    // check.max4466();
-
-    Serial.println("test: Done");
 
     delay(100);
 }

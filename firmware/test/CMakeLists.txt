@@ -1,5 +1,7 @@
 set(SOURCE_FILES
   main.cpp
+  debug.cpp
+  AnalogSampling.cpp
 )
 
 set(LIBRARIES
