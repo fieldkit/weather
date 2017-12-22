@@ -9,6 +9,7 @@ namespace fk {
 
 class WeatherModule : public Module {
 private:
+    Delay delay{ 500 };
     WeatherReadings *weatherReadings;
 
 public:
@@ -16,6 +17,7 @@ public:
 
 public:
     void beginReading(SensorReading *readings) override;
+    void done(Task &task) override;
 
 };
 
@@ -25,7 +27,12 @@ WeatherModule::WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings)
 
 void WeatherModule::beginReading(SensorReading *readings) {
     weatherReadings->begin(readings);
+    push(delay); // This is to give us time to reply with the backoff. Should be avoidable?
     push(*weatherReadings);
+}
+
+void WeatherModule::done(Task &task) {
+    resume();
 }
 
 }
@@ -68,24 +75,12 @@ void setup() {
     fk::WeatherModule module(info, weatherReadings);
     uint32_t idleStart = 0;
 
-    module.begin();
-
     weatherReadings.setup();
+
+    module.begin();
 
     while (true) {
         module.tick();
-
-        if (module.isIdle()) {
-            if (idleStart > 0 && millis() - idleStart > 1000) {
-                module.beginReading(nullptr);
-                idleStart = 0;
-            } else if (idleStart == 0) {
-                idleStart = millis();
-            }
-        }
-        else {
-            idleStart = 0;
-        }
 
         delay(10);
     }

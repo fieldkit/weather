@@ -36,6 +36,8 @@ void WeatherReadings::setup() {
 }
 
 TaskEval WeatherReadings::task() {
+    Wire.begin();
+
     auto shtTemperature = sht31Sensor.readTemperature();
     auto shtHumidity = sht31Sensor.readHumidity();
 
@@ -56,6 +58,22 @@ TaskEval WeatherReadings::task() {
     bnoSensor.getEvent(&event);
 
     if (readings != nullptr) {
+        readings[ 0].value = shtTemperature;
+        readings[ 1].value = shtHumidity;
+        readings[ 2].value = mplTempCelsius;
+        readings[ 3].value = pressurePascals;
+        readings[ 4].value = altitudeMeters;
+        readings[ 5].value = ir;
+        readings[ 6].value = full - ir;
+        readings[ 7].value = lux;
+        readings[ 8].value = system;
+        readings[ 9].value = event.orientation.x;
+        readings[10].value = event.orientation.y;
+        readings[11].value = event.orientation.z;
+
+        for (auto i = 0; i < 12; ++i) {
+            readings[i].status = SensorReadingStatus::Done;
+        }
     }
 
     log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
