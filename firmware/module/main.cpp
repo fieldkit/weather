@@ -16,7 +16,8 @@ public:
     WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings);
 
 public:
-    void beginReading(SensorReading *readings) override;
+    ModuleReadingStatus beginReading(SensorReading *readings) override;
+    ModuleReadingStatus readingStatus(SensorReading *readings) override;
     void done(Task &task) override;
 
 };
@@ -25,10 +26,16 @@ WeatherModule::WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings)
     Module(info), weatherReadings(&weatherReadings) {
 }
 
-void WeatherModule::beginReading(SensorReading *readings) {
+ModuleReadingStatus WeatherModule::beginReading(SensorReading *readings) {
     weatherReadings->begin(readings);
     push(delay); // This is to give us time to reply with the backoff. Should be avoidable?
     push(*weatherReadings);
+
+    return ModuleReadingStatus{ 5000 };
+}
+
+ModuleReadingStatus WeatherModule::readingStatus(SensorReading *readings) {
+    return ModuleReadingStatus{};
 }
 
 void WeatherModule::done(Task &task) {
