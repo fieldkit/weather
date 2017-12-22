@@ -11,6 +11,7 @@ all: $(BUILD) gitdeps
 
 gitdeps:
 	simple-deps --config firmware/test/arduino-libraries
+	simple-deps --config firmware/module/arduino-libraries
 
 clean:
 	rm -rf $(BUILD)
