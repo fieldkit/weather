@@ -49,7 +49,7 @@ extern "C" {
 void setup() {
     Serial.begin(115200);
 
-    while (!Serial) {
+    while (!Serial && millis() < 2000) {
         delay(100);
     }
 
