@@ -80,6 +80,7 @@ void setup() {
 
     fk::WeatherReadings weatherReadings;
     fk::WeatherModule module(info, weatherReadings);
+    fk::Watchdog watchdog;
     uint32_t idleStart = 0;
 
     weatherReadings.setup();
@@ -88,6 +89,7 @@ void setup() {
 
     while (true) {
         module.tick();
+        watchdog.tick();
 
         delay(10);
     }
