@@ -86,6 +86,7 @@ void setup() {
     weatherReadings.setup();
 
     module.begin();
+    watchdog.setup();
 
     while (true) {
         module.tick();
