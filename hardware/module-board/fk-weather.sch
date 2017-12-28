@@ -2030,17 +2030,6 @@ Text Label 1750 3750 0    60   ~ 0
 WIND_SPEED
 Text Label 1750 3950 0    60   ~ 0
 RAIN
-$Comp
-L Conn_01x08 J3
-U 1 1 5A46B966
-P 10250 2850
-F 0 "J3" H 10250 3250 50  0000 C CNN
-F 1 "Conn_01x08" H 10250 2350 50  0000 C CNN
-F 2 "Socket_Strips:Socket_Strip_Straight_1x08_Pitch2.54mm" H 10250 2850 50  0001 C CNN
-F 3 "" H 10250 2850 50  0001 C CNN
-	1    10250 2850
-	1    0    0    -1  
-$EndComp
 Text Label 9250 3250 0    50   ~ 0
 SDA2
 Text Label 9250 3150 0    50   ~ 0
@@ -2062,4 +2051,23 @@ F 3 "" H 8900 10700 60  0000 C CNN
 	1    8900 10700
 	1    0    0    -1  
 $EndComp
+$Comp
+L Conn_01x10 J3
+U 1 1 5A454B4B
+P 10250 2950
+F 0 "J3" H 10250 3450 50  0000 C CNN
+F 1 "Conn_01x10" H 10250 2350 50  0000 C CNN
+F 2 "Socket_Strips:Socket_Strip_Straight_1x10_Pitch2.54mm" H 10250 2950 50  0001 C CNN
+F 3 "" H 10250 2950 50  0001 C CNN
+	1    10250 2950
+	1    0    0    -1  
+$EndComp
+Text Label 9250 3450 0    50   ~ 0
+D31
+Text Label 9250 3350 0    50   ~ 0
+D30
+Wire Wire Line
+	10050 3350 9250 3350
+Wire Wire Line
+	9250 3450 10050 3450
 $EndSCHEMATC
