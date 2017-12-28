@@ -259,17 +259,6 @@ F 4 "0" H 6200 5650 50  0001 C CNN "price"
 	1    0    0    -1  
 $EndComp
 $Comp
-L 5V0 #PWR2
-U 1 1 5A446545
-P 5550 5450
-F 0 "#PWR2" H 5550 5300 50  0001 C CNN
-F 1 "5V0" H 5550 5590 50  0000 C CNN
-F 2 "" H 5550 5450 60  0000 C CNN
-F 3 "" H 5550 5450 60  0000 C CNN
-	1    5550 5450
-	1    0    0    -1  
-$EndComp
-$Comp
 L GND #PWR8
 U 1 1 5A446546
 P 7550 1950
@@ -280,9 +269,9 @@ F 3 "" H 7550 1950 60  0000 C CNN
 	1    7550 1950
 	1    0    0    -1  
 $EndComp
-Text Label 5750 5350 0    50   ~ 0
-SDA
 Text Label 5750 5250 0    50   ~ 0
+SDA
+Text Label 5750 5150 0    50   ~ 0
 SCL
 Text Label 8250 5350 2    50   ~ 0
 SDA
@@ -300,13 +289,6 @@ NoConn ~ 2100 1900
 NoConn ~ 2100 1800
 NoConn ~ 8400 5450
 NoConn ~ 7800 1700
-NoConn ~ 5650 5150
-Wire Wire Line
-	5750 5250 6000 5250
-Wire Wire Line
-	5750 5350 6000 5350
-Wire Wire Line
-	5650 5150 6000 5150
 Wire Wire Line
 	5750 4950 6000 4950
 Wire Wire Line
@@ -378,8 +360,6 @@ Wire Wire Line
 Wire Wire Line
 	5550 5050 5550 5000
 Wire Wire Line
-	6000 5450 5550 5450
-Wire Wire Line
 	7550 1800 7800 1800
 Wire Wire Line
 	7550 1800 7550 1950
@@ -436,4 +416,9 @@ Text Notes 8600 800  0    118  ~ 24
 SHT31 (TEMP)
 Text Notes 2150 800  0    118  ~ 24
 MPL3115A2 (PRESSURE/HUMIDITY)
+NoConn ~ 6000 5450
+Wire Wire Line
+	5750 5150 6000 5150
+Wire Wire Line
+	6000 5250 5750 5250
 $EndSCHEMATC
