@@ -2,10 +2,10 @@
 
   (general
     (links 140)
-    (no_connects 31)
+    (no_connects 0)
     (area 106.352905 32.742999 165.914286 159.377948)
     (thickness 1.6)
-    (drawings 22)
+    (drawings 24)
     (tracks 671)
     (zones 0)
     (modules 67)
@@ -2992,6 +2992,12 @@
     )
   )
 
+  (gr_text D31 (at 149.5552 116.3828) (layer F.SilkS) (tstamp 5A46AC35)
+    (effects (font (size 1 1) (thickness 0.2)))
+  )
+  (gr_text D30 (at 149.5552 118.5164) (layer F.SilkS) (tstamp 5A46AC2D)
+    (effects (font (size 1 1) (thickness 0.2)))
+  )
   (gr_text GND (at 148.7424 133.7056) (layer F.SilkS) (tstamp 5A45489B)
     (effects (font (size 1 1) (thickness 0.2)))
   )
