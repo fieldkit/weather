@@ -2,7 +2,7 @@
 
   (general
     (links 140)
-    (no_connects 0)
+    (no_connects 31)
     (area 106.352905 32.742999 165.914286 159.377948)
     (thickness 1.6)
     (drawings 24)
@@ -3035,7 +3035,7 @@
   (gr_text SDA1 (at 149.098 126.1364) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.2)))
   )
-  (gr_text v0.1 (at 147.574 142.178) (layer F.SilkS)
+  (gr_text v0.6 (at 147.574 142.178) (layer F.SilkS)
     (effects (font (size 1.2 1.2) (thickness 0.2)))
   )
   (dimension 26.277065 (width 0.3) (layer Dwgs.User)
