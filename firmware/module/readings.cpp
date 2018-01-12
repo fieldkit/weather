@@ -76,6 +76,7 @@ TaskEval WeatherReadings::task() {
 
         for (auto i = 0; i < 12; ++i) {
             readings[i].status = SensorReadingStatus::Done;
+            readings[i].time = clock.getTime();
         }
     }
 
