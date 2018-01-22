@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/jlewallen/fieldkit/weather/hardware/sensor-board/fk-weather-sensors.sch)
-    (date "Thu 28 Dec 2017 11:35:57 AM PST")
+    (date "Mon 22 Jan 2018 03:54:41 PM PST")
     (tool "Eeschema 4.0.7-e2-6376~58~ubuntu16.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -57,7 +57,7 @@
       (tstamp 5A4464F8))
     (comp (ref U2)
       (value TSL2591)
-      (footprint Housings_DFN_QFN:DFN-6-1EP_2x2mm_Pitch0.65mm)
+      (footprint conservify:TSL2591)
       (fields
         (field (name price) 0)
         (field (name spn1) 985-TSL25911FN)
