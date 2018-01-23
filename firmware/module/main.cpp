@@ -9,7 +9,7 @@ namespace fk {
 
 class WeatherModule : public Module {
 private:
-    TwoWireBus bus{ Wire };
+    TwoWireBus bus{ Wire4and3 };
     Delay delay{ 500 };
     WeatherReadings *weatherReadings;
 
@@ -99,6 +99,7 @@ void setup() {
 
     while (true) {
         module.tick();
+        meters.tick();
 
         delay(10);
     }
