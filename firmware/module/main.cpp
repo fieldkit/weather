@@ -81,7 +81,6 @@ void setup() {
 
     fk::WeatherReadings weatherReadings;
     fk::WeatherModule module(info, weatherReadings);
-    uint32_t idleStart = 0;
 
     weatherReadings.setup();
 
