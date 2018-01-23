@@ -62,9 +62,9 @@ TaskEval WeatherReadings::task() {
 
         pending->elapsed -= millis();
 
-        for (auto i = 0; i < i; ++i) {
-            readings[i].status = SensorReadingStatus::Done;
-            readings[i].time = clock.getTime();
+        for (auto j = 0; j < i; ++j) {
+            readings[j].status = SensorReadingStatus::Done;
+            readings[j].time = clock.getTime();
         }
     }
 
