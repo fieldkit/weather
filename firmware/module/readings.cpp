@@ -11,6 +11,20 @@ WeatherReadings::WeatherReadings(ModuleHardware &hw, WeatherMeters &meters) : Ta
 void WeatherReadings::setup() {
     hw->setup();
     meters->setup();
+
+    if (!hw->sht31Sensor.begin()) {
+        log("SHT31 FAILED");
+    }
+
+    if (!hw->mpl3115a2Sensor.begin()) {
+        log("MPL3115A2 FAILED");
+    }
+
+    if (!hw->tsl2591Sensor.begin()) {
+        log("TSL25911FN FAILED");
+    }
+
+    log("Ready");
 }
 
 TaskEval WeatherReadings::task() {
