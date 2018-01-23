@@ -1,7 +1,9 @@
 set(SOURCE_FILES
   main.cpp
   readings.cpp
+  ../common/AmbientSensors.cpp
   ../common/WeatherMeters.cpp
+  ../common/ModuleHardware.cpp
 )
 
 set(LIBRARIES

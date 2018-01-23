@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <SPI.h>
 
-#include <Sensors.h>
+#include <AmbientSensors.h>
 #include <WeatherMeters.h>
 #include <Check.h>
 
@@ -17,18 +17,15 @@ void setup() {
     debugfln("test: Setup");
 
     fk::ModuleHardware hw;
-    hw.setup();
-
-    debugfln("test: Begin");
-
     fk::Check check(hw);
+    hw.setup();
     if (!check.check()) {
         check.failed();
     }
 
     debugfln("test: Done");
 
-    fk::Sensors sensors(hw);
+    fk::AmbientSensors ambientSensors(hw);
     fk::WeatherMeters meters;
     meters.setup();
 
@@ -47,7 +44,6 @@ void setup() {
             debugf(",%f,%d", dailyWindGust.speed, dailyWindGust.direction.angle);
             debugf(",%f,%d", wind10mGust.speed, wind10mGust.direction.angle);
             debugf(",%f,%d", averageWind.speed, averageWind.direction.angle);
-
             debugfln(",%f,%f", hourlyRain, dailyRain);
         }
     }

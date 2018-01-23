@@ -69,17 +69,28 @@ void setup() {
             {"Ambient IR", "",},
             {"Ambient Visible", "",},
             {"Ambient Lux", "",},
-            {"IMU Cal", ""},
-            {"IMU Orien X", ""},
-            {"IMU Orien Y", ""},
-            {"IMU Orien Z", ""},
+
+            {"Wind Speed", "km/hr"},
+            {"Wind Dir", ""},
+            {"Day Wind Speed", "km/hr"},
+            {"Day Wind Dir", ""},
+            {"10m Wind Gust", "km/hr"},
+            {"10m Wind Dir", ""},
+            {"2m Wind Gust", "km/hr"},
+            {"2m Wind Dir", ""},
+
+            {"Hourly Rain", "mm"},
+            {"Daily Rain", "mm"},
         },
         {
-            {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+            {}, {}, {}, {}, {}, {}, {}, {},
+            {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
         },
     };
 
-    fk::WeatherReadings weatherReadings;
+    fk::ModuleHardware hardware;
+    fk::WeatherMeters meters;
+    fk::WeatherReadings weatherReadings(hardware, meters);
     fk::WeatherModule module(info, weatherReadings);
 
     weatherReadings.setup();

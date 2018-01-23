@@ -70,9 +70,10 @@ bool Check::check() {
     if (!mpl3115a2()) {
         failures = true;
     }
-    if (false)
-    if (!tsl2591()) {
-        failures = true;
+    if (false) {
+        if (!tsl2591()) {
+            failures = true;
+        }
     }
     if (!sht31()) {
         failures = true;
