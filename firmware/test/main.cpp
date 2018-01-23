@@ -4,36 +4,31 @@
 #include <cstdarg>
 
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
 #include <Adafruit_TSL2561_U.h>
 #include <Adafruit_MPL3115A2.h>
 #include <Adafruit_TSL2591.h>
 #include <Adafruit_SHT31.h>
 #include <SerialFlash.h>
 
-#include "debug.h"
-#include "AnalogSampling.h"
+#include "WeatherMeters.h"
+
+void debugf(const char *f, ...) __attribute__((format(printf, 1, 2)));
+void debugfln(const char *f, ...) __attribute__((format(printf, 1, 2)));
 
 class ModuleHardware {
 public:
     static constexpr uint8_t PIN_FLASH_CS = 5;
-    static constexpr uint8_t PIN_MAX4466 = A1;
 
 public:
-    TwoWire bno055Wire{ &sercom1, 11, 13 };
     Adafruit_SHT31 sht31Sensor;
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
-    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &bno055Wire };
     SerialFlashChip serialFlash;
-    AnalogSampler audioSampler;
 
 public:
     void setup() {
         SPI.begin();
         Wire.begin();
-
-        bno055Wire.begin();
 
         pinPeripheral(11, PIO_SERCOM);
         pinPeripheral(13, PIO_SERCOM);
@@ -41,10 +36,6 @@ public:
         pinMode(A3, OUTPUT);
         pinMode(A4, OUTPUT);
         pinMode(A5, OUTPUT);
-
-        pinMode(PIN_MAX4466, INPUT);
-
-        audioSampler.setup();
     }
 
     void leds(bool on) {
@@ -80,17 +71,8 @@ public:
         auto full = fullLuminosity & 0xFFFF;
         auto lux = hw->tsl2591Sensor.calculateLux(full, ir);
 
-        uint8_t system = 0, gyro = 0, accel = 0, mag = 0;
-        hw->bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
-
-        sensors_event_t event;
-        hw->bnoSensor.getEvent(&event);
-
-        debugfln("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-        debugfln("sensors: ir(%d) full(%d) visible(%d) lux(%d)", ir, full, full - ir, lux);
-        debugfln("sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
-
-        hw->audioSampler.log();
+        // debugfln("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
+        // debugfln("sensors: ir(%d) full(%d) visible(%d) lux(%d)", ir, full, full - ir, lux);
     }
 };
 
@@ -133,21 +115,6 @@ public:
         return true;
     }
 
-    bool bno055() {
-        if (!hw->bnoSensor.begin()) {
-            debugfln("test: BNO055 FAILED");
-            return false;
-        }
-
-        hw->bnoSensor.setExtCrystalUse(true);
-
-        debugfln("test: BNO055 PASSED");
-        return true;
-    }
-
-    void max4466() {
-    }
-
     bool flashMemory() {
         debugfln("test: Checking flash memory...");
 
@@ -178,12 +145,10 @@ public:
         if (!flashMemory()) {
             failures = true;
         }
-        if (!bno055()) {
-            failures = true;
-        }
         if (!mpl3115a2()) {
             failures = true;
         }
+        if (false)
         if (!tsl2591()) {
             failures = true;
         }
@@ -227,14 +192,59 @@ void setup() {
     debugfln("test: Done");
 
     Sensors sensors(hw);
+    fk::WeatherMeters meters;
+    meters.setup();
 
     while (true) {
-        sensors.takeReading();
-    }
+        if (meters.tick()) {
+            auto time = meters.getTime();
+            auto currentWind = meters.getCurrentWind();
+            auto dailyWindGust = meters.getDailyWindGust();
+            auto averageWind = meters.getTwoMinuteWindAverage();
+            auto wind10mGust = meters.getLargestRecentWindGust();
+            auto hourlyRain = meters.getHourlyRain();
+            auto dailyRain = meters.getDailyRain();
 
-    delay(100);
+            debugf("%d,%d,%d,%d", millis(), time.hour, time.minute, time.second);
+            debugf(",%f,%d", currentWind.speed, currentWind.direction.angle);
+            debugf(",%f,%d", dailyWindGust.speed, dailyWindGust.direction.angle);
+            debugf(",%f,%d", wind10mGust.speed, wind10mGust.direction.angle);
+            debugf(",%f,%d", averageWind.speed, averageWind.direction.angle);
+            debugf(",%f,%f", hourlyRain, dailyRain);
+
+            debugfln("");
+        }
+    }
 }
 
 void loop() {
 
+}
+
+#define DEBUG_LINE_MAX 256
+
+void debugf(const char *f, ...) {
+    char buffer[DEBUG_LINE_MAX];
+    va_list args;
+
+    va_start(args, f);
+    vsnprintf(buffer, DEBUG_LINE_MAX, f, args);
+    va_end(args);
+
+    Serial.print(buffer);
+}
+
+void debugfln(const char *f, ...) {
+    char buffer[DEBUG_LINE_MAX];
+    va_list args;
+
+    va_start(args, f);
+    auto w = vsnprintf(buffer, DEBUG_LINE_MAX - 2, f, args);
+    va_end(args);
+
+    buffer[w] = '\r';
+    buffer[w + 1] = '\n';
+    buffer[w + 2] = 0;
+
+    Serial.print(buffer);
 }
