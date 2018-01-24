@@ -202,7 +202,10 @@ bool WeatherMeters::tick() {
             persistedState.dailyWindGust = currentWind;
         }
 
-        persistedState.save(flash);
+        if (memcmp(&persistedState, &savedState, sizeof(PersistedState)) != 0) {
+            persistedState.save(flash);
+            memcpy(&savedState, &persistedState, sizeof(PersistedState));
+        }
 
         return true;
     }

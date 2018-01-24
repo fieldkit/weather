@@ -119,6 +119,7 @@ private:
      * Wind recording that was just taken.
      */
     WindReading currentWind;
+    PersistedState savedState;
     PersistedState persistedState;
     FlashStorage flash;
 
