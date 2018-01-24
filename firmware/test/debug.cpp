@@ -29,3 +29,19 @@ void debugfln(const char *f, ...) {
 
     Serial.print(buffer);
 }
+
+void debugfpln(const char *prefix, const char *f, ...) {
+    char buffer[DEBUG_LINE_MAX];
+    va_list args;
+
+    va_start(args, f);
+    auto w = vsnprintf(buffer, DEBUG_LINE_MAX - 2, f, args);
+    va_end(args);
+
+    buffer[w] = '\r';
+    buffer[w + 1] = '\n';
+    buffer[w + 2] = 0;
+
+    debugf("%10s", prefix);
+    Serial.print(buffer);
+}
