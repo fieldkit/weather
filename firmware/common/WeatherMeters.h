@@ -80,9 +80,6 @@ struct PersistedState {
      * Stores the daily rainfall. Reset every 24h.
      */
     float dailyRain{ 0 };
-
-    void save(FlashStorage &flash);
-    void load(FlashStorage &flash);
 };
 
 struct DumbTime {
@@ -119,7 +116,6 @@ private:
      * Wind recording that was just taken.
      */
     WindReading currentWind;
-    PersistedState savedState;
     PersistedState persistedState;
     FlashStorage flash;
 
@@ -155,6 +151,8 @@ private:
     float getWindSpeed();
     WindDirection getWindDirection();
     int16_t windAdcToAngle(int16_t adc);
+    void save();
+    void load();
 
 };
 

@@ -42,6 +42,6 @@ void debugfpln(const char *prefix, const char *f, ...) {
     buffer[w + 1] = '\n';
     buffer[w + 2] = 0;
 
-    debugf("%10s", prefix);
+    debugf("%-10s", prefix);
     Serial.print(buffer);
 }

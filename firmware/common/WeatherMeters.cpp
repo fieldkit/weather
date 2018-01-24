@@ -5,55 +5,70 @@ namespace fk {
 
 static WeatherMeters *global_weather_meters{ nullptr };
 
-static constexpr char FileName[] = "storage.bin";
-
 FlashStorage::FlashStorage(SerialFlashChip &serialFlash) : serialFlash(&serialFlash) {
 }
 
+static uint32_t crc16_table[16] = {
+    0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+    0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+};
+
+static uint16_t crc16_update(uint16_t start, uint8_t *p, size_t n) {
+    uint16_t crc = start;
+    uint16_t r;
+
+    while (n-- > 0) {
+        /* compute checksum of lower four bits of *p */
+        r = crc16_table[crc & 0xF];
+        crc = (crc >> 4) & 0x0FFF;
+        crc = crc ^ r ^ crc16_table[*p & 0xF];
+
+        /* now compute checksum of upper four bits of *p */
+        r = crc16_table[crc & 0xF];
+        crc = (crc >> 4) & 0x0FFF;
+        crc = crc ^ r ^ crc16_table[(*p >> 4) & 0xF];
+
+        p++;
+    }
+
+    return crc;
+}
+
 size_t FlashStorage::write(uint8_t recordId, void *ptr, size_t size) {
-    if (createNew) {
-        if (!SerialFlash.create(FileName, size)) {
-            debugfpln("Flash", "Unable to create");
-        }
+    uint8_t buffer[size + sizeof(uint16_t)];
+
+    uint16_t oldHash{ 0 };
+    serialFlash->read(0, (uint8_t *)&oldHash, sizeof(uint16_t));
+
+    auto newHash = crc16_update(0, (uint8_t *)ptr, size);
+    if (newHash == oldHash) {
+        return size;
     }
-    auto file = serialFlash->open(FileName);
-    if (file) {
-        file.seek(0);
-        file.write(ptr, size);
-        debugfpln("Flash", "Wrote %d bytes", size);
-    }
-    return 0;
+
+    memcpy(buffer, &newHash, sizeof(uint16_t));
+    memcpy(buffer + sizeof(uint16_t), ptr, size);
+
+    serialFlash->eraseBlock(0);
+    serialFlash->write(0, buffer, sizeof(buffer));
+
+    return size;
 }
 
 size_t FlashStorage::read(uint8_t recordId, void *ptr, size_t size) {
-    if (!serialFlash->exists(FileName)) {
-        debugfpln("Flash", "No file found");
+    uint8_t buffer[size + sizeof(uint16_t)];
+    uint16_t hash{ 0 };
+
+    serialFlash->read(0, buffer, sizeof(buffer));
+
+    memcpy(&hash, buffer, sizeof(uint16_t));
+
+    auto expected = crc16_update(0, buffer + sizeof(uint16_t), size);
+    if (expected != hash) {
         return 0;
     }
-    auto file = serialFlash->open(FileName);
-    if (file) {
-        if (file.size() != size) {
-            debugfpln("Flash", "File size mismatch %lu != %d", file.size(), size);
-            serialFlash->remove(FileName);
-            return 0;
-        }
 
-        file.read(ptr, size);
-
-        createNew = false;
-
-        debugfpln("Flash", "Read %d bytes", size);
-    }
-
-    return 0;
-}
-
-void PersistedState::save(FlashStorage &flash) {
-    flash.write(0, this, sizeof(PersistedState));
-}
-
-void PersistedState::load(FlashStorage &flash) {
-    flash.read(0, this, sizeof(PersistedState));
+    memcpy(ptr, buffer + sizeof(uint16_t), size);
+    return size;
 }
 
 void isr_wind();
@@ -96,7 +111,7 @@ void WeatherMeters::setup() {
     attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
 
-    persistedState.load(flash);
+    load();
 }
 
 float WeatherMeters::getHourlyRain() {
@@ -202,10 +217,7 @@ bool WeatherMeters::tick() {
             persistedState.dailyWindGust = currentWind;
         }
 
-        if (memcmp(&persistedState, &savedState, sizeof(PersistedState)) != 0) {
-            persistedState.save(flash);
-            memcpy(&savedState, &persistedState, sizeof(PersistedState));
-        }
+        save();
 
         return true;
     }
@@ -229,6 +241,16 @@ WindDirection WeatherMeters::getWindDirection() {
         adc, windAdcToAngle(adc)
     };
     return direction;
+}
+
+void WeatherMeters::save() {
+    flash.write(0, &persistedState, sizeof(PersistedState));
+    debugfpln("Meters", "Save (daily rain: %f)", persistedState.dailyRain);
+}
+
+void WeatherMeters::load() {
+    flash.read(0, &persistedState, sizeof(PersistedState));
+    debugfpln("Meters", "Load (daily rain: %f)", persistedState.dailyRain);
 }
 
 int16_t WeatherMeters::windAdcToAngle(int16_t adc) {
