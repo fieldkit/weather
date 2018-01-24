@@ -98,7 +98,7 @@ void WeatherMeters::rain() {
     auto now = millis();
     if (now - lastRainAt > 10) {
         persistedState.dailyRain += RainPerTick;
-        persistedState.lastHourOfRain[minute] += RainPerTick;
+        persistedState.lastHourOfRain[persistedState.minute] += RainPerTick;
         lastRainAt = now;
     }
 }
@@ -184,34 +184,34 @@ bool WeatherMeters::tick() {
 
         lastStatusTick = millis();
 
-        if (++twoMinuteSecondsCounter > 119) {
-            twoMinuteSecondsCounter = 0;
+        if (++persistedState.twoMinuteSecondsCounter > 119) {
+            persistedState.twoMinuteSecondsCounter = 0;
         }
 
-        if (++second > 59) {
-            second = 0;
-            if (++minute > 59) {
-                minute = 0;
-                if (++hour > 23) {
-                    hour = 0;
+        if (++persistedState.second > 59) {
+            persistedState.second = 0;
+            if (++persistedState.minute > 59) {
+                persistedState.minute = 0;
+                if (++persistedState.hour > 23) {
+                    persistedState.hour = 0;
                     persistedState.dailyRain = 0;
                     persistedState.dailyWindGust.zero();
                 }
             }
 
-            persistedState.lastHourOfRain[minute] = 0;
+            persistedState.lastHourOfRain[persistedState.minute] = 0;
 
-            if (++tenMinuteMinuteCounter > 9) {
-                tenMinuteMinuteCounter = 0;
+            if (++persistedState.tenMinuteMinuteCounter > 9) {
+                persistedState.tenMinuteMinuteCounter = 0;
             }
 
-            persistedState.windGusts[tenMinuteMinuteCounter].zero();
+            persistedState.windGusts[persistedState.tenMinuteMinuteCounter].zero();
         }
 
-        persistedState.lastTwoMinutesOfWind[twoMinuteSecondsCounter] = currentWind;
+        persistedState.lastTwoMinutesOfWind[persistedState.twoMinuteSecondsCounter] = currentWind;
 
-        if (currentWind.strongerThan(persistedState.windGusts[tenMinuteMinuteCounter])) {
-            persistedState.windGusts[tenMinuteMinuteCounter] = currentWind;
+        if (currentWind.strongerThan(persistedState.windGusts[persistedState.tenMinuteMinuteCounter])) {
+            persistedState.windGusts[persistedState.tenMinuteMinuteCounter] = currentWind;
         }
         if (currentWind.strongerThan(persistedState.dailyWindGust)) {
             persistedState.dailyWindGust = currentWind;

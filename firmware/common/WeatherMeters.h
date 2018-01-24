@@ -59,6 +59,15 @@ public:
 
 struct PersistedState {
     /**
+     * Time related counters.
+     */
+    uint8_t second{ 0 };
+    uint8_t minute{ 0 };
+    uint8_t hour{ 0 };
+    uint8_t twoMinuteSecondsCounter{ 0 };
+    uint8_t tenMinuteMinuteCounter{ 0 };
+
+    /**
      * Last 120 wind readings. Used to calculate an average.
      */
     WindReading lastTwoMinutesOfWind[120];
@@ -104,15 +113,6 @@ private:
     uint32_t windTicks{ 0 };
 
     /**
-     * Time related counters.
-     */
-    uint8_t second{ 0 };
-    uint8_t minute{ 0 };
-    uint8_t hour{ 0 };
-    uint8_t twoMinuteSecondsCounter{ 0 };
-    uint8_t tenMinuteMinuteCounter{ 0 };
-
-    /**
      * Wind recording that was just taken.
      */
     WindReading currentWind;
@@ -130,7 +130,7 @@ public:
 
 public:
     DumbTime getTime() {
-        return DumbTime{ second, minute, hour };
+        return DumbTime{ persistedState.second, persistedState.minute, persistedState.hour };
     }
     WindReading getCurrentWind() {
         return currentWind;
