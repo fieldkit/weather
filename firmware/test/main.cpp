@@ -16,17 +16,17 @@ void setup() {
 
     debugfln("test: Setup");
 
-    fk::ModuleHardware hw;
-    fk::Check check(hw);
-    hw.setup();
+    fk::ModuleHardware hardware;
+    fk::Check check(hardware);
+    hardware.setup();
     if (!check.check()) {
         check.failed();
     }
 
     debugfln("test: Done");
 
-    fk::AmbientSensors ambientSensors(hw);
-    fk::WeatherMeters meters;
+    fk::AmbientSensors ambientSensors(hardware);
+    fk::WeatherMeters meters(hardware.serialFlash);
     meters.setup();
 
     while (true) {

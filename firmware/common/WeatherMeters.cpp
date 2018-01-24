@@ -1,8 +1,60 @@
 #include "WeatherMeters.h"
+#include "debug.h"
 
 namespace fk {
 
 static WeatherMeters *global_weather_meters{ nullptr };
+
+static constexpr char FileName[] = "storage.bin";
+
+FlashStorage::FlashStorage(SerialFlashChip &serialFlash) : serialFlash(&serialFlash) {
+}
+
+size_t FlashStorage::write(uint8_t recordId, void *ptr, size_t size) {
+    if (createNew) {
+        if (!SerialFlash.create(FileName, size)) {
+            debugfpln("Flash", "Unable to create");
+        }
+    }
+    auto file = serialFlash->open(FileName);
+    if (file) {
+        file.seek(0);
+        file.write(ptr, size);
+        debugfpln("Flash", "Wrote %d bytes", size);
+    }
+    return 0;
+}
+
+size_t FlashStorage::read(uint8_t recordId, void *ptr, size_t size) {
+    if (!serialFlash->exists(FileName)) {
+        debugfpln("Flash", "No file found");
+        return 0;
+    }
+    auto file = serialFlash->open(FileName);
+    if (file) {
+        if (file.size() != size) {
+            debugfpln("Flash", "File size mismatch %lu != %d", file.size(), size);
+            serialFlash->remove(FileName);
+            return 0;
+        }
+
+        file.read(ptr, size);
+
+        createNew = false;
+
+        debugfpln("Flash", "Read %d bytes", size);
+    }
+
+    return 0;
+}
+
+void PersistedState::save(FlashStorage &flash) {
+    flash.write(0, this, sizeof(PersistedState));
+}
+
+void PersistedState::load(FlashStorage &flash) {
+    flash.read(0, this, sizeof(PersistedState));
+}
 
 void isr_wind();
 void isr_rain();
@@ -15,7 +67,7 @@ void isr_rain() {
     global_weather_meters->rain();
 }
 
-WeatherMeters::WeatherMeters() {
+WeatherMeters::WeatherMeters(SerialFlashChip &serialFlash) : flash(serialFlash) {
     global_weather_meters = this;
 }
 
@@ -30,8 +82,8 @@ void WeatherMeters::wind() {
 void WeatherMeters::rain() {
     auto now = millis();
     if (now - lastRainAt > 10) {
-        dailyRain += RainPerTick;
-        lastHourOfRain[minute] += RainPerTick;
+        persistedState.dailyRain += RainPerTick;
+        persistedState.lastHourOfRain[minute] += RainPerTick;
         lastRainAt = now;
     }
 }
@@ -43,12 +95,14 @@ void WeatherMeters::setup() {
 
     attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
+
+    persistedState.load(flash);
 }
 
 float WeatherMeters::getHourlyRain() {
     auto total = 0.0f;
     for (auto i = 0; i < 60; ++i) {
-        total += lastHourOfRain[i];
+        total += persistedState.lastHourOfRain[i];
     }
     return total;
 }
@@ -61,12 +115,12 @@ WindReading WeatherMeters::getWindReading() {
 
 WindReading WeatherMeters::getTwoMinuteWindAverage() {
     auto speedSum = 0.0f;
-    auto directionSum = lastTwoMinutesOfWind[0].direction.angle;
-    auto d = lastTwoMinutesOfWind[0].direction.angle;
+    auto directionSum = persistedState.lastTwoMinutesOfWind[0].direction.angle;
+    auto d = persistedState.lastTwoMinutesOfWind[0].direction.angle;
     auto numberOfSamples = 0;
     for (auto i = 1 ; i < 120; i++) {
-        if (lastTwoMinutesOfWind[i].direction.angle != -1) {
-            auto delta = lastTwoMinutesOfWind[i].direction.angle - d;
+        if (persistedState.lastTwoMinutesOfWind[i].direction.angle != -1) {
+            auto delta = persistedState.lastTwoMinutesOfWind[i].direction.angle - d;
 
             if (delta < -180) {
                 d += delta + 360;
@@ -80,7 +134,7 @@ WindReading WeatherMeters::getTwoMinuteWindAverage() {
 
             directionSum += d;
 
-            speedSum += lastTwoMinutesOfWind[i].speed;
+            speedSum += persistedState.lastTwoMinutesOfWind[i].speed;
 
             numberOfSamples++;
         }
@@ -102,8 +156,8 @@ WindReading WeatherMeters::getTwoMinuteWindAverage() {
 WindReading WeatherMeters::getLargestRecentWindGust() {
     auto gust = WindReading{};
     for (auto i = 0; i < 10; ++i) {
-        if (windGusts[i].strongerThan(gust)) {
-            gust = windGusts[i];
+        if (persistedState.windGusts[i].strongerThan(gust)) {
+            gust = persistedState.windGusts[i];
         }
     }
     return gust;
@@ -125,28 +179,30 @@ bool WeatherMeters::tick() {
                 minute = 0;
                 if (++hour > 23) {
                     hour = 0;
-                    dailyRain = 0;
-                    dailyWindGust.zero();
+                    persistedState.dailyRain = 0;
+                    persistedState.dailyWindGust.zero();
                 }
             }
 
-            lastHourOfRain[minute] = 0;
+            persistedState.lastHourOfRain[minute] = 0;
 
             if (++tenMinuteMinuteCounter > 9) {
                 tenMinuteMinuteCounter = 0;
             }
 
-            windGusts[tenMinuteMinuteCounter].zero();
+            persistedState.windGusts[tenMinuteMinuteCounter].zero();
         }
 
-        lastTwoMinutesOfWind[twoMinuteSecondsCounter] = currentWind;
+        persistedState.lastTwoMinutesOfWind[twoMinuteSecondsCounter] = currentWind;
 
-        if (currentWind.strongerThan(windGusts[tenMinuteMinuteCounter])) {
-            windGusts[tenMinuteMinuteCounter] = currentWind;
+        if (currentWind.strongerThan(persistedState.windGusts[tenMinuteMinuteCounter])) {
+            persistedState.windGusts[tenMinuteMinuteCounter] = currentWind;
         }
-        if (currentWind.strongerThan(dailyWindGust)) {
-            dailyWindGust = currentWind;
+        if (currentWind.strongerThan(persistedState.dailyWindGust)) {
+            persistedState.dailyWindGust = currentWind;
         }
+
+        persistedState.save(flash);
 
         return true;
     }

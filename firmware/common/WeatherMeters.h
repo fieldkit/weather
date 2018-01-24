@@ -2,6 +2,7 @@
 #define FK_WEATHER_METERS_H_INCLUDED
 
 #include <Arduino.h>
+#include <SerialFlash.h>
 
 namespace fk {
 
@@ -41,6 +42,49 @@ struct WindReading {
     }
 };
 
+class FlashStorage {
+private:
+    SerialFlashChip *serialFlash;
+    bool createNew{ true };
+
+public:
+    FlashStorage(SerialFlashChip &serialFlash);
+
+public:
+
+    size_t write(uint8_t recordId, void *ptr, size_t size);
+    size_t read(uint8_t recordId, void *ptr, size_t size);
+};
+
+
+struct PersistedState {
+    /**
+     * Last 120 wind readings. Used to calculate an average.
+     */
+    WindReading lastTwoMinutesOfWind[120];
+    /**
+     * For the last 10 minutes the largest gust that occured during that minute.
+     */
+    WindReading windGusts[10];
+    /*
+     * The maximum gust of wind for the day.
+     */
+    WindReading dailyWindGust;
+
+    /**
+     * Stores the rainfall per minute over the last 60 minutes.
+     */
+    float lastHourOfRain[60] = { 0 };
+
+    /**
+     * Stores the daily rainfall. Reset every 24h.
+     */
+    float dailyRain{ 0 };
+
+    void save(FlashStorage &flash);
+    void load(FlashStorage &flash);
+};
+
 struct DumbTime {
     uint8_t second;
     uint8_t minute;
@@ -75,37 +119,11 @@ private:
      * Wind recording that was just taken.
      */
     WindReading currentWind;
-
-    /**
-     * Last 120 wind readings. Used to calculate an average.
-     */
-    WindReading lastTwoMinutesOfWind[120];
-
-    /**
-     * For the last 10 minutes the largest gust that occured during that minute.
-     */
-    WindReading windGusts[10];
-
-    /*
-
-*
-     * The maximum gust of wind for the day.
-     */
-    WindReading dailyWindGust;
-
-    /**
-     * Stores the rainfall per minute over the last 60 minutes.
-     */
-    float lastHourOfRain[60] = { 0 };
-
-    /**
-     * Stores the daily rainfall. Reset every 24h.
-     */
-    float dailyRain{ 0 };
-
+    PersistedState persistedState;
+    FlashStorage flash;
 
 public:
-    WeatherMeters();
+    WeatherMeters(SerialFlashChip &serialFlash);
 
 public:
     void wind();
@@ -117,16 +135,16 @@ public:
     DumbTime getTime() {
         return DumbTime{ second, minute, hour };
     }
-    float getHourlyRain();
-    float getDailyRain() {
-        return dailyRain;
-    }
     WindReading getCurrentWind() {
         return currentWind;
     }
-    WindReading getDailyWindGust() {
-        return dailyWindGust;
+    float getDailyRain() {
+        return persistedState.dailyRain;
     }
+    WindReading getDailyWindGust() {
+        return persistedState.dailyWindGust;
+    }
+    float getHourlyRain();
     WindReading getWindReading();
     WindReading getTwoMinuteWindAverage();
     WindReading getLargestRecentWindGust();
@@ -136,6 +154,7 @@ private:
     float getWindSpeed();
     WindDirection getWindDirection();
     int16_t windAdcToAngle(int16_t adc);
+
 };
 
 }
