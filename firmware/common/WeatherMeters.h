@@ -2,7 +2,7 @@
 #define FK_WEATHER_METERS_H_INCLUDED
 
 #include <Arduino.h>
-#include <SerialFlash.h>
+#include "FlashStorage.h"
 
 namespace fk {
 
@@ -41,21 +41,6 @@ struct WindReading {
         return speed > r.speed;
     }
 };
-
-class FlashStorage {
-private:
-    SerialFlashChip *serialFlash;
-    bool createNew{ true };
-
-public:
-    FlashStorage(SerialFlashChip &serialFlash);
-
-public:
-
-    size_t write(uint8_t recordId, void *ptr, size_t size);
-    size_t read(uint8_t recordId, void *ptr, size_t size);
-};
-
 
 struct PersistedState {
     /**
