@@ -155,7 +155,10 @@ bool WeatherMeters::tick() {
             persistedState.dailyWindGust = currentWind;
         }
 
-        save();
+        if (millis() - lastSave > 10000) {
+            save();
+            lastSave = millis();
+        }
 
         return true;
     }

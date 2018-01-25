@@ -92,6 +92,7 @@ private:
 
 private:
     uint32_t lastStatusTick{ 0 };
+    uint32_t lastSave{ 0 };
     uint32_t lastRainAt{ 0 };
     uint32_t lastWindAt{ 0 };
     uint32_t lastWindCheck{ 0 };
