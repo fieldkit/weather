@@ -32,13 +32,33 @@ static uint16_t crc16_update(uint16_t start, uint8_t *p, size_t n) {
     return crc;
 }
 
-size_t FlashStorage::write(uint8_t recordId, void *ptr, size_t size) {
+bool FlashStorage::setup() {
+    blockSize = serialFlash->blockSize();
+    return blockSize > 0;
+}
+
+size_t FlashStorage::write(void *ptr, size_t size) {
+    block = (block + 1) % 2;
+    return write(block * blockSize, ptr, size);
+}
+
+size_t FlashStorage::read(void *ptr, size_t size) {
+    if (read(block * blockSize, ptr, size) != size) {
+        block = (block + 1) % 2;
+        if (read(block * blockSize, ptr, size) != size) {
+            return 0;
+        }
+    }
+    return size;
+}
+
+size_t FlashStorage::write(uint32_t address, void *ptr, size_t size) {
     uint8_t buffer[size + sizeof(uint16_t)];
 
     uint16_t oldHash{ 0 };
-    serialFlash->read(0, (uint8_t *)&oldHash, sizeof(uint16_t));
+    serialFlash->read(address, (uint8_t *)&oldHash, sizeof(uint16_t));
 
-    auto newHash = crc16_update(0, (uint8_t *)ptr, size);
+    auto newHash = crc16_update(address, (uint8_t *)ptr, size);
     if (newHash == oldHash) {
         return size;
     }
@@ -46,23 +66,22 @@ size_t FlashStorage::write(uint8_t recordId, void *ptr, size_t size) {
     memcpy(buffer, &newHash, sizeof(uint16_t));
     memcpy(buffer + sizeof(uint16_t), ptr, size);
 
-    debugfpln("Flash", "Writing (%d)...", newHash);
-    serialFlash->eraseBlock(0);
-    serialFlash->write(0, buffer, sizeof(buffer));
-    debugfpln("Flash", "Done (%d)", newHash);
+    debugfpln("Flash", "Writing %lu (%d)...", address, newHash);
+    serialFlash->eraseBlock(address);
+    serialFlash->write(address, buffer, sizeof(buffer));
 
     return size;
 }
 
-size_t FlashStorage::read(uint8_t recordId, void *ptr, size_t size) {
+size_t FlashStorage::read(uint32_t address, void *ptr, size_t size) {
     uint8_t buffer[size + sizeof(uint16_t)];
     uint16_t hash{ 0 };
 
-    serialFlash->read(0, buffer, sizeof(buffer));
+    serialFlash->read(address, buffer, sizeof(buffer));
 
     memcpy(&hash, buffer, sizeof(uint16_t));
 
-    auto expected = crc16_update(0, buffer + sizeof(uint16_t), size);
+    auto expected = crc16_update(address, buffer + sizeof(uint16_t), size);
     if (expected != hash) {
         debugfpln("Flash", "Hash mismatch (%d != %d)", expected, hash);
         return 0;

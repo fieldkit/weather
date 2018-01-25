@@ -45,6 +45,8 @@ void WeatherMeters::setup() {
     attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
 
+    flash.setup();
+
     load();
 }
 
@@ -180,12 +182,12 @@ WindDirection WeatherMeters::getWindDirection() {
 }
 
 void WeatherMeters::save() {
-    flash.write(0, &persistedState, sizeof(PersistedState));
+    flash.write(&persistedState, sizeof(PersistedState));
     debugfpln("Meters", "Save (daily rain: %f)", persistedState.dailyRain);
 }
 
 void WeatherMeters::load() {
-    flash.read(0, &persistedState, sizeof(PersistedState));
+    flash.read(&persistedState, sizeof(PersistedState));
     debugfpln("Meters", "Load (daily rain: %f)", persistedState.dailyRain);
 }
 

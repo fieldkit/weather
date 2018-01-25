@@ -9,15 +9,21 @@ namespace fk {
 class FlashStorage {
 private:
     SerialFlashChip *serialFlash;
-    bool createNew{ true };
+    uint32_t blockSize{ 0 };
+    uint32_t block{ 0 };
 
 public:
     FlashStorage(SerialFlashChip &serialFlash);
 
 public:
+    bool setup();
 
-    size_t write(uint8_t recordId, void *ptr, size_t size);
-    size_t read(uint8_t recordId, void *ptr, size_t size);
+public:
+    size_t write(void *ptr, size_t size);
+    size_t read(void *ptr, size_t size);
+    size_t write(uint32_t address, void *ptr, size_t size);
+    size_t read(uint32_t address, void *ptr, size_t size);
+
 };
 
 }
