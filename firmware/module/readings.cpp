@@ -83,7 +83,7 @@ TaskEval WeatherReadings::task() {
     }
 
     log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-    log("Sensors: ir(%d) full(%d) visible(%d) lux(%d)", ir, full, full - ir, lux);
+    log("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
     log("Meters: %lu,%d,%d,%d", millis(), time.hour, time.minute, time.second);
     log("Meters: %f,%d", currentWind.speed, currentWind.direction.angle);
     log("Meters: %f,%d", dailyWindGust.speed, dailyWindGust.direction.angle);
