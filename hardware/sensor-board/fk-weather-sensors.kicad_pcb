@@ -2,8 +2,8 @@
 
   (general
     (links 27)
-    (no_connects 0)
-    (area 140.640999 104.064999 155.015001 125.805001)
+    (no_connects 6)
+    (area 139.492667 99.154 167.362 127.193)
     (thickness 1.6)
     (drawings 14)
     (tracks 86)
@@ -64,7 +64,7 @@
     (aux_axis_origin 0 0)
     (visible_elements FFFFFF7F)
     (pcbplotparams
-      (layerselection 0x0003c_80000001)
+      (layerselection 0x000fc_80000001)
       (usegerberextensions false)
       (excludeedgelayer true)
       (linewidth 0.100000)
@@ -912,7 +912,7 @@
     (arrow2a (pts (xy 140.716 101.854) (xy 141.842504 102.440421)))
     (arrow2b (pts (xy 140.716 101.854) (xy 141.842504 101.267579)))
   )
-  (gr_text v0.6 (at 154.051 105.918 90) (layer F.SilkS)
+  (gr_text v0.7 (at 154.051 105.918 90) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.15)))
   )
   (gr_text SDA (at 141.732 118.2624 270) (layer F.SilkS) (tstamp 5A4462EA)
