@@ -2,7 +2,7 @@
 #define FK_WEATHER_METERS_H_INCLUDED
 
 #include <Arduino.h>
-#include "FlashStorage.h"
+#include <flash_storage.h>
 
 namespace fk {
 

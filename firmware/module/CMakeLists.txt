@@ -4,7 +4,6 @@ set(SOURCE_FILES
   ../common/AmbientSensors.cpp
   ../common/WeatherMeters.cpp
   ../common/ModuleHardware.cpp
-  ../common/FlashStorage.cpp
 )
 
 set(LIBRARIES
