@@ -30,6 +30,8 @@ void WeatherReadings::setup() {
 TaskEval WeatherReadings::task() {
     Wire.begin();
 
+    log("Sensors: begin...");
+
     auto shtTemperature = hw->sht31Sensor.readTemperature();
     auto shtHumidity = hw->sht31Sensor.readHumidity();
 

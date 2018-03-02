@@ -98,6 +98,7 @@ private:
     uint32_t lastWindAt{ 0 };
     uint32_t lastWindCheck{ 0 };
     uint32_t windTicks{ 0 };
+    bool clockSynced{ false };
 
     /**
      * Wind recording that was just taken.
@@ -140,6 +141,7 @@ private:
     int16_t windAdcToAngle(int16_t adc);
     void save();
     void load();
+    void syncDumbClock();
 
 };
 

@@ -1,5 +1,6 @@
 #include "WeatherMeters.h"
 #include "debug.h"
+#include "rtc.h"
 
 namespace fk {
 
@@ -113,11 +114,34 @@ WindReading WeatherMeters::getLargestRecentWindGust() {
     return gust;
 }
 
+void WeatherMeters::syncDumbClock() {
+    auto now = clock.now();
+
+    // Is persisted state more than a few minutes from us?
+    if (now.unixtime() - persistedState.time > 60 * 5) {
+        debugfpln("Meters", "Zeroing persisted state!");
+        persistedState = PersistedState{};
+    }
+
+    persistedState.time = now.unixtime();
+    persistedState.second = now.second();
+    persistedState.minute = now.minute();
+    persistedState.hour = now.hour();
+
+    debugfpln("Meters", "Synced clock: %02d/%02d/%02d", persistedState.hour, persistedState.minute, persistedState.second);
+
+}
+
 bool WeatherMeters::tick() {
     if (millis() - lastStatusTick > 1000) {
-        currentWind = getWindReading();
-
         lastStatusTick = millis();
+
+        if (!clockSynced && clock.isValid()) {
+            syncDumbClock();
+            clockSynced = true;
+        }
+
+        currentWind = getWindReading();
 
         if (++persistedState.twoMinuteSecondsCounter > 119) {
             persistedState.twoMinuteSecondsCounter = 0;
@@ -157,6 +181,8 @@ bool WeatherMeters::tick() {
         if (currentWind.strongerThan(persistedState.hourlyWindGust)) {
             persistedState.hourlyWindGust = currentWind;
         }
+
+        persistedState.time = clock.getTime();
 
         if (millis() - lastSave > 10000) {
             save();
