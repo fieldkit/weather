@@ -89,15 +89,15 @@ void setup() {
     };
 
     fk::ModuleHardware hardware;
-    fk_assert(hardware.serialFlash.begin(fk::ModuleHardware::PIN_FLASH_CS));
-
     fk::WeatherMeters meters(hardware.serialFlash);
     fk::WeatherReadings weatherReadings(hardware, meters);
     fk::WeatherModule module(info, weatherReadings);
 
-    weatherReadings.setup();
-
     module.begin();
+
+    fk_assert(hardware.serialFlash.begin(fk::ModuleHardware::PIN_FLASH_CS));
+
+    weatherReadings.setup();
 
     while (true) {
         module.tick();
