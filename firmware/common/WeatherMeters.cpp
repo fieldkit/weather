@@ -31,7 +31,6 @@ void WeatherMeters::wind() {
 void WeatherMeters::rain() {
     auto now = millis();
     if (now - lastRainAt > 10) {
-        persistedState.dailyRain += RainPerTick;
         persistedState.lastHourOfRain[persistedState.minute] += RainPerTick;
         lastRainAt = now;
     }
@@ -127,13 +126,16 @@ bool WeatherMeters::tick() {
         if (++persistedState.second > 59) {
             persistedState.second = 0;
             if (++persistedState.minute > 59) {
-                persistedState.minute = 0;
                 debugfpln("Meters", "New Hour");
+                persistedState.minute = 0;
+                persistedState.previousHourlyRain = getHourlyRain();
+                for (auto i = 0; i < 60; ++i) {
+                    persistedState.lastHourOfRain[i] = 0;
+                }
+                persistedState.hourlyWindGust.zero();
                 if (++persistedState.hour > 23) {
-                    persistedState.hour = 0;
-                    persistedState.dailyRain = 0;
-                    persistedState.dailyWindGust.zero();
                     debugfpln("Meters", "New Day");
+                    persistedState.hour = 0;
                 }
             }
 
@@ -151,8 +153,9 @@ bool WeatherMeters::tick() {
         if (currentWind.strongerThan(persistedState.windGusts[persistedState.tenMinuteMinuteCounter])) {
             persistedState.windGusts[persistedState.tenMinuteMinuteCounter] = currentWind;
         }
-        if (currentWind.strongerThan(persistedState.dailyWindGust)) {
-            persistedState.dailyWindGust = currentWind;
+
+        if (currentWind.strongerThan(persistedState.hourlyWindGust)) {
+            persistedState.hourlyWindGust = currentWind;
         }
 
         if (millis() - lastSave > 10000) {
@@ -186,12 +189,12 @@ WindDirection WeatherMeters::getWindDirection() {
 
 void WeatherMeters::save() {
     flash.write(&persistedState, sizeof(PersistedState));
-    debugfpln("Meters", "Save (daily rain: %f)", persistedState.dailyRain);
+    debugfpln("Meters", "Save (hourly rain: %f)", getHourlyRain());
 }
 
 void WeatherMeters::load() {
     flash.read(&persistedState, sizeof(PersistedState));
-    debugfpln("Meters", "Load (daily rain: %f)", persistedState.dailyRain);
+    debugfpln("Meters", "Load (hourly rain: %f)", getHourlyRain());
 }
 
 int16_t WeatherMeters::windAdcToAngle(int16_t adc) {

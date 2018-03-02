@@ -46,6 +46,7 @@ struct PersistedState {
     /**
      * Time related counters.
      */
+    uint32_t time{ 0 };
     uint8_t second{ 0 };
     uint8_t minute{ 0 };
     uint8_t hour{ 0 };
@@ -61,19 +62,19 @@ struct PersistedState {
      */
     WindReading windGusts[10];
     /*
-     * The maximum gust of wind for the day.
+     * The maximum gust of wind for the hour.
      */
-    WindReading dailyWindGust;
+    WindReading hourlyWindGust;
+
+    /**
+     * Amount of rain rolled over.
+     */
+    float previousHourlyRain{ 0 };
 
     /**
      * Stores the rainfall per minute over the last 60 minutes.
      */
     float lastHourOfRain[60] = { 0 };
-
-    /**
-     * Stores the daily rainfall. Reset every 24h.
-     */
-    float dailyRain{ 0 };
 };
 
 struct DumbTime {
@@ -121,11 +122,11 @@ public:
     WindReading getCurrentWind() {
         return currentWind;
     }
-    float getDailyRain() {
-        return persistedState.dailyRain;
+    WindReading getHourlyWindGust() {
+        return persistedState.hourlyWindGust;
     }
-    WindReading getDailyWindGust() {
-        return persistedState.dailyWindGust;
+    float getPreviousHourlyRain() {
+        return persistedState.previousHourlyRain;
     }
     float getHourlyRain();
     WindReading getWindReading();

@@ -33,18 +33,18 @@ void setup() {
         if (meters.tick()) {
             auto time = meters.getTime();
             auto currentWind = meters.getCurrentWind();
-            auto dailyWindGust = meters.getDailyWindGust();
+            auto hourlyWindGust = meters.getHourlyWindGust();
             auto averageWind = meters.getTwoMinuteWindAverage();
             auto wind10mGust = meters.getLargestRecentWindGust();
+            auto previousHourlyRain = meters.getPreviousHourlyRain();
             auto hourlyRain = meters.getHourlyRain();
-            auto dailyRain = meters.getDailyRain();
 
             debugf("%lu,%d,%d,%d", millis(), time.hour, time.minute, time.second);
             debugf(",%f,%d", currentWind.speed, currentWind.direction.angle);
-            debugf(",%f,%d", dailyWindGust.speed, dailyWindGust.direction.angle);
+            debugf(",%f,%d", hourlyWindGust.speed, hourlyWindGust.direction.angle);
             debugf(",%f,%d", wind10mGust.speed, wind10mGust.direction.angle);
             debugf(",%f,%d", averageWind.speed, averageWind.direction.angle);
-            debugfln(",%f,%f", hourlyRain, dailyRain);
+            debugfln(",%f,%f", previousHourlyRain, hourlyRain);
         }
     }
 }

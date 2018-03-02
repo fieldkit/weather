@@ -72,19 +72,19 @@ void setup() {
 
             {"Wind Speed", "km/hr"},
             {"Wind Dir", ""},
-            {"Day Wind Speed", "km/hr"},
-            {"Day Wind Dir", ""},
+            {"Hr Wind Speed", "km/hr"},
+            {"Hr Wind Dir", ""},
             {"10m Wind Gust", "km/hr"},
             {"10m Wind Dir", ""},
             {"2m Wind Gust", "km/hr"},
             {"2m Wind Dir", ""},
 
+            {"Prev Hrly Rain", "mm"},
             {"Hourly Rain", "mm"},
-            {"Daily Rain", "mm"},
         },
         {
             {}, {}, {}, {}, {}, {}, {}, {},
-            {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+            {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
         },
     };
 

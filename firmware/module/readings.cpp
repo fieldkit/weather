@@ -45,11 +45,11 @@ TaskEval WeatherReadings::task() {
 
     auto time = meters->getTime();
     auto currentWind = meters->getCurrentWind();
-    auto dailyWindGust = meters->getDailyWindGust();
+    auto hourlyWindGust = meters->getHourlyWindGust();
     auto averageWind = meters->getTwoMinuteWindAverage();
     auto wind10mGust = meters->getLargestRecentWindGust();
+    auto previousHourlyRain = meters->getPreviousHourlyRain();
     auto hourlyRain = meters->getHourlyRain();
-    auto dailyRain = meters->getDailyRain();
 
     if (pending != nullptr) {
         auto readings = pending->readings;
@@ -65,14 +65,14 @@ TaskEval WeatherReadings::task() {
 
         readings[i++].value = currentWind.speed;
         readings[i++].value = currentWind.direction.angle;
-        readings[i++].value = dailyWindGust.speed;
-        readings[i++].value = dailyWindGust.direction.angle;
+        readings[i++].value = hourlyWindGust.speed;
+        readings[i++].value = hourlyWindGust.direction.angle;
         readings[i++].value = wind10mGust.speed;
         readings[i++].value = wind10mGust.direction.angle;
         readings[i++].value = averageWind.speed;
         readings[i++].value = averageWind.direction.angle;
+        readings[i++].value = previousHourlyRain;
         readings[i++].value = hourlyRain;
-        readings[i++].value = dailyRain;
 
         pending->elapsed -= millis();
 
@@ -86,10 +86,10 @@ TaskEval WeatherReadings::task() {
     log("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
     log("Meters: %lu,%d,%d,%d", millis(), time.hour, time.minute, time.second);
     log("Meters: %f,%d", currentWind.speed, currentWind.direction.angle);
-    log("Meters: %f,%d", dailyWindGust.speed, dailyWindGust.direction.angle);
+    log("Meters: %f,%d", hourlyWindGust.speed, hourlyWindGust.direction.angle);
     log("Meters: %f,%d", wind10mGust.speed, wind10mGust.direction.angle);
     log("Meters: %f,%d", averageWind.speed, averageWind.direction.angle);
-    log("Meters(Rain): %f,%f", hourlyRain, dailyRain);
+    log("Meters(Rain): %f,%f", previousHourlyRain, hourlyRain);
 
     return TaskEval::done();
 }
