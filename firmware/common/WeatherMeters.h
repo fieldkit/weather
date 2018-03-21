@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <flash_storage.h>
+#include <RTClib.h>
 
 namespace fk {
 
@@ -46,10 +47,7 @@ struct PersistedState {
     /**
      * Time related counters.
      */
-    uint32_t time{ 0 };
-    uint8_t second{ 0 };
-    uint8_t minute{ 0 };
-    uint8_t hour{ 0 };
+    DateTime time;
     uint8_t twoMinuteSecondsCounter{ 0 };
     uint8_t tenMinuteMinuteCounter{ 0 };
 
@@ -77,12 +75,6 @@ struct PersistedState {
     float lastHourOfRain[60] = { 0 };
 };
 
-struct DumbTime {
-    uint8_t second;
-    uint8_t minute;
-    uint8_t hour;
-};
-
 class WeatherMeters {
 private:
     static constexpr float RainPerTick = 0.2794; // mm
@@ -98,7 +90,6 @@ private:
     uint32_t lastWindAt{ 0 };
     uint32_t lastWindCheck{ 0 };
     uint32_t windTicks{ 0 };
-    bool clockSynced{ false };
 
     /**
      * Wind recording that was just taken.
@@ -117,9 +108,6 @@ public:
     bool tick();
 
 public:
-    DumbTime getTime() {
-        return DumbTime{ persistedState.second, persistedState.minute, persistedState.hour };
-    }
     WindReading getCurrentWind() {
         return currentWind;
     }
@@ -141,7 +129,6 @@ private:
     int16_t windAdcToAngle(int16_t adc);
     void save();
     void load();
-    void syncDumbClock();
 
 };
 

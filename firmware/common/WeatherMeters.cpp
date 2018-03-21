@@ -32,7 +32,8 @@ void WeatherMeters::wind() {
 void WeatherMeters::rain() {
     auto now = millis();
     if (now - lastRainAt > 10) {
-        persistedState.lastHourOfRain[persistedState.minute] += RainPerTick;
+        auto minute = persistedState.time.minute();
+        persistedState.lastHourOfRain[minute] += RainPerTick;
         lastRainAt = now;
     }
 }
@@ -114,32 +115,24 @@ WindReading WeatherMeters::getLargestRecentWindGust() {
     return gust;
 }
 
-void WeatherMeters::syncDumbClock() {
+bool WeatherMeters::tick() {
+    if (millis() - lastStatusTick < 500) {
+        return false;
+    }
+
     auto now = clock.now();
 
     // Is persisted state more than a few minutes from us?
-    if (now.unixtime() - persistedState.time > 60 * 5) {
-        debugfpln("Meters", "Zeroing persisted state!");
+    auto nowUnix = now.unixtime();
+    auto savedUnix = persistedState.time.unixtime();
+    auto difference = nowUnix > savedUnix ? nowUnix - savedUnix : savedUnix - nowUnix; // Avoid overflow.
+    if (difference > 60 * 5) {
+        debugfpln("Meters", "Zeroing persisted state! (%lu - %lu = %lu)", nowUnix, savedUnix, difference);
         persistedState = PersistedState{};
     }
 
-    persistedState.time = now.unixtime();
-    persistedState.second = now.second();
-    persistedState.minute = now.minute();
-    persistedState.hour = now.hour();
-
-    debugfpln("Meters", "Synced clock: %02d/%02d/%02d", persistedState.hour, persistedState.minute, persistedState.second);
-
-}
-
-bool WeatherMeters::tick() {
-    if (millis() - lastStatusTick > 1000) {
+    if (now.second() != persistedState.time.second()) {
         lastStatusTick = millis();
-
-        if (!clockSynced && clock.isValid()) {
-            syncDumbClock();
-            clockSynced = true;
-        }
 
         currentWind = getWindReading();
 
@@ -147,23 +140,25 @@ bool WeatherMeters::tick() {
             persistedState.twoMinuteSecondsCounter = 0;
         }
 
-        if (++persistedState.second > 59) {
-            persistedState.second = 0;
-            if (++persistedState.minute > 59) {
+        if (now.minute() != persistedState.time.minute()) {
+            FormattedTime nowFormatted{ now };
+            debugfpln("Meters", "New Minute: %s", nowFormatted.toString());
+
+            if (now.hour() != persistedState.time.hour()) {
                 debugfpln("Meters", "New Hour");
-                persistedState.minute = 0;
+
                 persistedState.previousHourlyRain = getHourlyRain();
                 for (auto i = 0; i < 60; ++i) {
                     persistedState.lastHourOfRain[i] = 0;
                 }
+
                 persistedState.hourlyWindGust.zero();
-                if (++persistedState.hour > 23) {
-                    debugfpln("Meters", "New Day");
-                    persistedState.hour = 0;
+                if (now.hour() < persistedState.time.hour()) {
+                    debugfpln("Meters", "New Day (%d %d)", now.hour(), persistedState.time.hour());
                 }
             }
 
-            persistedState.lastHourOfRain[persistedState.minute] = 0;
+            persistedState.lastHourOfRain[now.minute()] = 0;
 
             if (++persistedState.tenMinuteMinuteCounter > 9) {
                 persistedState.tenMinuteMinuteCounter = 0;
@@ -182,7 +177,7 @@ bool WeatherMeters::tick() {
             persistedState.hourlyWindGust = currentWind;
         }
 
-        persistedState.time = clock.getTime();
+        persistedState.time = now;
 
         if (millis() - lastSave > 10000) {
             save();

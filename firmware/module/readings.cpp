@@ -45,7 +45,6 @@ TaskEval WeatherReadings::task() {
     auto full = fullLuminosity & 0xFFFF;
     auto lux = hw->tsl2591Sensor.calculateLux(full, ir);
 
-    auto time = meters->getTime();
     auto currentWind = meters->getCurrentWind();
     auto hourlyWindGust = meters->getHourlyWindGust();
     auto averageWind = meters->getTwoMinuteWindAverage();
@@ -61,6 +60,7 @@ TaskEval WeatherReadings::task() {
         readings[i++].value = mplTempCelsius;
         readings[i++].value = pressurePascals;
         readings[i++].value = altitudeMeters;
+
         readings[i++].value = ir;
         readings[i++].value = full - ir;
         readings[i++].value = lux;
@@ -73,6 +73,7 @@ TaskEval WeatherReadings::task() {
         readings[i++].value = wind10mGust.direction.angle;
         readings[i++].value = averageWind.speed;
         readings[i++].value = averageWind.direction.angle;
+
         readings[i++].value = previousHourlyRain;
         readings[i++].value = hourlyRain;
 
@@ -86,11 +87,10 @@ TaskEval WeatherReadings::task() {
 
     log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
     log("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
-    log("Meters: %lu,%d,%d,%d", millis(), time.hour, time.minute, time.second);
-    log("Meters: %f,%d", currentWind.speed, currentWind.direction.angle);
-    log("Meters: %f,%d", hourlyWindGust.speed, hourlyWindGust.direction.angle);
-    log("Meters: %f,%d", wind10mGust.speed, wind10mGust.direction.angle);
-    log("Meters: %f,%d", averageWind.speed, averageWind.direction.angle);
+    log("Meters(WindCur): %f,%d", currentWind.speed, currentWind.direction.angle);
+    log("Meters(WindHrly): %f,%d", hourlyWindGust.speed, hourlyWindGust.direction.angle);
+    log("Meters(Wind10m): %f,%d", wind10mGust.speed, wind10mGust.direction.angle);
+    log("Meters(WindAvg): %f,%d", averageWind.speed, averageWind.direction.angle);
     log("Meters(Rain): %f,%f", previousHourlyRain, hourlyRain);
 
     return TaskEval::done();

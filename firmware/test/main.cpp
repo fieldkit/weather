@@ -31,7 +31,6 @@ void setup() {
 
     while (true) {
         if (meters.tick()) {
-            auto time = meters.getTime();
             auto currentWind = meters.getCurrentWind();
             auto hourlyWindGust = meters.getHourlyWindGust();
             auto averageWind = meters.getTwoMinuteWindAverage();
@@ -39,7 +38,6 @@ void setup() {
             auto previousHourlyRain = meters.getPreviousHourlyRain();
             auto hourlyRain = meters.getHourlyRain();
 
-            debugf("%lu,%d,%d,%d", millis(), time.hour, time.minute, time.second);
             debugf(",%f,%d", currentWind.speed, currentWind.direction.angle);
             debugf(",%f,%d", hourlyWindGust.speed, hourlyWindGust.direction.angle);
             debugf(",%f,%d", wind10mGust.speed, wind10mGust.direction.angle);
