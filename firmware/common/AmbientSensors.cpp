@@ -19,8 +19,8 @@ void AmbientSensors::takeReading() {
     auto full = fullLuminosity & 0xFFFF;
     auto lux = hw->tsl2591Sensor.calculateLux(full, ir);
 
-    debugfln("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-    debugfln("sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
+    debugfpln("Sensors", "sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
+    debugfpln("Sensors", "sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
 }
 
 }
