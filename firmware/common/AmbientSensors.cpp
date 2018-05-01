@@ -1,3 +1,5 @@
+#include <alogging/alogging.h>
+
 #include "AmbientSensors.h"
 
 namespace fk {
@@ -19,8 +21,8 @@ void AmbientSensors::takeReading() {
     auto full = fullLuminosity & 0xFFFF;
     auto lux = hw->tsl2591Sensor.calculateLux(full, ir);
 
-    debugfpln("Sensors", "sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-    debugfpln("Sensors", "sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
+    loginfof("Sensors", "sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
+    loginfof("Sensors", "sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
 }
 
 }

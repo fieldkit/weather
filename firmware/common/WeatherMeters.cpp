@@ -1,3 +1,5 @@
+#include <alogging/alogging.h>
+
 #include "WeatherMeters.h"
 #include "debug.h"
 #include "rtc.h"
@@ -127,7 +129,7 @@ bool WeatherMeters::tick() {
     auto savedUnix = persistedState.time.unixtime();
     auto difference = nowUnix > savedUnix ? nowUnix - savedUnix : savedUnix - nowUnix; // Avoid overflow.
     if (difference > 60 * 5) {
-        debugfpln("Meters", "Zeroing persisted state! (%lu - %lu = %lu)", nowUnix, savedUnix, difference);
+        loginfof("Meters", "Zeroing persisted state! (%lu - %lu = %lu)", nowUnix, savedUnix, difference);
         persistedState = PersistedState{};
     }
 
@@ -142,10 +144,10 @@ bool WeatherMeters::tick() {
 
         if (now.minute() != persistedState.time.minute()) {
             FormattedTime nowFormatted{ now };
-            debugfpln("Meters", "New Minute: %s", nowFormatted.toString());
+            loginfof("Meters", "New Minute: %s", nowFormatted.toString());
 
             if (now.hour() != persistedState.time.hour()) {
-                debugfpln("Meters", "New Hour");
+                loginfof("Meters", "New Hour");
 
                 persistedState.previousHourlyRain = getHourlyRain();
                 for (auto i = 0; i < 60; ++i) {
@@ -154,7 +156,7 @@ bool WeatherMeters::tick() {
 
                 persistedState.hourlyWindGust.zero();
                 if (now.hour() < persistedState.time.hour()) {
-                    debugfpln("Meters", "New Day (%d %d)", now.hour(), persistedState.time.hour());
+                    loginfof("Meters", "New Day (%d %d)", now.hour(), persistedState.time.hour());
                 }
             }
 
@@ -210,12 +212,12 @@ WindDirection WeatherMeters::getWindDirection() {
 
 void WeatherMeters::save() {
     flash.write(&persistedState, sizeof(PersistedState));
-    debugfpln("Meters", "Save (hourly rain: %f)", getHourlyRain());
+    loginfof("Meters", "Save (hourly rain: %f)", getHourlyRain());
 }
 
 void WeatherMeters::load() {
     flash.read(&persistedState, sizeof(PersistedState));
-    debugfpln("Meters", "Load (hourly rain: %f)", getHourlyRain());
+    loginfof("Meters", "Load (hourly rain: %f)", getHourlyRain());
 }
 
 int16_t WeatherMeters::windAdcToAngle(int16_t adc) {
