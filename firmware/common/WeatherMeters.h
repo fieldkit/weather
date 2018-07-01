@@ -2,8 +2,11 @@
 #define FK_WEATHER_METERS_H_INCLUDED
 
 #include <Arduino.h>
-#include <flash_storage.h>
 #include <RTClib.h>
+
+#include <flash_storage.h>
+
+#include "ModuleHardware.h"
 
 namespace fk {
 
@@ -43,7 +46,7 @@ struct WindReading {
     }
 };
 
-struct PersistedState {
+struct PersistedState : phylum::MinimumSuperBlock {
     /**
      * Time related counters.
      */
@@ -95,16 +98,15 @@ private:
      * Wind recording that was just taken.
      */
     WindReading currentWind;
-    PersistedState persistedState;
-    FlashStorage flash;
+    FlashStorage<PersistedState> flash;
 
 public:
-    WeatherMeters(SerialFlashChip &serialFlash);
+    WeatherMeters();
 
 public:
+    bool setup();
     void wind();
     void rain();
-    void setup();
     bool tick();
 
 public:
@@ -112,10 +114,10 @@ public:
         return currentWind;
     }
     WindReading getHourlyWindGust() {
-        return persistedState.hourlyWindGust;
+        return flash.state().hourlyWindGust;
     }
     float getPreviousHourlyRain() {
-        return persistedState.previousHourlyRain;
+        return flash.state().previousHourlyRain;
     }
     float getHourlyRain();
     WindReading getWindReading();

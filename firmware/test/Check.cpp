@@ -1,3 +1,5 @@
+#include <SerialFlash.h>
+
 #include "Check.h"
 
 #include "debug.h"
@@ -99,19 +101,21 @@ bool Check::tsl2591() {
 bool Check::flashMemory() {
     debugfln("test: Checking flash memory...");
 
-    if (!hw->serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
+    SerialFlashChip serialFlash;
+
+    if (!serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
         debugfln("test: Flash memory FAILED");
         return false;
     }
 
     uint8_t buffer[256];
-    hw->serialFlash.readID(buffer);
+    serialFlash.readID(buffer);
     if (buffer[0] == 0) {
         debugfln("test: Flash memory FAILED");
         return false;
     }
 
-    auto chipSize = hw->serialFlash.capacity(buffer);
+    auto chipSize = serialFlash.capacity(buffer);
     if (chipSize == 0) {
         debugfln("test: Flash memory FAILED");
         return false;
@@ -120,11 +124,11 @@ bool Check::flashMemory() {
     debugfln("Read Chip Identification:");
     debugf("  JEDEC ID:     %x %x %x", buffer[0], buffer[1], buffer[2]);
     debugfln("  Part Nummber: %s", serialFlashId2Chip(buffer));
-    debugfln("  Memory Size:  %lu bytes Block Size: %lu bytes", chipSize, hw->serialFlash.blockSize());
+    debugfln("  Memory Size:  %lu bytes Block Size: %lu bytes", chipSize, serialFlash.blockSize());
 
     if (false) {
-        hw->serialFlash.eraseAll();
-        while (!hw->serialFlash.ready()) {
+        serialFlash.eraseAll();
+        while (!serialFlash.ready()) {
             debugfln("test: Flash erasing...");
             delay(500);
         }

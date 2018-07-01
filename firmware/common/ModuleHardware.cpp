@@ -1,5 +1,7 @@
 #include "ModuleHardware.h"
 
+#include <SPI.h>
+
 namespace fk {
 
 void ModuleHardware::setup() {

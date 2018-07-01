@@ -26,7 +26,7 @@ void setup() {
     debugfln("test: Done");
 
     fk::AmbientSensors ambientSensors(hardware);
-    fk::WeatherMeters meters(hardware.serialFlash);
+    fk::WeatherMeters meters;
     meters.setup();
 
     while (true) {

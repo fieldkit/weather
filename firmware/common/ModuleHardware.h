@@ -9,7 +9,6 @@
 #include <Adafruit_MPL3115A2.h>
 #include <Adafruit_TSL2591.h>
 #include <Adafruit_SHT31.h>
-#include <SerialFlash.h>
 
 namespace fk {
 
@@ -21,7 +20,6 @@ public:
     Adafruit_SHT31 sht31Sensor;
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
-    SerialFlashChip serialFlash;
 
 public:
     void setup();

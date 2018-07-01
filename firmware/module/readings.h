@@ -24,7 +24,7 @@ public:
     TaskEval task() override;
 
 public:
-    void setup();
+    bool setup();
     void begin(PendingSensorReading &p) {
         pending = &p;
         pending->elapsed = millis();

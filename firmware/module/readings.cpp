@@ -8,9 +8,11 @@ namespace fk {
 WeatherReadings::WeatherReadings(ModuleHardware &hw, WeatherMeters &meters) : Task("Weather"), hw(&hw), meters(&meters) {
 }
 
-void WeatherReadings::setup() {
+bool WeatherReadings::setup() {
     hw->setup();
-    meters->setup();
+    if (!meters->setup()) {
+        return false;
+    }
 
     hasSht31 = true;
     if (!hw->sht31Sensor.begin()) {
@@ -31,6 +33,8 @@ void WeatherReadings::setup() {
     }
 
     log("Ready");
+
+    return true;
 }
 
 WeatherReadings::Sht31Reading WeatherReadings::getSht31Reading() {
