@@ -5,6 +5,7 @@
 #include <RTClib.h>
 
 #include <flash_storage.h>
+#include <watchdog.h>
 
 #include "ModuleHardware.h"
 
@@ -101,7 +102,7 @@ private:
     FlashStorage<PersistedState> flash;
 
 public:
-    WeatherMeters();
+    WeatherMeters(Watchdog &watchdog);
 
 public:
     bool setup();

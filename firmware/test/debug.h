@@ -1,5 +1,5 @@
-#ifndef FK_DEBUG_H_INCLUDED
-#define FK_DEBUG_H_INCLUDED
+#ifndef FK_FIRMWARE_TEST_DEBUG_H_INCLUDED
+#define FK_FIRMWARE_TEST_DEBUG_H_INCLUDED
 
 #include <cstdarg>
 

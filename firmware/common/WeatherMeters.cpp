@@ -19,7 +19,7 @@ void isr_rain() {
     global_weather_meters->rain();
 }
 
-WeatherMeters::WeatherMeters() {
+WeatherMeters::WeatherMeters(Watchdog &watchdog) : flash(watchdog) {
     global_weather_meters = this;
 }
 

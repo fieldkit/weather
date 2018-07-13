@@ -1,6 +1,8 @@
 #include <Wire.h>
 #include <SPI.h>
 
+#include <watchdog.h>
+
 #include <AmbientSensors.h>
 #include <WeatherMeters.h>
 #include <Check.h>
@@ -25,8 +27,10 @@ void setup() {
 
     debugfln("test: Done");
 
+    fk::Leds leds;
+    fk::Watchdog watchdog(leds);
     fk::AmbientSensors ambientSensors(hardware);
-    fk::WeatherMeters meters;
+    fk::WeatherMeters meters(watchdog);
     meters.setup();
 
     while (true) {

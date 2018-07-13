@@ -10,32 +10,46 @@ namespace fk {
 class WeatherModule : public Module {
 private:
     TwoWireBus bus{ Wire4and3 };
-    Delay delay{ 500 };
-    WeatherReadings *weatherReadings;
+    Delay delay_{ 500 };
+    ModuleHardware hardware_;
+    WeatherMeters meters_;
+    WeatherReadings weatherReadings_{ hardware_, meters_ };
 
 public:
-    WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings);
+    WeatherReadings &readings() {
+        return weatherReadings_;
+    }
+
+public:
+    WeatherModule(ModuleInfo &info);
 
 public:
     ModuleReadingStatus beginReading(PendingSensorReading &pending) override;
     ModuleReadingStatus readingStatus(PendingSensorReading &pending) override;
+    void tick() override;
 
 };
 
-WeatherModule::WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings) :
-    Module(bus, info), weatherReadings(&weatherReadings) {
+WeatherModule::WeatherModule(ModuleInfo &info) :
+    Module(bus, info), meters_(watchdog()) {
 }
 
 ModuleReadingStatus WeatherModule::beginReading(PendingSensorReading &pending) {
-    weatherReadings->begin(pending);
-    taskQueue().append(delay); // This is to give us time to reply with the backoff. Should be avoidable?
-    taskQueue().append(*weatherReadings);
+    weatherReadings_.begin(pending);
+
+    taskQueue().append(delay_); // This is to give us time to reply with the backoff. Should be avoidable?
+    taskQueue().append(weatherReadings_);
 
     return ModuleReadingStatus{ 5000 };
 }
 
 ModuleReadingStatus WeatherModule::readingStatus(PendingSensorReading &pending) {
     return ModuleReadingStatus{};
+}
+
+void WeatherModule::tick() {
+    meters_.tick();
+    Module::tick();
 }
 
 }
@@ -87,19 +101,15 @@ void setup() {
         },
     };
 
-    fk::ModuleHardware hardware;
-    fk::WeatherMeters meters;
-    fk::WeatherReadings weatherReadings(hardware, meters);
-    fk::WeatherModule module(info, weatherReadings);
+    fk::WeatherModule module(info);
 
     module.begin();
 
-    if (!weatherReadings.setup()) {
+    if (!module.readings().setup()) {
     }
 
     while (true) {
         module.tick();
-        meters.tick();
 
         delay(10);
     }
