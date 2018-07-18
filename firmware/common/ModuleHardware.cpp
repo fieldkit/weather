@@ -4,9 +4,12 @@
 
 namespace fk {
 
-void ModuleHardware::setup() {
+bool ModuleHardware::setup() {
     SPI.begin();
     Wire.begin();
+
+    pinMode(PIN_PERIPH_ENABLE, OUTPUT);
+    digitalWrite(PIN_PERIPH_ENABLE, LOW);
 
     pinPeripheral(11, PIO_SERCOM);
     pinPeripheral(13, PIO_SERCOM);
@@ -15,6 +18,12 @@ void ModuleHardware::setup() {
     pinMode(A3, OUTPUT);
     pinMode(A4, OUTPUT);
     pinMode(A5, OUTPUT);
+
+    delay(2000);
+
+    digitalWrite(PIN_PERIPH_ENABLE, HIGH);
+
+    return true;
 }
 
 void ModuleHardware::leds(bool on) {

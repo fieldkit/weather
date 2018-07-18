@@ -9,7 +9,12 @@ WeatherReadings::WeatherReadings(ModuleHardware &hw, WeatherMeters &meters) : Ta
 }
 
 bool WeatherReadings::setup() {
-    hw->setup();
+    log("Starting...");
+
+    if (!hw->setup()) {
+        return false;
+    }
+
     if (!meters->setup()) {
         return false;
     }

@@ -15,6 +15,7 @@ namespace fk {
 class ModuleHardware {
 public:
     static constexpr uint8_t PIN_FLASH_CS = 5;
+    static constexpr uint8_t PIN_PERIPH_ENABLE = 8;
 
 public:
     Adafruit_SHT31 sht31Sensor;
@@ -22,7 +23,7 @@ public:
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
 
 public:
-    void setup();
+    bool setup();
     void leds(bool on);
 
 };

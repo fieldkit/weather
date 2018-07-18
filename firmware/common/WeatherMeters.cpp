@@ -49,7 +49,8 @@ bool WeatherMeters::setup() {
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
 
     if (!flash.initialize(ModuleHardware::PIN_FLASH_CS, 2048)) {
-        return false;
+        digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, LOW);
+        fk_assert(false);
     }
 
     load();
