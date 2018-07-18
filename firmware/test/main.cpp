@@ -7,6 +7,7 @@
 #include <WeatherMeters.h>
 #include <Check.h>
 
+#include "rtc.h"
 #include "debug.h"
 
 void setup() {
@@ -16,7 +17,13 @@ void setup() {
         delay(100);
     }
 
+    pinMode(8, OUTPUT);
+    digitalWrite(8, HIGH);
+    delay(500);
+
     debugfln("test: Setup");
+
+    fk::clock.begin();
 
     fk::ModuleHardware hardware;
     fk::Check check(hardware);
@@ -35,6 +42,8 @@ void setup() {
 
     while (true) {
         if (meters.tick()) {
+            ambientSensors.takeReading();
+
             auto currentWind = meters.getCurrentWind();
             auto hourlyWindGust = meters.getHourlyWindGust();
             auto averageWind = meters.getTwoMinuteWindAverage();
@@ -42,11 +51,12 @@ void setup() {
             auto previousHourlyRain = meters.getPreviousHourlyRain();
             auto hourlyRain = meters.getHourlyRain();
 
-            debugf(",%f,%d", currentWind.speed, currentWind.direction.angle);
-            debugf(",%f,%d", hourlyWindGust.speed, hourlyWindGust.direction.angle);
-            debugf(",%f,%d", wind10mGust.speed, wind10mGust.direction.angle);
-            debugf(",%f,%d", averageWind.speed, averageWind.direction.angle);
-            debugfln(",%f,%f", previousHourlyRain, hourlyRain);
+            loginfof("Sensors", "sensors: wind(%f, %d) hourly(%f, %d) 10m(%f, %d) avg(%f, %d) rain(%f, %f)",
+                     currentWind.speed, currentWind.direction.angle,
+                     hourlyWindGust.speed, hourlyWindGust.direction.angle,
+                     wind10mGust.speed, wind10mGust.direction.angle,
+                     averageWind.speed, averageWind.direction.angle,
+                     previousHourlyRain, hourlyRain);
         }
     }
 }
