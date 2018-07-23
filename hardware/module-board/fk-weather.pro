@@ -1,4 +1,4 @@
-update=Thu 28 Dec 2017 11:23:11 AM PST
+update=Mon 23 Jul 2018 11:10:16 AM PDT
 version=1
 last_client=kicad
 [cvpcb]
@@ -40,7 +40,4 @@ ERC_TestSimilarLabels=1
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=fk-weather-rescue
-LibName2=conn
-LibName3=/home/jlewallen/conservify/kicad/conservify
-LibName4=/home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary
+LibName1=/home/jlewallen/conservify/kicad/conservify
