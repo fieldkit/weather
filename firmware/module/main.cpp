@@ -72,7 +72,9 @@ void setup() {
         fk_module_ModuleType_SENSOR,
         8,
         18,
+        1,
         "Weather",
+        "fk-weather",
         {
             {"temp_1", "°C",},
             {"humidity", "%",},
