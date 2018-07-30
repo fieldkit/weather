@@ -21,6 +21,6 @@ add_definitions("-DFIRMWARE_GIT_HASH=\"${GIT_COMMIT_HASH}\"")
 add_definitions("-DFIRMWARE_GIT_BRANCH=\"${GIT_BRANCH}\"")
 add_definitions("-DFIRMWARE_BUILD=\"$ENV{BUILD_TAG}\"")
 
-arduino(fk-weather-module "${SOURCE_FILES}" "${LIBRARIES}")
+arduino(fk-weather-standard "${SOURCE_FILES}" "${LIBRARIES}")
 
-target_compile_options(fk-weather-module PUBLIC -Wall -Werror -I${CMAKE_CURRENT_SOURCE_DIR}/../common)
+target_compile_options(fk-weather-standard PUBLIC -Wall -Werror -I${CMAKE_CURRENT_SOURCE_DIR}/../common)
