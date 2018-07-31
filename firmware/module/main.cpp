@@ -68,6 +68,32 @@ void setup() {
 
     loginfof("Module", "Starting (%lu free)", fk_free_memory());
 
+    fk::SensorInfo sensors[18] = {
+        {"temp_1", "°C",},
+        {"humidity", "%",},
+        {"temp_2", "°C",},
+        {"pressure", "pa",},
+        {"altitude", "m",},
+
+        {"light_ir", "",},
+        {"light_visible", "",},
+        {"light_lux", "",},
+
+        {"wind_speed", "km/hr"},
+        {"wind_dir", ""},
+        {"wind_hr_speed", "km/hr"},
+        {"wind_hr_dir", ""},
+        {"wind_10m_gust", "km/hr"},
+        {"wind_10m_dir", ""},
+        {"wind_2m_gust", "km/hr"},
+        {"wind_2m_dir", ""},
+
+        {"rain_prev_hour", "mm"},
+        {"rain_this_hour", "mm"},
+    };
+
+    fk::SensorReading readings[18];
+
     fk::ModuleInfo info = {
         fk_module_ModuleType_SENSOR,
         8,
@@ -75,35 +101,8 @@ void setup() {
         1,
         "Weather",
         "fk-weather",
-        {
-            {"temp_1", "°C",},
-            {"humidity", "%",},
-            {"temp_2", "°C",},
-            {"pressure", "pa",},
-            {"altitude", "m",},
-
-            {"light_ir", "",},
-            {"light_visible", "",},
-            {"light_lux", "",},
-
-            {"wind_speed", "km/hr"},
-            {"wind_dir", ""},
-            {"wind_hr_speed", "km/hr"},
-            {"wind_hr_dir", ""},
-            {"wind_10m_gust", "km/hr"},
-            {"wind_10m_dir", ""},
-            {"wind_2m_gust", "km/hr"},
-            {"wind_2m_dir", ""},
-
-            {"rain_prev_hour", "mm"},
-            {"rain_this_hour", "mm"},
-        },
-        {
-            {}, {}, {}, {}, {},
-            {}, {}, {},
-            {}, {}, {}, {}, {}, {}, {}, {},
-            {}, {},
-        },
+        sensors,
+        readings
     };
 
     fk::WeatherModule module(info);
