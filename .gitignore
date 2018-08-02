@@ -9,3 +9,4 @@ build
 gitdeps
 firmwaretool.properties
 .gdb_history
+dependencies.cmake
