@@ -2,18 +2,66 @@
 #include <Wire.h>
 
 #include <fk-module.h>
+#include "module_idle.h"
 
 #include "readings.h"
 
 namespace fk {
 
+struct WeatherServices {
+    WeatherReadings *weatherReadings;
+
+    WeatherServices(WeatherReadings *weatherReadings) : weatherReadings(weatherReadings) {
+    }
+};
+
+class WeatherModuleState : public ModuleServicesState {
+private:
+    static WeatherServices *weatherServices_;
+
+public:
+    static WeatherServices &weatherServices() {
+        fk_assert(weatherServices_ != nullptr);
+        return *weatherServices_;
+    }
+
+    static void atlasServices(WeatherServices &newServices) {
+        weatherServices_ = &newServices;
+    }
+
+};
+
+WeatherServices *WeatherModuleState::weatherServices_{ nullptr };
+
+class TakeWeatherReadings : public WeatherModuleState {
+public:
+    const char *name() const override {
+        return "TakeWeatherReadings";
+    }
+
+public:
+    void task() override;
+};
+
+void TakeWeatherReadings::task() {
+    weatherServices().weatherReadings->enqueued();
+
+    while (simple_task_run(*weatherServices().weatherReadings)) {
+        services().alive();
+    }
+
+    transit<ModuleIdle>();
+}
+
 class WeatherModule : public Module {
 private:
     TwoWireBus bus{ Wire4and3 };
-    Delay delay_{ 500 };
     ModuleHardware hardware_;
     WeatherMeters meters_;
     WeatherReadings weatherReadings_{ hardware_, meters_ };
+    WeatherServices weatherServices_{
+        &weatherReadings_
+    };
 
 public:
     WeatherReadings &readings() {
@@ -25,6 +73,7 @@ public:
 
 public:
     ModuleReadingStatus beginReading(PendingSensorReading &pending) override;
+    DeferredModuleState beginReadingState() override;
     ModuleReadingStatus readingStatus(PendingSensorReading &pending) override;
     void tick() override;
 
@@ -37,10 +86,14 @@ WeatherModule::WeatherModule(ModuleInfo &info) :
 ModuleReadingStatus WeatherModule::beginReading(PendingSensorReading &pending) {
     weatherReadings_.begin(pending);
 
-    taskQueue().append(delay_); // This is to give us time to reply with the backoff. Should be avoidable?
-    taskQueue().append(weatherReadings_);
+    // taskQueue().append(delay_); // This is to give us time to reply with the backoff. Should be avoidable?
+    // taskQueue().append(weatherReadings_);
 
     return ModuleReadingStatus{ 5000 };
+}
+
+fk::DeferredModuleState WeatherModule::beginReadingState() {
+    return ModuleFsm::deferred<TakeWeatherReadings>();
 }
 
 ModuleReadingStatus WeatherModule::readingStatus(PendingSensorReading &pending) {
