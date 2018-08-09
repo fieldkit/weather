@@ -5,7 +5,7 @@ conservifyProperties()
 timestamps {
     node () {
         conservifyBuild(name: 'weather')
-
-        build job: "distribution", wait: false
     }
+
+    refreshDistribution()
 }
