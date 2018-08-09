@@ -1,9 +1,11 @@
 @Library('conservify') _
 
+conservifyProperties()
+
 timestamps {
     node () {
-        conservifyBuild(name: 'weather', repository: 'https://github.com/fieldkit/weather.git')
+        conservifyBuild(name: 'weather')
 
-        build job: "distribution", parameters: []
+        build job: "distribution", wait: false
     }
 }
