@@ -19,7 +19,7 @@ void isr_rain() {
     global_weather_meters->rain();
 }
 
-WeatherMeters::WeatherMeters(Watchdog &watchdog) : flash(watchdog) {
+WeatherMeters::WeatherMeters(Watchdog &watchdog) : flashFs(watchdog) {
     global_weather_meters = this;
 }
 
@@ -48,7 +48,12 @@ bool WeatherMeters::setup() {
     attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
 
-    if (!flash.initialize(ModuleHardware::PIN_FLASH_CS, 2048)) {
+    if (!flashFs.initialize(ModuleHardware::PIN_FLASH_CS, 2048)) {
+        digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, LOW);
+        fk_assert(false);
+    }
+
+    if (!flash.initialize()) {
         digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, LOW);
         fk_assert(false);
     }

@@ -99,7 +99,8 @@ private:
      * Wind recording that was just taken.
      */
     WindReading currentWind;
-    FlashStorage<PersistedState> flash;
+    SerialFlashFileSystem flashFs;
+    FlashState<PersistedState> flash{ flashFs };
 
 public:
     WeatherMeters(Watchdog &watchdog);
