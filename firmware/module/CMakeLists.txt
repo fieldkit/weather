@@ -24,3 +24,6 @@ add_definitions("-DFIRMWARE_BUILD=\"$ENV{BUILD_TAG}\"")
 arduino(fk-weather-standard "${SOURCE_FILES}" "${LIBRARIES}")
 
 target_compile_options(fk-weather-standard PUBLIC -Wall -Werror -I${CMAKE_CURRENT_SOURCE_DIR}/../common)
+
+add_definitions(-DPHYLUM_ENABLE_SERIAL_FLASH)
+target_compile_options(arduino_zero_phylum PUBLIC -DPHYLUM_ENABLE_SERIAL_FLASH)
