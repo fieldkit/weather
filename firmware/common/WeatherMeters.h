@@ -47,7 +47,7 @@ struct WindReading {
     }
 };
 
-struct PersistedState : phylum::MinimumSuperBlock {
+struct WeatherState : phylum::MinimumSuperBlock {
     /**
      * Time related counters.
      */
@@ -100,7 +100,7 @@ private:
      */
     WindReading currentWind;
     SerialFlashFileSystem flashFs;
-    FlashState<PersistedState> flash{ flashFs };
+    FlashState<WeatherState> flash{ flashFs };
 
 public:
     WeatherMeters(Watchdog &watchdog);
