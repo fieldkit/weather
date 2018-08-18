@@ -47,7 +47,7 @@ struct WindReading {
     }
 };
 
-struct WeatherState : phylum::MinimumSuperBlock {
+struct WeatherState : MinimumFlashState {
     /**
      * Time related counters.
      */
