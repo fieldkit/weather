@@ -1,29 +1,28 @@
-file(GLOB SOURCE_FILES *.cpp ../common/*.cpp)
-set(LIBRARIES Wire SPI)
+include(Arduino)
 
-# Get the current working branch
-execute_process(
-  COMMAND git rev-parse --abbrev-ref HEAD
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  OUTPUT_VARIABLE GIT_BRANCH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+enable_arduino_toolchain()
 
-# Get the latest abbreviated commit hash of the working branch
-execute_process(
-  COMMAND git log -1 --format=%H
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  OUTPUT_VARIABLE GIT_COMMIT_HASH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+file(GLOB sources *.cpp ../common/*.cpp)
 
-add_definitions("-DFIRMWARE_GIT_HASH=\"${GIT_COMMIT_HASH}\"")
-add_definitions("-DFIRMWARE_GIT_BRANCH=\"${GIT_BRANCH}\"")
-add_definitions("-DFIRMWARE_BUILD=\"$ENV{BUILD_TAG}\"")
+find_package(FkModule)
 
-arduino(fk-weather-standard "${SOURCE_FILES}" "${LIBRARIES}")
+find_package(Adafruit_Sensor)
+find_package(Adafruit_MPL3115A2)
+find_package(Adafruit_SHT31)
+find_package(Adafruit_TSL2561)
+find_package(Adafruit_TSL2591)
 
-target_compile_options(fk-weather-standard PUBLIC -Wall -Werror -I${CMAKE_CURRENT_SOURCE_DIR}/../common)
+add_arduino_library(fk-weather-standard "${sources}")
 
-add_definitions(-DPHYLUM_ENABLE_SERIAL_FLASH -DPHYLUM_ENABLE_SD)
-target_compile_options(arduino_zero_phylum PUBLIC -DPHYLUM_ENABLE_SERIAL_FLASH -DPHYLUM_ENABLE_SD)
+fk_configure_module(fk-weather-standard)
+
+target_link_libraries(fk-weather-standard Adafruit_Sensor)
+target_link_libraries(fk-weather-standard Adafruit_MPL3115A2_Library)
+target_link_libraries(fk-weather-standard Adafruit_SHT31)
+target_link_libraries(fk-weather-standard Adafruit_TSL2561)
+target_link_libraries(fk-weather-standard Adafruit_TSL2591_Library)
+
+target_compile_options(fk-weather-standard PRIVATE -Wall -Werror)
+target_include_directories(fk-weather-standard PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../common")
+
+add_arduino_firmware(fk-weather-standard)

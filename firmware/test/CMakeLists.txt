@@ -1,4 +1,8 @@
-set(SOURCE_FILES
+include(Arduino)
+
+enable_arduino_toolchain()
+
+set(sources
   main.cpp
   debug.cpp
   Check.cpp
@@ -7,16 +11,25 @@ set(SOURCE_FILES
   ../common/ModuleHardware.cpp
 )
 
-set(LIBRARIES
-  SPI
-  Wire
-)
+find_package(FkModule)
 
-include_directories(./)
+find_package(Adafruit_Sensor)
+find_package(Adafruit_MPL3115A2)
+find_package(Adafruit_SHT31)
+find_package(Adafruit_TSL2561)
+find_package(Adafruit_TSL2591)
 
-arduino(fk-weather-test "${SOURCE_FILES}" "${LIBRARIES}")
+add_arduino_library(fk-weather-test "${sources}")
 
-target_compile_options(fk-weather-test PUBLIC -Wall -Werror -I${CMAKE_CURRENT_SOURCE_DIR}/../common)
+fk_configure_module(fk-weather-test)
 
-add_definitions(-DPHYLUM_ENABLE_SERIAL_FLASH)
-target_compile_options(arduino_zero_phylum PUBLIC -DPHYLUM_ENABLE_SERIAL_FLASH)
+target_link_libraries(fk-weather-test Adafruit_Sensor)
+target_link_libraries(fk-weather-test Adafruit_MPL3115A2_Library)
+target_link_libraries(fk-weather-test Adafruit_SHT31)
+target_link_libraries(fk-weather-test Adafruit_TSL2561)
+target_link_libraries(fk-weather-test Adafruit_TSL2591_Library)
+
+target_compile_options(fk-weather-test PRIVATE -Wall -Werror)
+target_include_directories(fk-weather-test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../common")
+
+add_arduino_firmware(fk-weather-test)
