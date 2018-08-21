@@ -5,7 +5,7 @@ conservifyProperties()
 timestamps {
     node () {
         conservifyBuild(name: 'weather', archive: "build/firmware/module/*.bin")
-        distributeFirmware()
+        distributeFirmware(directory: "build/firmware/module")
     }
 
     refreshDistribution()
