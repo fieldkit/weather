@@ -15,7 +15,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L fk-weather-rescue:TACT-SWITCH_2Pins SW1
+L conservify:SWITCH_CONN_02 SW1
 U 1 1 56091122
 P 3900 2050
 F 0 "SW1" H 3900 2200 60  0000 C CNN
@@ -57,7 +57,7 @@ F 13 "mouser" H 200 400 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C2
+L conservify:CAPACITOR_CERAMIC C2
 U 1 1 560BC402
 P 2950 1800
 F 0 "C2" H 2975 1900 50  0000 L CNN
@@ -78,7 +78,7 @@ F 13 "mouser" H 200 400 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C1
+L conservify:CAPACITOR_CERAMIC C1
 U 1 1 560BC473
 P 2250 1800
 F 0 "C1" H 2275 1900 50  0000 L CNN
@@ -110,7 +110,7 @@ F 3 "" H 2050 1650 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C3
+L conservify:CAPACITOR_CERAMIC C3
 U 1 1 560C00D4
 P 5350 2300
 F 0 "C3" V 5200 2250 50  0000 L CNN
@@ -131,7 +131,7 @@ F 13 "mouser" H 200 400 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C7
+L conservify:CAPACITOR_CERAMIC C7
 U 1 1 560C0195
 P 6150 2300
 F 0 "C7" V 6000 2250 50  0000 L CNN
@@ -152,7 +152,7 @@ F 13 "mouser" H 200 400 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C8
+L conservify:CAPACITOR_CERAMIC C8
 U 1 1 560C021E
 P 6550 2300
 F 0 "C8" V 6400 2250 50  0000 L CNN
@@ -173,7 +173,7 @@ F 13 "mouser" H 200 400 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C5
+L conservify:CAPACITOR_CERAMIC C5
 U 1 1 560C02A4
 P 5750 2300
 F 0 "C5" V 5600 2250 50  0000 L CNN
@@ -303,7 +303,7 @@ F 13 "mouser" H 200 400 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C4
+L conservify:CAPACITOR_CERAMIC C4
 U 1 1 560C23D4
 P 5750 3250
 F 0 "C4" H 5550 3250 50  0000 L CNN
@@ -378,18 +378,7 @@ F 3 "" H 4250 1350 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:AREF #PWR013
-U 1 1 56101489
-P 1550 2700
-F 0 "#PWR013" H 1550 2550 50  0001 C CNN
-F 1 "AREF" H 1550 2840 50  0000 C CNN
-F 2 "" H 1550 2700 60  0000 C CNN
-F 3 "" H 1550 2700 60  0000 C CNN
-	1    1550 2700
-	1    0    0    -1  
-$EndComp
-$Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C6
+L conservify:CAPACITOR_CERAMIC C6
 U 1 1 56101EA7
 P 1850 3050
 F 0 "C6" H 1950 3050 50  0000 L CNN
@@ -410,7 +399,7 @@ F 13 "mouser" H -300 400 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C14
+L conservify:CAPACITOR_CERAMIC C14
 U 1 1 561023B1
 P 1550 3050
 F 0 "C14" H 1300 3050 50  0000 L CNN
@@ -569,7 +558,7 @@ F 13 "mouser" H 200 400 50  0001 C CNN "supplier1"
 	-1   0    0    1   
 $EndComp
 $Comp
-L fk-weather-rescue:ATSAMD21G18A-AU U1
+L conservify:ATSAMD21G18A_AU U1
 U 1 1 56332480
 P 3900 3650
 F 0 "U1" H 3250 4950 60  0000 C CNN
@@ -686,7 +675,7 @@ F 13 "mouser" H -4400 -2000 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:MICRO-USB J1
+L conservify:MICRO_USB J1
 U 1 1 5979086D
 P 4200 6900
 F 0 "J1" H 4200 7250 60  0000 C CNN
@@ -770,7 +759,7 @@ F 13 "mouser" H -4400 -2000 50  0001 C CNN "supplier1"
 	0    1    1    0   
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C10
+L conservify:CAPACITOR_CERAMIC C10
 U 1 1 59790E57
 P 5000 7450
 F 0 "C10" H 5025 7550 50  0000 L CNN
@@ -812,7 +801,7 @@ F 13 "mouser" H -4400 -2000 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C9
+L conservify:CAPACITOR_CERAMIC C9
 U 1 1 59791381
 P 800 6900
 F 0 "C9" H 825 7000 50  0000 L CNN
@@ -854,7 +843,7 @@ F 13 "mouser" H -4400 -2000 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C12
+L conservify:CAPACITOR_CERAMIC C12
 U 1 1 59792065
 P 6950 6700
 F 0 "C12" H 6975 6800 50  0000 L CNN
@@ -875,7 +864,7 @@ F 13 "mouser" H -4400 -2000 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C11
+L conservify:CAPACITOR_CERAMIC C11
 U 1 1 59792142
 P 5650 6700
 F 0 "C11" H 5675 6800 50  0000 L CNN
@@ -1037,7 +1026,7 @@ F 13 "mouser" H -800 -6200 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:LED-SINGLE D5
+L conservify:LED_SINGLE D5
 U 1 1 59BC28FF
 P 8050 3500
 F 0 "D5" H 8050 3600 50  0000 C CNN
@@ -1058,7 +1047,7 @@ F 13 "mouser" H -800 -6200 50  0001 C CNN "supplier1"
 	-1   0    0    1   
 $EndComp
 $Comp
-L fk-weather-rescue:MOSFET-N Q4
+L conservify:MOSFET_N Q4
 U 1 1 59BC2907
 P 8950 3150
 F 0 "Q4" H 9200 3200 50  0000 R CNN
@@ -1121,7 +1110,7 @@ F 12 "797-25FL116KOXMFI041" H 5550 9650 50  0001 C CNN "spn1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C18
+L conservify:CAPACITOR_CERAMIC C18
 U 1 1 5A1CAC3A
 P 6750 9100
 F 0 "C18" H 6850 9100 50  0000 L CNN
@@ -1142,7 +1131,7 @@ F 13 "mouser" H 4650 2300 50  0001 C CNN "supplier1"
 	0    -1   -1   0   
 $EndComp
 $Comp
-L fk-weather-rescue:Conn_01x06 J11
+L conservify:CONN_01x06 J11
 U 1 1 5A44A535
 P 12600 4900
 F 0 "J11" H 12600 5200 50  0000 C CNN
@@ -1369,7 +1358,7 @@ F 3 "" H 14800 5750 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:Conn_01x06 J10
+L conservify:CONN_01x06 J10
 U 1 1 5A46F26B
 P 12950 2050
 F 0 "J10" H 12950 2350 50  0000 C CNN
@@ -1514,7 +1503,7 @@ F 13 "mouser" H 10400 7600 50  0001 C CNN "supplier1"
 	0    1    1    0   
 $EndComp
 $Comp
-L fk-weather-rescue:Conn_01x05 J2
+L conservify:CONN_01x05 J2
 U 1 1 5B3C0765
 P 8700 5850
 F 0 "J2" H 8700 6150 50  0000 C CNN
@@ -1556,7 +1545,7 @@ F 3 "" H 8200 5500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:Conn_01x04 J4
+L conservify:CONN_01x04 J4
 U 1 1 5B3C5AFF
 P 9500 5850
 F 0 "J4" H 9500 6050 50  0000 C CNN
@@ -1653,7 +1642,7 @@ F 3 "" H 14450 9500 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C13
+L conservify:CAPACITOR_CERAMIC C13
 U 1 1 5B3F4664
 P 11800 8550
 F 0 "C13" V 11650 8500 50  0000 L CNN
@@ -1674,7 +1663,7 @@ F 13 "mouser" H 5850 6650 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C15
+L conservify:CAPACITOR_CERAMIC C15
 U 1 1 5B3F4F66
 P 15200 8650
 F 0 "C15" V 15050 8600 50  0000 L CNN
@@ -1695,7 +1684,7 @@ F 13 "mouser" H 9250 6750 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C16
+L conservify:CAPACITOR_CERAMIC C16
 U 1 1 5B3F510A
 P 15600 8600
 F 0 "C16" V 15450 8550 50  0000 L CNN
@@ -1727,7 +1716,7 @@ F 3 "" H 15600 9500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:Conn_01x02 J5
+L conservify:CONN_01x02 J5
 U 1 1 5B3F92E3
 P 12900 7850
 F 0 "J5" H 12900 7950 50  0000 C CNN
@@ -1912,7 +1901,7 @@ F 12 " " H 900 9950 50  0001 C CNN "Supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C17
+L conservify:CAPACITOR_CERAMIC C17
 U 1 1 5B56FA30
 P 3100 9400
 F 0 "C17" V 2950 9350 50  0000 L CNN
@@ -1933,7 +1922,7 @@ F 13 "mouser" H -3250 7500 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:CAPACITOR-CERAMIC C19
+L conservify:CAPACITOR_CERAMIC C19
 U 1 1 5B56FB8C
 P 3950 9400
 F 0 "C19" V 3800 9350 50  0000 L CNN
@@ -1997,7 +1986,7 @@ F 3 "" H 3100 10050 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-weather-rescue:Conn_01x05 J7
+L conservify:CONN_01x05 J7
 U 1 1 5B565BC0
 P 7950 5850
 F 0 "J7" H 7950 6150 50  0000 C CNN
@@ -2593,8 +2582,6 @@ Wire Wire Line
 Wire Wire Line
 	7050 9800 7050 9100
 Wire Wire Line
-	1550 2700 1550 2800
-Wire Wire Line
 	1850 2800 1850 2900
 Wire Wire Line
 	8200 5750 8500 5750
@@ -2918,7 +2905,6 @@ Connection ~ 14800 5650
 Connection ~ 14350 1950
 Connection ~ 14400 1950
 Connection ~ 14400 2800
-Connection ~ 1550 2800
 Connection ~ 1850 2800
 Connection ~ 15600 8900
 Connection ~ 12100 8400
@@ -2936,4 +2922,72 @@ NoConn ~ 8000 4750
 NoConn ~ 8500 5850
 NoConn ~ 2550 9300
 NoConn ~ 7750 5850
+NoConn ~ 2250 3000
+NoConn ~ 2250 2700
+NoConn ~ 2250 3200
+NoConn ~ 2250 3500
+NoConn ~ 2250 3600
+NoConn ~ 2250 3800
+NoConn ~ 2250 3900
+NoConn ~ 3050 4100
+NoConn ~ 2250 4400
+NoConn ~ 2250 4600
+NoConn ~ 5350 4200
+NoConn ~ 5350 3700
+NoConn ~ 5350 3500
+$Comp
+L conservify:5V0 #PWR0101
+U 1 1 5BBDF471
+P 1150 7700
+F 0 "#PWR0101" H 1150 7550 50  0001 C CNN
+F 1 "5V0" H 1150 7840 50  0000 C CNN
+F 2 "" H 1150 7700 60  0000 C CNN
+F 3 "" H 1150 7700 60  0000 C CNN
+	1    1150 7700
+	1    0    0    -1  
+$EndComp
+$Comp
+L conservify:PWR_FLAG #FLG0101
+U 1 1 5BBDF693
+P 1150 7850
+F 0 "#FLG0101" H 1150 7925 50  0001 C CNN
+F 1 "PWR_FLAG" H 1150 8023 50  0000 C CNN
+F 2 "" H 1150 7850 50  0001 C CNN
+F 3 "~" H 1150 7850 50  0001 C CNN
+	1    1150 7850
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1150 7700 1150 7850
+$Comp
+L conservify:PWR_FLAG #FLG0102
+U 1 1 5BBDF7C1
+P 1550 7850
+F 0 "#FLG0102" H 1550 7925 50  0001 C CNN
+F 1 "PWR_FLAG" H 1550 8023 50  0000 C CNN
+F 2 "" H 1550 7850 50  0001 C CNN
+F 3 "~" H 1550 7850 50  0001 C CNN
+	1    1550 7850
+	-1   0    0    1   
+$EndComp
+$Comp
+L conservify:GND #PWR0102
+U 1 1 5BC38690
+P 1550 7650
+F 0 "#PWR0102" H 1550 7400 50  0001 C CNN
+F 1 "GND" H 1550 7500 50  0001 C CNN
+F 2 "" H 1550 7650 60  0000 C CNN
+F 3 "" H 1550 7650 60  0000 C CNN
+	1    1550 7650
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1550 7650 1550 7850
+NoConn ~ 5350 3800
+NoConn ~ 12800 5100
+NoConn ~ 12800 4600
+NoConn ~ 13150 1750
+NoConn ~ 13150 2250
+NoConn ~ 13600 2150
+NoConn ~ 13600 1850
 $EndSCHEMATC
