@@ -12,7 +12,7 @@ class WeatherReadings : public Task {
 private:
     ModuleHardware *hw;
     WeatherMeters *meters;
-    PendingSensorReading *pending;
+    PendingReadings *pending;
     bool hasSht31;
     bool hasMpl3115a2;
     bool hasTsl2591;
@@ -25,9 +25,8 @@ public:
 
 public:
     bool setup();
-    void begin(PendingSensorReading &p) {
-        pending = &p;
-        pending->elapsed = millis();
+    void begin(PendingReadings *p) {
+        pending = p;
     }
 
 private:

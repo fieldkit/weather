@@ -44,6 +44,8 @@ public:
 };
 
 void TakeWeatherReadings::task() {
+    weatherServices().weatherReadings->begin(services().readings);
+
     weatherServices().weatherReadings->enqueued();
 
     while (simple_task_run(*weatherServices().weatherReadings)) {
@@ -72,32 +74,19 @@ public:
     WeatherModule(ModuleInfo &info);
 
 public:
-    ModuleReadingStatus beginReading(PendingSensorReading &pending) override;
-    DeferredModuleState beginReadingState() override;
-    ModuleReadingStatus readingStatus(PendingSensorReading &pending) override;
+    fk::ModuleStates states() override {
+        return {
+            fk::ModuleFsm::deferred<fk::ConfigureModule>(),
+            fk::ModuleFsm::deferred<TakeWeatherReadings>()
+        };
+    }
+
     void tick() override;
 
 };
 
 WeatherModule::WeatherModule(ModuleInfo &info) :
     Module(bus, info), meters_(watchdog()) {
-}
-
-ModuleReadingStatus WeatherModule::beginReading(PendingSensorReading &pending) {
-    weatherReadings_.begin(pending);
-
-    // taskQueue().append(delay_); // This is to give us time to reply with the backoff. Should be avoidable?
-    // taskQueue().append(weatherReadings_);
-
-    return ModuleReadingStatus{ 5000 };
-}
-
-fk::DeferredModuleState WeatherModule::beginReadingState() {
-    return ModuleFsm::deferred<TakeWeatherReadings>();
-}
-
-ModuleReadingStatus WeatherModule::readingStatus(PendingSensorReading &pending) {
-    return ModuleReadingStatus{};
 }
 
 void WeatherModule::tick() {

@@ -109,37 +109,29 @@ TaskEval WeatherReadings::task() {
     auto hourlyRain = meters->getHourlyRain();
 
     if (pending != nullptr) {
-        auto readings = pending->readings;
         auto i = 0;
-        readings[i++].value = sht31.temperature;
-        readings[i++].value = sht31.humidity;
+        pending->done(i++, sht31.temperature);
+        pending->done(i++, sht31.humidity);
 
-        readings[i++].value = mpl3115a2.temperature;
-        readings[i++].value = mpl3115a2.pressurePascals;
-        readings[i++].value = mpl3115a2.altitudeMeters;
+        pending->done(i++, mpl3115a2.temperature);
+        pending->done(i++, mpl3115a2.pressurePascals);
+        pending->done(i++, mpl3115a2.altitudeMeters);
 
-        readings[i++].value = tsl2591.ir;
-        readings[i++].value = tsl2591.visible;
-        readings[i++].value = tsl2591.lux;
+        pending->done(i++, tsl2591.ir);
+        pending->done(i++, tsl2591.visible);
+        pending->done(i++, tsl2591.lux);
 
-        readings[i++].value = currentWind.speed;
-        readings[i++].value = currentWind.direction.angle;
-        readings[i++].value = hourlyWindGust.speed;
-        readings[i++].value = hourlyWindGust.direction.angle;
-        readings[i++].value = wind10mGust.speed;
-        readings[i++].value = wind10mGust.direction.angle;
-        readings[i++].value = averageWind.speed;
-        readings[i++].value = averageWind.direction.angle;
+        pending->done(i++, currentWind.speed);
+        pending->done(i++, currentWind.direction.angle);
+        pending->done(i++, hourlyWindGust.speed);
+        pending->done(i++, hourlyWindGust.direction.angle);
+        pending->done(i++, wind10mGust.speed);
+        pending->done(i++, wind10mGust.direction.angle);
+        pending->done(i++, averageWind.speed);
+        pending->done(i++, averageWind.direction.angle);
 
-        readings[i++].value = previousHourlyRain;
-        readings[i++].value = hourlyRain;
-
-        pending->elapsed -= millis();
-
-        for (auto j = 0; j < i; ++j) {
-            readings[j].status = SensorReadingStatus::Done;
-            readings[j].time = clock.getTime();
-        }
+        pending->done(i++, previousHourlyRain);
+        pending->done(i++, hourlyRain);
     }
 
     log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", sht31.temperature, sht31.humidity, mpl3115a2.temperature, mpl3115a2.pressurePascals, mpl3115a2.pressureInchesMercury, mpl3115a2.altitudeMeters);
