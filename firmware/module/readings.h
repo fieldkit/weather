@@ -10,7 +10,7 @@ namespace fk {
 
 class WeatherReadings : public Task {
 private:
-    ModuleHardware *hw;
+    WeatherHardware *hw;
     WeatherMeters *meters;
     PendingReadings *pending;
     bool hasSht31;
@@ -18,7 +18,7 @@ private:
     bool hasTsl2591;
 
 public:
-    WeatherReadings(ModuleHardware &hw, WeatherMeters &meters);
+    WeatherReadings(WeatherHardware &hw, WeatherMeters &meters);
 
 public:
     TaskEval task() override;

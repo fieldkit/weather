@@ -4,7 +4,7 @@
 
 namespace fk {
 
-AmbientSensors::AmbientSensors(ModuleHardware &hw) : hw(&hw) {
+AmbientSensors::AmbientSensors(WeatherHardware &hw) : hw(&hw) {
 }
 
 void AmbientSensors::takeReading() {

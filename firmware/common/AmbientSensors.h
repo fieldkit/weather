@@ -8,10 +8,10 @@ namespace fk {
 
 class AmbientSensors {
 private:
-    ModuleHardware *hw;
+    WeatherHardware *hw;
 
 public:
-    AmbientSensors(ModuleHardware &hw);
+    AmbientSensors(WeatherHardware &hw);
 
 public:
     void takeReading();

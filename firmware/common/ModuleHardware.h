@@ -12,7 +12,7 @@
 
 namespace fk {
 
-class ModuleHardware {
+class WeatherHardware {
 public:
     static constexpr uint8_t PIN_FLASH_CS = 5;
     static constexpr uint8_t PIN_PERIPH_ENABLE = 8;

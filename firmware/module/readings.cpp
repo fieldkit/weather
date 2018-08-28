@@ -5,7 +5,7 @@
 
 namespace fk {
 
-WeatherReadings::WeatherReadings(ModuleHardware &hw, WeatherMeters &meters) : Task("Weather"), hw(&hw), meters(&meters) {
+WeatherReadings::WeatherReadings(WeatherHardware &hw, WeatherMeters &meters) : Task("Weather"), hw(&hw), meters(&meters) {
 }
 
 bool WeatherReadings::setup() {

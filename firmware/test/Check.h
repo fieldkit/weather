@@ -7,10 +7,10 @@ namespace fk {
 
 class Check {
 private:
-    ModuleHardware *hw;
+    WeatherHardware *hw;
 
 public:
-    Check(ModuleHardware &hw);
+    Check(WeatherHardware &hw);
 
 public:
     bool sht31();

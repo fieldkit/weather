@@ -25,7 +25,7 @@ void setup() {
 
     fk::clock.begin();
 
-    fk::ModuleHardware hardware;
+    fk::WeatherHardware hardware;
     fk::Check check(hardware);
     hardware.setup();
     if (!check.check()) {

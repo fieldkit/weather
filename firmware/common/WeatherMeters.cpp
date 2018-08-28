@@ -48,13 +48,13 @@ bool WeatherMeters::setup() {
     attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
 
-    if (!flashFs.initialize(ModuleHardware::PIN_FLASH_CS, 2048)) {
-        digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, LOW);
+    if (!flashFs.initialize(WeatherHardware::PIN_FLASH_CS, 2048)) {
+        digitalWrite(WeatherHardware::PIN_PERIPH_ENABLE, LOW);
         fk_assert(false);
     }
 
     if (!flash.initialize()) {
-        digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, LOW);
+        digitalWrite(WeatherHardware::PIN_PERIPH_ENABLE, LOW);
         fk_assert(false);
     }
 

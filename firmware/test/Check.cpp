@@ -6,7 +6,7 @@
 
 namespace fk {
 
-Check::Check(ModuleHardware &hw) : hw(&hw) {
+Check::Check(WeatherHardware &hw) : hw(&hw) {
 }
 
 static const char *serialFlashId2Chip(const unsigned char *id) {
@@ -103,7 +103,7 @@ bool Check::flashMemory() {
 
     SerialFlashChip serialFlash;
 
-    if (!serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
+    if (!serialFlash.begin(WeatherHardware::PIN_FLASH_CS)) {
         debugfln("test: Flash memory FAILED");
         return false;
     }

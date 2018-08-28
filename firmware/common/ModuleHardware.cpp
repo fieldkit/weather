@@ -4,7 +4,7 @@
 
 namespace fk {
 
-bool ModuleHardware::setup() {
+bool WeatherHardware::setup() {
     SPI.begin();
     Wire.begin();
 
@@ -26,7 +26,7 @@ bool ModuleHardware::setup() {
     return true;
 }
 
-void ModuleHardware::leds(bool on) {
+void WeatherHardware::leds(bool on) {
     digitalWrite(A3, on ? HIGH : LOW);
     digitalWrite(A4, on ? HIGH : LOW);
     digitalWrite(A5, on ? HIGH : LOW);
