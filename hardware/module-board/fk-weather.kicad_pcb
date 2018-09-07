@@ -2990,7 +2990,7 @@
   (gr_text D13 (at 104.1527 171.8945) (layer F.SilkS) (tstamp 59FBB4B5)
     (effects (font (size 0.6 0.6) (thickness 0.11)))
   )
-  (gr_text v0.9 (at 110.998 199.136) (layer F.SilkS)
+  (gr_text v0.10 (at 110.8583 199.0471) (layer F.SilkS)
     (effects (font (size 1.2 1.2) (thickness 0.2)))
   )
 
