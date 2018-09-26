@@ -16,6 +16,11 @@ add_arduino_library(fk-weather-standard "${sources}")
 
 fk_configure_module(fk-weather-standard)
 
+option(FK_ENABLE_PCF8523 "Enable PCF8523 RTC" ON)
+if(FK_ENABLE_PCF8523)
+  target_compile_options(firmware-common PUBLIC -DFK_RTC_PCF8523)
+endif()
+
 target_link_libraries(fk-weather-standard Adafruit_Sensor)
 target_link_libraries(fk-weather-standard Adafruit_MPL3115A2_Library)
 target_link_libraries(fk-weather-standard Adafruit_SHT31)
