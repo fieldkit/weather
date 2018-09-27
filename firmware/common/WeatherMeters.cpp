@@ -223,12 +223,14 @@ WindDirection WeatherMeters::getWindDirection() {
 }
 
 void WeatherMeters::save() {
-    // flash.write(&persistedState, sizeof(WeatherState));
-    loginfof("Meters", "Save (hourly rain: %f)", getHourlyRain());
+    flash.save();
+
+    auto savedUnix = flash.state().time;
+    loginfof("Meters", "Save (hourly rain: %f) (%lu)", getHourlyRain(), savedUnix);
 }
 
 void WeatherMeters::load() {
-    // flash.read(&persistedState, sizeof(WeatherState));
+    flash.initialize();
     loginfof("Meters", "Load (hourly rain: %f)", getHourlyRain());
 }
 
