@@ -142,7 +142,7 @@ bool WeatherMeters::tick() {
     auto difference = nowUnix > savedUnix ? nowUnix - savedUnix : savedUnix - nowUnix; // Avoid overflow.
     if (difference > 60 * 5) {
         loginfof("Meters", "Zeroing persisted state! (%lu - %lu = %lu)", nowUnix, savedUnix, difference);
-        persistedState = WeatherState{};
+        persistedState.clear();
     }
 
     if (now.second() != persistedState.date_time().second()) {
@@ -226,7 +226,7 @@ void WeatherMeters::save() {
     flash.save();
 
     auto savedUnix = flash.state().time;
-    loginfof("Meters", "Save (hourly rain: %f) (%lu)", getHourlyRain(), savedUnix);
+    loginfof("Meters", "Save (hourly rain: %f) (%lu) (ts = %lu)", getHourlyRain(), savedUnix, flash.state().link.header.timestamp);
 }
 
 void WeatherMeters::load() {

@@ -77,8 +77,31 @@ struct WeatherState : MinimumFlashState {
      */
     float lastHourOfRain[60] = { 0 };
 
+    /**
+     * Return a DateTime for the UNIX time stamp in our state.
+     */
     DateTime date_time() const {
         return DateTime{ time };
+    }
+
+    /**
+     * Clear the weather related state. We have to do this because we need to
+     * leave the MinimumFlashState alone.
+     */
+    void clear() {
+        twoMinuteSecondsCounter = 0;
+        tenMinuteMinuteCounter = 0;
+        for (auto i = 0; i < 120; ++i) {
+            lastTwoMinutesOfWind[i] = { };
+        }
+        for (auto i = 0; i < 10; ++i) {
+            windGusts[i] = {  };
+        }
+        hourlyWindGust = { };
+        previousHourlyRain = 0;
+        for (auto i = 0; i < 60; ++i) {
+            lastHourOfRain[i] = 0;
+        }
     }
 };
 
