@@ -157,7 +157,6 @@ private:
     WindDirection getWindDirection();
     int16_t windAdcToAngle(int16_t adc);
     void save();
-    void load();
 
 };
 

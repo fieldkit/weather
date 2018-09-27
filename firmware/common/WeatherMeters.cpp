@@ -48,8 +48,6 @@ bool WeatherMeters::setup() {
     attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
 
-    load();
-
     return true;
 }
 
@@ -217,10 +215,6 @@ void WeatherMeters::save() {
 
     auto savedUnix = flash_->state().time;
     loginfof("Meters", "Save (hourly rain: %f) (%lu) (ts = %lu)", getHourlyRain(), savedUnix, flash_->state().link.header.timestamp);
-}
-
-void WeatherMeters::load() {
-    loginfof("Meters", "Load (hourly rain: %f)", getHourlyRain());
 }
 
 int16_t WeatherMeters::windAdcToAngle(int16_t adc) {
