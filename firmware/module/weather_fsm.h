@@ -23,7 +23,7 @@ public:
         return *weatherServices_;
     }
 
-    static void atlasServices(WeatherServices &newServices) {
+    static void weatherServices(WeatherServices &newServices) {
         weatherServices_ = &newServices;
     }
 

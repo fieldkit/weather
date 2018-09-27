@@ -17,6 +17,8 @@ void TakeWeatherReadings::task() {
 
 WeatherModule::WeatherModule(ModuleInfo &info) :
     Module(bus, info, { WeatherHardware::PIN_FLASH_CS }), meters_(*moduleServices().watchdog, flashState()) {
+
+    WeatherModuleState::weatherServices(weatherServices_);
 }
 
 void WeatherModule::tick() {
