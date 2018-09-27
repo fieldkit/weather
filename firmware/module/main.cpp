@@ -55,7 +55,7 @@ void TakeWeatherReadings::task() {
     transit<ModuleIdle>();
 }
 
-class WeatherModule : public Module {
+class WeatherModule : public Module<WeatherState> {
 private:
     TwoWireBus bus{ Wire4and3 };
     WeatherHardware hardware_;
@@ -86,7 +86,7 @@ public:
 };
 
 WeatherModule::WeatherModule(ModuleInfo &info) :
-    Module(bus, info), meters_(*moduleServices().watchdog) {
+    Module(bus, info, { WeatherHardware::PIN_FLASH_CS }), meters_(*moduleServices().watchdog, flashState()) {
 }
 
 void WeatherModule::tick() {

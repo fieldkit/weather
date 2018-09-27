@@ -37,7 +37,10 @@ void setup() {
     fk::Leds leds;
     fk::Watchdog watchdog(leds);
     fk::AmbientSensors ambientSensors(hardware);
-    fk::WeatherMeters meters(watchdog);
+    fk::SerialFlashFileSystem flashFs{ watchdog };
+    fk::FlashState<fk::WeatherState> flashState{ flashFs };
+    fk::WeatherMeters meters(watchdog, flashState);
+
     meters.setup();
 
     while (true) {

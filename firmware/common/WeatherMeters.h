@@ -114,6 +114,7 @@ private:
     static constexpr uint8_t PinRain = 6;
 
 private:
+    FlashState<WeatherState> *flash_;
     uint32_t lastStatusTick{ 0 };
     uint32_t lastSave{ 0 };
     uint32_t lastRainAt{ 0 };
@@ -125,11 +126,9 @@ private:
      * Wind recording that was just taken.
      */
     WindReading currentWind;
-    SerialFlashFileSystem flashFs;
-    FlashState<WeatherState> flash{ flashFs };
 
 public:
-    WeatherMeters(Watchdog &watchdog);
+    WeatherMeters(Watchdog &watchdog, FlashState<WeatherState> &flash);
 
 public:
     bool setup();
@@ -142,10 +141,10 @@ public:
         return currentWind;
     }
     WindReading getHourlyWindGust() {
-        return flash.state().hourlyWindGust;
+        return flash_->state().hourlyWindGust;
     }
     float getPreviousHourlyRain() {
-        return flash.state().previousHourlyRain;
+        return flash_->state().previousHourlyRain;
     }
     float getHourlyRain();
     WindReading getWindReading();

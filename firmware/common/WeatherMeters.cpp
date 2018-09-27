@@ -19,7 +19,7 @@ void isr_rain() {
     global_weather_meters->rain();
 }
 
-WeatherMeters::WeatherMeters(Watchdog &watchdog) : flashFs(watchdog) {
+WeatherMeters::WeatherMeters(Watchdog &watchdog, FlashState<WeatherState> &flash) : flash_(&flash) {
     global_weather_meters = this;
 }
 
@@ -34,8 +34,8 @@ void WeatherMeters::wind() {
 void WeatherMeters::rain() {
     auto now = millis();
     if (now - lastRainAt > 10) {
-        auto minute = flash.state().date_time().minute();
-        flash.state().lastHourOfRain[minute] += RainPerTick;
+        auto minute = flash_->state().date_time().minute();
+        flash_->state().lastHourOfRain[minute] += RainPerTick;
         lastRainAt = now;
     }
 }
@@ -48,16 +48,6 @@ bool WeatherMeters::setup() {
     attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
     attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
 
-    if (!flashFs.initialize(WeatherHardware::PIN_FLASH_CS, 2048)) {
-        digitalWrite(WeatherHardware::PIN_PERIPH_ENABLE, LOW);
-        fk_assert(false);
-    }
-
-    if (!flash.initialize()) {
-        digitalWrite(WeatherHardware::PIN_PERIPH_ENABLE, LOW);
-        fk_assert(false);
-    }
-
     load();
 
     return true;
@@ -66,7 +56,7 @@ bool WeatherMeters::setup() {
 float WeatherMeters::getHourlyRain() {
     auto total = 0.0f;
     for (auto i = 0; i < 60; ++i) {
-        total += flash.state().lastHourOfRain[i];
+        total += flash_->state().lastHourOfRain[i];
     }
     return total;
 }
@@ -78,7 +68,7 @@ WindReading WeatherMeters::getWindReading() {
 }
 
 WindReading WeatherMeters::getTwoMinuteWindAverage() {
-    auto &persistedState = flash.state();
+    auto &persistedState = flash_->state();
     auto speedSum = 0.0f;
     auto directionSum = persistedState.lastTwoMinutesOfWind[0].direction.angle;
     auto d = persistedState.lastTwoMinutesOfWind[0].direction.angle;
@@ -121,8 +111,8 @@ WindReading WeatherMeters::getTwoMinuteWindAverage() {
 WindReading WeatherMeters::getLargestRecentWindGust() {
     auto gust = WindReading{};
     for (auto i = 0; i < 10; ++i) {
-        if (flash.state().windGusts[i].strongerThan(gust)) {
-            gust = flash.state().windGusts[i];
+        if (flash_->state().windGusts[i].strongerThan(gust)) {
+            gust = flash_->state().windGusts[i];
         }
     }
     return gust;
@@ -133,12 +123,12 @@ bool WeatherMeters::tick() {
         return false;
     }
 
-    auto &persistedState = flash.state();
+    auto &persistedState = flash_->state();
     auto now = clock.now();
 
     // Is persisted state more than a few minutes from us?
     auto nowUnix = now.unixtime();
-    auto savedUnix = persistedState.date_time().unixtime();
+    auto savedUnix = persistedState.time;
     auto difference = nowUnix > savedUnix ? nowUnix - savedUnix : savedUnix - nowUnix; // Avoid overflow.
     if (difference > 60 * 5) {
         loginfof("Meters", "Zeroing persisted state! (%lu - %lu = %lu)", nowUnix, savedUnix, difference);
@@ -223,14 +213,13 @@ WindDirection WeatherMeters::getWindDirection() {
 }
 
 void WeatherMeters::save() {
-    flash.save();
+    flash_->save();
 
-    auto savedUnix = flash.state().time;
-    loginfof("Meters", "Save (hourly rain: %f) (%lu) (ts = %lu)", getHourlyRain(), savedUnix, flash.state().link.header.timestamp);
+    auto savedUnix = flash_->state().time;
+    loginfof("Meters", "Save (hourly rain: %f) (%lu) (ts = %lu)", getHourlyRain(), savedUnix, flash_->state().link.header.timestamp);
 }
 
 void WeatherMeters::load() {
-    flash.initialize();
     loginfof("Meters", "Load (hourly rain: %f)", getHourlyRain());
 }
 
