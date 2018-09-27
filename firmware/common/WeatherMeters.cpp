@@ -34,7 +34,7 @@ void WeatherMeters::wind() {
 void WeatherMeters::rain() {
     auto now = millis();
     if (now - lastRainAt > 10) {
-        auto minute = flash.state().time.minute();
+        auto minute = flash.state().date_time().minute();
         flash.state().lastHourOfRain[minute] += RainPerTick;
         lastRainAt = now;
     }
@@ -138,14 +138,14 @@ bool WeatherMeters::tick() {
 
     // Is persisted state more than a few minutes from us?
     auto nowUnix = now.unixtime();
-    auto savedUnix = persistedState.time.unixtime();
+    auto savedUnix = persistedState.date_time().unixtime();
     auto difference = nowUnix > savedUnix ? nowUnix - savedUnix : savedUnix - nowUnix; // Avoid overflow.
     if (difference > 60 * 5) {
         loginfof("Meters", "Zeroing persisted state! (%lu - %lu = %lu)", nowUnix, savedUnix, difference);
         persistedState = WeatherState{};
     }
 
-    if (now.second() != persistedState.time.second()) {
+    if (now.second() != persistedState.date_time().second()) {
         lastStatusTick = millis();
 
         currentWind = getWindReading();
@@ -154,11 +154,11 @@ bool WeatherMeters::tick() {
             persistedState.twoMinuteSecondsCounter = 0;
         }
 
-        if (now.minute() != persistedState.time.minute()) {
+        if (now.minute() != persistedState.date_time().minute()) {
             FormattedTime nowFormatted{ now };
             loginfof("Meters", "New Minute: %s", nowFormatted.toString());
 
-            if (now.hour() != persistedState.time.hour()) {
+            if (now.hour() != persistedState.date_time().hour()) {
                 loginfof("Meters", "New Hour");
 
                 persistedState.previousHourlyRain = getHourlyRain();
@@ -167,8 +167,8 @@ bool WeatherMeters::tick() {
                 }
 
                 persistedState.hourlyWindGust.zero();
-                if (now.hour() < persistedState.time.hour()) {
-                    loginfof("Meters", "New Day (%d %d)", now.hour(), persistedState.time.hour());
+                if (now.hour() < persistedState.date_time().hour()) {
+                    loginfof("Meters", "New Day (%d %d)", now.hour(), persistedState.date_time().hour());
                 }
             }
 
@@ -191,7 +191,7 @@ bool WeatherMeters::tick() {
             persistedState.hourlyWindGust = currentWind;
         }
 
-        persistedState.time = now;
+        persistedState.time = now.unixtime();
 
         if (millis() - lastSave > 10000) {
             save();

@@ -51,7 +51,6 @@ struct WeatherState : MinimumFlashState {
     /**
      * Time related counters.
      */
-    DateTime time;
     uint8_t twoMinuteSecondsCounter{ 0 };
     uint8_t tenMinuteMinuteCounter{ 0 };
 
@@ -77,6 +76,10 @@ struct WeatherState : MinimumFlashState {
      * Stores the rainfall per minute over the last 60 minutes.
      */
     float lastHourOfRain[60] = { 0 };
+
+    DateTime date_time() const {
+        return DateTime{ time };
+    }
 };
 
 class WeatherMeters {
