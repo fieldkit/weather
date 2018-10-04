@@ -2,7 +2,7 @@
 #define FK_AMBIENT_SENSORS_H_INCLUDED
 
 #include "debug.h"
-#include "ModuleHardware.h"
+#include "module_hardware.h"
 
 namespace fk {
 

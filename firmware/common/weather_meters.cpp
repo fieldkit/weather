@@ -1,6 +1,6 @@
 #include <alogging/alogging.h>
 
-#include "WeatherMeters.h"
+#include "weather_meters.h"
 #include "debug.h"
 #include "rtc.h"
 

@@ -1,6 +1,6 @@
 #include <alogging/alogging.h>
 
-#include "AmbientSensors.h"
+#include "ambient_sensors.h"
 
 namespace fk {
 

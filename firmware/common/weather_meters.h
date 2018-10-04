@@ -7,7 +7,7 @@
 #include <flash_storage.h>
 #include <watchdog.h>
 
-#include "ModuleHardware.h"
+#include "module_hardware.h"
 
 namespace fk {
 

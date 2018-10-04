@@ -3,8 +3,8 @@
 
 #include <fk-module.h>
 
-#include "ModuleHardware.h"
-#include "WeatherMeters.h"
+#include "module_hardware.h"
+#include "weather_meters.h"
 
 namespace fk {
 

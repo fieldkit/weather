@@ -1,6 +1,6 @@
 #include <SerialFlash.h>
 
-#include "Check.h"
+#include "check.h"
 
 #include "debug.h"
 

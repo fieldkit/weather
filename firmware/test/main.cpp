@@ -3,9 +3,9 @@
 
 #include <watchdog.h>
 
-#include <AmbientSensors.h>
-#include <WeatherMeters.h>
-#include <Check.h>
+#include <ambient_sensors.h>
+#include <weather_meters.h>
+#include <check.h>
 
 #include "rtc.h"
 #include "debug.h"

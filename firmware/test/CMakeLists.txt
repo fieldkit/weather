@@ -2,14 +2,7 @@ include(Arduino)
 
 enable_arduino_toolchain()
 
-set(sources
-  main.cpp
-  debug.cpp
-  Check.cpp
-  ../common/AmbientSensors.cpp
-  ../common/WeatherMeters.cpp
-  ../common/ModuleHardware.cpp
-)
+file(GLOB sources *.cpp ../common/*.cpp)
 
 find_package(FkModule)
 

@@ -1,7 +1,7 @@
 #ifndef FK_CHECK_H_INCLUDED
 #define FK_CHECK_H_INCLUDED
 
-#include <ModuleHardware.h>
+#include <module_hardware.h>
 
 namespace fk {
 

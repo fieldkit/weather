@@ -1,6 +1,6 @@
-#include "ModuleHardware.h"
-
 #include <SPI.h>
+
+#include "module_hardware.h"
 
 namespace fk {
 
