@@ -13,13 +13,14 @@
 void setup() {
     Serial.begin(115200);
 
-    while (!Serial) {
+    pinMode(fk::WeatherHardware::PIN_PERIPH_ENABLE, OUTPUT);
+    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, HIGH);
+
+    while (!Serial && millis() < 2000) {
         delay(100);
     }
 
-    pinMode(8, OUTPUT);
-    digitalWrite(8, HIGH);
-    delay(500);
+    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, LOW);
 
     debugfln("test: Setup");
 

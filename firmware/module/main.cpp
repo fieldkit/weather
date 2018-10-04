@@ -1,16 +1,21 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#include "weather_module.h"
+#include <weather_module.h>
 
 extern "C" {
 
 void setup() {
     Serial.begin(115200);
 
+    pinMode(fk::WeatherHardware::PIN_PERIPH_ENABLE, OUTPUT);
+    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, HIGH);
+
     while (!Serial && millis() < 2000) {
         delay(100);
     }
+
+    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, LOW);
 
     firmware_version_set(FIRMWARE_GIT_HASH);
     firmware_build_set(FIRMWARE_BUILD);
