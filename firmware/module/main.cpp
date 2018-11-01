@@ -64,7 +64,9 @@ void setup() {
         "Weather",
         "fk-weather",
         sensors,
-        readings
+        readings,
+        0,
+        fk_module_RequiredUptime_ALWAYS,
     };
 
     fk::WeatherModule module(info);
