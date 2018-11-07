@@ -11,12 +11,20 @@ static WeatherMeters *global_weather_meters{ nullptr };
 void isr_wind();
 void isr_rain();
 
-void isr_wind() {
+void isr_wind_falling() {
     global_weather_meters->wind();
 }
 
-void isr_rain() {
-    global_weather_meters->rain();
+void isr_rain_falling() {
+    Serial.print("*");
+}
+
+void isr_rain_change() {
+    auto value = digitalRead(6);
+    Serial.println(value);
+    if (value) {
+        global_weather_meters->rain();
+    }
 }
 
 WeatherMeters::WeatherMeters(Watchdog &watchdog, FlashState<WeatherState> &flash) : flash_(&flash) {
@@ -45,8 +53,9 @@ bool WeatherMeters::setup() {
     pinMode(PinWindSpeed, INPUT_PULLUP);
     pinMode(PinRain, INPUT_PULLUP);
 
-    attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind, FALLING);
-    attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PinWindSpeed), isr_wind_falling, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain_falling, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PinRain), isr_rain_change, CHANGE);
 
     return true;
 }
