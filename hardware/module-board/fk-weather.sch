@@ -2155,21 +2155,21 @@ Text Notes 5350 3100 0    50   ~ 0
 TX0
 Text Notes 5350 3200 0    50   ~ 0
 RX0
-Text Notes 2350 2350 0    60   ~ 0
+Text Notes 2350 2350 0    50   ~ 0
 32.768kHz
-Text Notes 2450 2450 0    60   ~ 0
+Text Notes 2450 2450 0    50   ~ 0
 12.5pF
 Text Label 10350 1250 0    50   ~ 0
 SDA1
 Text Label 10350 1600 0    50   ~ 0
 SCL1
-Text Label 4200 7750 0    60   ~ 0
+Text Label 4200 7750 0    50   ~ 0
 USB_ID
 Text Label 3600 6800 0    50   ~ 0
 USB-
 Text Label 3600 6900 0    50   ~ 0
 USB+
-Text Label 9500 3150 0    60   ~ 0
+Text Label 9500 3150 0    50   ~ 0
 D13
 Text Label 2250 4200 0    50   ~ 0
 D13
@@ -2177,33 +2177,33 @@ Text Label 2250 3300 0    50   ~ 0
 SDA2
 Text Label 2250 3400 0    50   ~ 0
 SCL2
-Text Label 6300 9300 0    60   ~ 0
+Text Label 6300 9300 0    50   ~ 0
 SCK
-Text Label 6300 9400 0    60   ~ 0
+Text Label 6300 9400 0    50   ~ 0
 MOSI
-Text Label 4450 9200 0    60   ~ 0
+Text Label 4450 9200 0    50   ~ 0
 MISO
-Text Label 4450 9100 0    60   ~ 0
+Text Label 4450 9100 0    50   ~ 0
 D5_FLASH_CS
-Text Label 15200 4700 0    60   ~ 0
+Text Label 15200 4700 0    50   ~ 0
 A1_WIND_DIR
-Text Label 15200 4800 0    60   ~ 0
+Text Label 15200 4800 0    50   ~ 0
 D10_WIND_SPEED
-Text Label 13250 2150 0    60   ~ 0
+Text Label 13250 2150 0    50   ~ 0
 RAIN_2
-Text Label 13250 1850 0    60   ~ 0
+Text Label 13250 1850 0    50   ~ 0
 RAIN_5
-Text Label 14550 1950 0    60   ~ 0
+Text Label 14550 1950 0    50   ~ 0
 D6_RAIN
-Text Label 4750 3600 0    60   ~ 0
+Text Label 4750 3600 0    50   ~ 0
 A1_WIND_DIR
-Text Label 2250 4300 0    60   ~ 0
+Text Label 2250 4300 0    50   ~ 0
 D10_WIND_SPEED
-Text Label 2250 4500 0    60   ~ 0
+Text Label 2250 4500 0    50   ~ 0
 D6_RAIN
 Text Label 12000 8550 0    50   ~ 0
 D8_PERIPH_EN
-Text Label 2250 3100 0    60   ~ 0
+Text Label 2250 3100 0    50   ~ 0
 D8_PERIPH_EN
 Text Label 2250 4600 0    50   ~ 0
 D7
@@ -2215,17 +2215,17 @@ Text Label 9000 6050 0    50   ~ 0
 SDA1
 Text Label 9000 5950 0    50   ~ 0
 SCL1
-Text Label 4400 8850 0    60   ~ 0
+Text Label 4400 8850 0    50   ~ 0
 PERIPH_3V3
-Text Label 14500 8450 0    60   ~ 0
+Text Label 14500 8450 0    50   ~ 0
 PERIPH_3V3
-Text Label 13300 7750 0    60   ~ 0
+Text Label 13300 7750 0    50   ~ 0
 PERIPH_3V3
-Text Label 9150 4900 0    60   ~ 0
+Text Label 9150 4900 0    50   ~ 0
 D31
-Text Label 9150 5000 0    60   ~ 0
+Text Label 9150 5000 0    50   ~ 0
 D30
-Text Label 8150 2200 0    60   ~ 0
+Text Label 8150 2200 0    50   ~ 0
 A3
 Text Label 2600 9400 0    50   ~ 0
 SCL1
