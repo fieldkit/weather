@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/jlewallen/fieldkit/weather/hardware/module-board/fk-weather.sch)
-    (date "Tue 04 Dec 2018 11:34:00 AM PST")
+    (date "Tue 04 Dec 2018 11:42:12 AM PST")
     (tool "Eeschema 5.0.1-33cea8e~67~ubuntu18.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -238,7 +238,7 @@
       (tstamp 561023B1))
     (comp (ref M1)
       (value MOUNT_HOLE)
-      (footprint conservify:HOLE_NPTH_2.54MM)
+      (footprint conservify:HOLE_NPTH_2.7MM)
       (fields
         (field (name Critical) " ")
         (field (name MFN) " ")
@@ -255,7 +255,7 @@
       (tstamp 560F68E5))
     (comp (ref M2)
       (value MOUNT_HOLE)
-      (footprint conservify:HOLE_NPTH_2.54MM)
+      (footprint conservify:HOLE_NPTH_2.7MM)
       (fields
         (field (name Critical) " ")
         (field (name MFN) " ")
@@ -272,7 +272,7 @@
       (tstamp 560F6B9C))
     (comp (ref M3)
       (value MOUNT_HOLE)
-      (footprint conservify:HOLE_NPTH_2.54MM)
+      (footprint conservify:HOLE_NPTH_2.7MM)
       (fields
         (field (name Critical) " ")
         (field (name MFN) " ")
@@ -289,7 +289,7 @@
       (tstamp 560F6C3B))
     (comp (ref M4)
       (value MOUNT_HOLE)
-      (footprint conservify:HOLE_NPTH_2.54MM)
+      (footprint conservify:HOLE_NPTH_2.7MM)
       (fields
         (field (name Critical) " ")
         (field (name MFN) " ")
