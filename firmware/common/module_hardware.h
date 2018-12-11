@@ -14,10 +14,6 @@ namespace fk {
 
 class WeatherHardware {
 public:
-    static constexpr uint8_t PIN_FLASH_CS = 5;
-    static constexpr uint8_t PIN_PERIPH_ENABLE = 8;
-
-public:
     Adafruit_SHT31 sht31Sensor;
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };

@@ -1,8 +1,8 @@
 #include <SerialFlash.h>
 
 #include "check.h"
-
 #include "debug.h"
+#include "board_definition.h"
 
 namespace fk {
 
@@ -103,7 +103,7 @@ bool Check::flashMemory() {
 
     SerialFlashChip serialFlash;
 
-    if (!serialFlash.begin(WeatherHardware::PIN_FLASH_CS)) {
+    if (!serialFlash.begin(FK_WEATHER_PIN_FLASH_CS)) {
         debugfln("test: Flash memory FAILED");
         return false;
     }

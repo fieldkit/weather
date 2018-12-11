@@ -1,4 +1,5 @@
 #include "weather_module.h"
+#include "board_definition.h"
 
 namespace fk {
 
@@ -16,7 +17,7 @@ void TakeWeatherReadings::task() {
 
 
 WeatherModule::WeatherModule(ModuleInfo &info) :
-    Module(bus, info, { WeatherHardware::PIN_FLASH_CS }), meters_(*moduleServices().watchdog, flashState()) {
+    Module(bus, info, { FK_WEATHER_PIN_FLASH_CS }), meters_(*moduleServices().watchdog, flashState()) {
 
     WeatherModuleState::weatherServices(weatherServices_);
 }

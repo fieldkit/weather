@@ -9,18 +9,16 @@
 
 #include "rtc.h"
 #include "debug.h"
+#include "board_definition.h"
 
 void setup() {
     Serial.begin(115200);
 
-    pinMode(fk::WeatherHardware::PIN_PERIPH_ENABLE, OUTPUT);
-    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, HIGH);
+    fk::board.disable_everything();
 
     while (!Serial && millis() < 2000) {
         delay(100);
     }
-
-    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, LOW);
 
     debugfln("test: Setup");
 

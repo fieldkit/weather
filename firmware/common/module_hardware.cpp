@@ -1,6 +1,7 @@
 #include <SPI.h>
 
 #include "module_hardware.h"
+#include "board_definition.h"
 
 namespace fk {
 
@@ -8,8 +9,8 @@ bool WeatherHardware::setup() {
     SPI.begin();
     Wire.begin();
 
-    pinMode(PIN_PERIPH_ENABLE, OUTPUT);
-    digitalWrite(PIN_PERIPH_ENABLE, LOW);
+    pinMode(FK_WEATHER_PIN_PERIPH_ENABLE, OUTPUT);
+    digitalWrite(FK_WEATHER_PIN_PERIPH_ENABLE, LOW);
 
     pinPeripheral(11, PIO_SERCOM);
     pinPeripheral(13, PIO_SERCOM);
@@ -21,7 +22,7 @@ bool WeatherHardware::setup() {
 
     delay(2000);
 
-    digitalWrite(PIN_PERIPH_ENABLE, HIGH);
+    digitalWrite(FK_WEATHER_PIN_PERIPH_ENABLE, HIGH);
 
     return true;
 }

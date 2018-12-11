@@ -3,13 +3,14 @@
 
 #include <weather_module.h>
 
+#include "board_definition.h"
+
 extern "C" {
 
 void setup() {
     Serial.begin(115200);
 
-    pinMode(fk::WeatherHardware::PIN_PERIPH_ENABLE, OUTPUT);
-    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, HIGH);
+    fk::board.disable_everything();
 
     while (!Serial && millis() < 2000) {
         delay(100);
@@ -21,8 +22,6 @@ void setup() {
         Serial5.begin(115200);
         log_uart_set(Serial5);
     }
-
-    digitalWrite(fk::WeatherHardware::PIN_PERIPH_ENABLE, LOW);
 
     firmware_version_set(FIRMWARE_GIT_HASH);
     firmware_build_set(FIRMWARE_BUILD);
