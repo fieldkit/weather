@@ -18,7 +18,7 @@ public:
 
 class WeatherModule : public Module<WeatherState> {
 private:
-    TwoWireBus bus{ Wire4and3 };
+    TwoWireBus moduleBus{ Wire4and3 };
     WeatherHardware hardware_;
     WeatherMeters meters_;
     WeatherReadings weatherReadings_{ hardware_, meters_ };

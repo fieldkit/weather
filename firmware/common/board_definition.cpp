@@ -2,15 +2,21 @@
 
 namespace fk {
 
-Board<BoardConfig<1, 1>> board{
+Board board{
     {
         FK_WEATHER_PIN_PERIPH_ENABLE,
         FK_WEATHER_PIN_FLASH_CS,
         {
             FK_WEATHER_PIN_FLASH_CS,
+            0,
+            0,
+            0,
         },
         {
             FK_WEATHER_PIN_PERIPH_ENABLE,
+            0,
+            0,
+            0,
         }
     }
 };
