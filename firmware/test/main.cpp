@@ -10,6 +10,7 @@
 #include "rtc.h"
 #include "debug.h"
 #include "board_definition.h"
+#include "tuning.h"
 
 void setup() {
     Serial.begin(115200);
@@ -41,6 +42,16 @@ void setup() {
     fk::SerialFlashFileSystem flashFs{ watchdog };
     fk::FlashState<fk::WeatherState> flashState{ flashFs };
     fk::WeatherMeters meters(watchdog, flashState);
+
+    if (!flashFs.initialize(fk::board.flash_cs(), fk::SuperBlockSize)) {
+        debugfln("test: FAILED Flash unavailable.");
+        check.failed();
+    }
+
+    if (!flashState.initialize()) {
+        debugfln("test: FAILED Flash initialize failed.");
+        check.failed();
+    }
 
     meters.setup();
 
