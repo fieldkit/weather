@@ -74,6 +74,12 @@ bool Check::sht31() {
         return false;
     }
 
+    auto status = hw->sht31Sensor.readStatus();
+    if (status != 0x8010) {
+        debugfln("test: SHT31 FAILED (STATUS = %x)", status);
+        return false;
+    }
+
     debugfln("test: SHT31 PASSED");
     return true;
 }

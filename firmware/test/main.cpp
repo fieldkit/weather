@@ -28,10 +28,12 @@ void setup() {
     fk::Check check(hardware);
     hardware.setup();
     if (!check.check()) {
+        debugfln("test: FAILED");
         check.failed();
     }
-
-    debugfln("test: Done");
+    else {
+        debugfln("test: PASSED");
+    }
 
     fk::Leds leds;
     fk::Watchdog watchdog(leds);
