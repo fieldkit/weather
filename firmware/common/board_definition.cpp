@@ -4,7 +4,7 @@ namespace fk {
 
 Board board{
     {
-        FK_WEATHER_PIN_PERIPH_ENABLE,
+        FK_WEATHER_PIN_PERIPHERALS_ENABLE,
         FK_WEATHER_PIN_FLASH_CS,
         {
             FK_WEATHER_PIN_FLASH_CS,
@@ -13,8 +13,8 @@ Board board{
             0,
         },
         {
-            FK_WEATHER_PIN_PERIPH_ENABLE,
-            0,
+            FK_WEATHER_PIN_PERIPHERALS_ENABLE,
+            FK_WEATHER_PIN_WEATHER_ENABLE,
             0,
             0,
         }

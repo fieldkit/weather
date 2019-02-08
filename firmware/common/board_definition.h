@@ -6,7 +6,8 @@
 namespace fk {
 
 constexpr uint8_t FK_WEATHER_PIN_FLASH_CS = 5;
-constexpr uint8_t FK_WEATHER_PIN_PERIPH_ENABLE = 8;
+constexpr uint8_t FK_WEATHER_PIN_WEATHER_ENABLE = 7;
+constexpr uint8_t FK_WEATHER_PIN_PERIPHERALS_ENABLE = 8;
 
 extern Board board;
 

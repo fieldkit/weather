@@ -9,8 +9,8 @@ bool WeatherHardware::setup() {
     SPI.begin();
     Wire.begin();
 
-    pinMode(FK_WEATHER_PIN_PERIPH_ENABLE, OUTPUT);
-    digitalWrite(FK_WEATHER_PIN_PERIPH_ENABLE, LOW);
+    pinMode(FK_WEATHER_PIN_PERIPHERALS_ENABLE, OUTPUT);
+    digitalWrite(FK_WEATHER_PIN_PERIPHERALS_ENABLE, LOW);
 
     pinPeripheral(11, PIO_SERCOM);
     pinPeripheral(13, PIO_SERCOM);
@@ -22,7 +22,7 @@ bool WeatherHardware::setup() {
 
     delay(2000);
 
-    digitalWrite(FK_WEATHER_PIN_PERIPH_ENABLE, HIGH);
+    digitalWrite(FK_WEATHER_PIN_PERIPHERALS_ENABLE, HIGH);
 
     return true;
 }
