@@ -6,6 +6,10 @@
 
 namespace fk {
 
+constexpr const char LogName[] = "Check";
+
+using Log = SimpleLog<LogName>;
+
 Check::Check(WeatherHardware &hw) : hw(&hw) {
 }
 
@@ -72,77 +76,77 @@ bool Check::sht31() {
     constexpr uint16_t StatusMask = 0xFC13;
 
     if (!hw->sht31Sensor.begin()) {
-        debugfln("test: SHT31 FAILED");
+        Log::info("test: SHT31 FAILED");
         return false;
     }
 
     auto status = hw->sht31Sensor.readStatus() & StatusMask;
     if (status != 0x8010) {
-        debugfln("test: SHT31 FAILED (STATUS = %x)", status);
+        Log::info("test: SHT31 FAILED (STATUS = %x)", status);
         return false;
     }
 
-    debugfln("test: SHT31 PASSED");
+    Log::info("test: SHT31 PASSED");
     return true;
 }
 
 bool Check::mpl3115a2() {
     if (!hw->mpl3115a2Sensor.begin()) {
-        debugfln("test: MPL3115A2 FAILED");
+        Log::info("test: MPL3115A2 FAILED");
         return false;
     }
 
-    debugfln("test: MPL3115A2 PASSED");
+    Log::info("test: MPL3115A2 PASSED");
     return true;
 }
 
 bool Check::tsl2591() {
     if (!hw->tsl2591Sensor.begin()) {
-        debugfln("test: TSL25911FN FAILED");
+        Log::info("test: TSL25911FN FAILED");
         return false;
     }
 
-    debugfln("test: TSL25911FN PASSED");
+    Log::info("test: TSL25911FN PASSED");
     return true;
 }
 
 bool Check::flashMemory() {
-    debugfln("test: Checking flash memory...");
+    Log::info("test: Checking flash memory...");
 
     SerialFlashChip serialFlash;
 
-    if (!serialFlash.begin(FK_WEATHER_PIN_FLASH_CS)) {
-        debugfln("test: Flash memory FAILED");
+    if (!serialFlash.begin(board.flash_cs())) {
+        Log::info("test: Flash memory FAILED");
         return false;
     }
 
     uint8_t buffer[256];
     serialFlash.readID(buffer);
     if (buffer[0] == 0) {
-        debugfln("test: Flash memory FAILED");
+        Log::info("test: Flash memory FAILED");
         return false;
     }
 
     auto chipSize = serialFlash.capacity(buffer);
     if (chipSize == 0) {
-        debugfln("test: Flash memory FAILED");
+        Log::info("test: Flash memory FAILED");
         return false;
     }
 
-    debugfln("Read Chip Identification:");
-    debugf("  JEDEC ID:     %x %x %x", buffer[0], buffer[1], buffer[2]);
-    debugfln("  Part Nummber: %s", serialFlashId2Chip(buffer));
-    debugfln("  Memory Size:  %lu bytes Block Size: %lu bytes", chipSize, serialFlash.blockSize());
+    Log::info("Read Chip Identification:");
+    Log::info("  JEDEC ID:     %x %x %x", buffer[0], buffer[1], buffer[2]);
+    Log::info("  Part Nummber: %s", serialFlashId2Chip(buffer));
+    Log::info("  Memory Size:  %lu bytes Block Size: %lu bytes", chipSize, serialFlash.blockSize());
 
     if (false) {
         serialFlash.eraseAll();
         while (!serialFlash.ready()) {
-            debugfln("test: Flash erasing...");
+            Log::info("test: Flash erasing...");
             delay(500);
         }
     }
 
-    debugfln("test: Flash memory PASSED");
+    Log::info("test: Flash memory PASSED");
 
     return true;
 }

@@ -1,55 +1,62 @@
 #include <Wire.h>
 #include <SPI.h>
 
+#include <alogging/alogging.h>
+
 #include <watchdog.h>
+#include <rtc.h>
+#include <debug.h>
+#include <board_definition.h>
+#include <tuning.h>
 
 #include <ambient_sensors.h>
 #include <weather_meters.h>
 #include <check.h>
 
-#include "rtc.h"
-#include "debug.h"
-#include "board_definition.h"
-#include "tuning.h"
+using namespace fk;
+
+constexpr const char LogName[] = "TEST";
+
+using Log = SimpleLog<LogName>;
 
 void setup() {
     Serial.begin(115200);
 
-    fk::board.disable_everything();
+    board.disable_everything();
 
     while (!Serial && millis() < 2000) {
         delay(100);
     }
 
-    debugfln("test: Setup");
+    Log::info("test: Setup");
 
-    fk::clock.begin();
+    clock.begin();
 
-    fk::WeatherHardware hardware;
-    fk::Check check(hardware);
+    WeatherHardware hardware;
+    Check check(hardware);
     hardware.setup();
     if (!check.check()) {
-        debugfln("test: FAILED");
+        Log::info("test: FAILED");
         check.failed();
     }
     else {
-        debugfln("test: PASSED");
+        Log::info("test: PASSED");
     }
 
-    fk::Leds leds;
-    fk::Watchdog watchdog(leds);
-    fk::AmbientSensors ambientSensors(hardware);
-    fk::SerialFlashFileSystem flashFs{ watchdog };
-    fk::FlashState<fk::WeatherState> flashState{ flashFs };
-    fk::WeatherMeters meters(watchdog, flashState);
+    Leds leds;
+    Watchdog watchdog(leds);
+    AmbientSensors ambientSensors(hardware);
+    SerialFlashFileSystem flashFs{ watchdog };
+    FlashState<WeatherState> flashState{ flashFs };
+    WeatherMeters meters(watchdog, flashState);
 
-    if (!flashFs.initialize(fk::board.flash_cs(), fk::SuperBlockSize)) {
-        debugfln("test: FAILED Flash unavailable.");
+    if (!flashFs.initialize(board.flash_cs(), SuperBlockSize)) {
+        Log::info("test: FAILED Flash unavailable.");
         check.failed();
     }
 
     if (!flashState.initialize()) {
-        debugfln("test: FAILED Flash initialize failed.");
+        Log::info("test: FAILED Flash initialize failed.");
         check.failed();
     }
 
@@ -66,7 +73,7 @@ void setup() {
             auto previousHourlyRain = meters.getPreviousHourlyRain();
             auto hourlyRain = meters.getHourlyRain();
 
-            loginfof("Sensors", "sensors: wind(%f, %d) hourly(%f, %d) 10m(%f, %d) avg(%f, %d) rain(%f, %f)",
+            Log::info("sensors: wind(%f, %d) hourly(%f, %d) 10m(%f, %d) avg(%f, %d) rain(%f, %f)",
                      currentWind.speed, currentWind.direction.angle,
                      hourlyWindGust.speed, hourlyWindGust.direction.angle,
                      wind10mGust.speed, wind10mGust.direction.angle,
