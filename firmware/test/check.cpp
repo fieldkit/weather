@@ -69,12 +69,14 @@ static const char *serialFlashId2Chip(const unsigned char *id) {
 }
 
 bool Check::sht31() {
+    constexpr uint16_t StatusMask = 0xFC13;
+
     if (!hw->sht31Sensor.begin()) {
         debugfln("test: SHT31 FAILED");
         return false;
     }
 
-    auto status = hw->sht31Sensor.readStatus();
+    auto status = hw->sht31Sensor.readStatus() & StatusMask;
     if (status != 0x8010) {
         debugfln("test: SHT31 FAILED (STATUS = %x)", status);
         return false;
