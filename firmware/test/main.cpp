@@ -28,6 +28,8 @@ void setup() {
         delay(100);
     }
 
+    board.enable_everything();
+
     Log::info("test: Setup");
 
     clock.begin();
