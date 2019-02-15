@@ -34,12 +34,14 @@ void setup() {
 
     clock.begin();
 
+    auto failed = false;
+
     WeatherHardware hardware;
     Check check(hardware);
     hardware.setup();
     if (!check.check()) {
         Log::info("test: FAILED");
-        check.failed();
+        failed = true;
     }
     else {
         Log::info("test: PASSED");
@@ -66,7 +68,9 @@ void setup() {
 
     while (true) {
         if (meters.tick()) {
-            ambientSensors.takeReading();
+            if (!failed) {
+                ambientSensors.takeReading();
+            }
 
             auto currentWind = meters.getCurrentWind();
             auto hourlyWindGust = meters.getHourlyWindGust();
