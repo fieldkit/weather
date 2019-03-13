@@ -1,6 +1,6 @@
 EESchema Schematic File Version 4
 LIBS:fk-weather-cache
-EELAYER 26 0
+EELAYER 29 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
@@ -2863,7 +2863,7 @@ $EndComp
 Wire Wire Line
 	9925 2350 9925 2450
 $Comp
-L conservify:RESISTOR R5
+L fk-weather-rescue:RESISTOR-conservify R5
 U 1 1 5C29248C
 P 10475 7675
 F 0 "R5" H 10275 7625 60  0000 C CNN
@@ -2884,7 +2884,7 @@ F 13 "mouser" H 6425 6375 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:CAPACITOR_CERAMIC C13
+L fk-weather-rescue:CAPACITOR_CERAMIC-conservify C13
 U 1 1 5C29249D
 P 11925 7775
 F 0 "C13" H 11675 7825 50  0000 L CNN
@@ -2905,7 +2905,7 @@ F 13 "mouser" H 9775 5125 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:CAPACITOR_CERAMIC C16
+L fk-weather-rescue:CAPACITOR_CERAMIC-conservify C16
 U 1 1 5C2924AE
 P 7975 7775
 F 0 "C16" H 7725 7875 50  0000 L CNN
@@ -2926,7 +2926,7 @@ F 13 "mouser" H 5825 5125 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:CAPACITOR_CERAMIC C15
+L fk-weather-rescue:CAPACITOR_CERAMIC-conservify C15
 U 1 1 5C2924BF
 P 12425 7725
 F 0 "C15" H 12175 7775 50  0000 L CNN
@@ -2967,7 +2967,7 @@ F 12 " " H 7925 7225 50  0001 C CNN "Supplier1"
 	-1   0    0    1   
 $EndComp
 $Comp
-L conservify:GND #PWR0106
+L fk-weather-rescue:GND-conservify #PWR0106
 U 1 1 5C2924D6
 P 8625 8425
 F 0 "#PWR0106" H 8625 8175 50  0001 C CNN
@@ -2978,7 +2978,7 @@ F 3 "" H 8625 8425 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:3V3 #PWR0107
+L fk-weather-rescue:3V3-conservify #PWR0107
 U 1 1 5C2924DC
 P 8275 7175
 F 0 "#PWR0107" H 8275 7025 50  0001 C CNN
@@ -2989,7 +2989,7 @@ F 3 "" H 8275 7175 50  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L conservify:3V3 #PWR0108
+L fk-weather-rescue:3V3-conservify #PWR0108
 U 1 1 5C2924E2
 P 7675 7575
 F 0 "#PWR0108" H 7675 7425 50  0001 C CNN
@@ -3000,7 +3000,7 @@ F 3 "" H 7675 7575 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L conservify:GND #PWR0109
+L fk-weather-rescue:GND-conservify #PWR0109
 U 1 1 5C2924E8
 P 7975 8425
 F 0 "#PWR0109" H 7975 8175 50  0001 C CNN
@@ -3011,7 +3011,7 @@ F 3 "" H 7975 8425 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:3V3 #PWR0110
+L fk-weather-rescue:3V3-conservify #PWR0110
 U 1 1 5C2924EE
 P 10775 7675
 F 0 "#PWR0110" H 10775 7525 50  0001 C CNN
@@ -3022,7 +3022,7 @@ F 3 "" H 10775 7675 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L conservify:GND #PWR0111
+L fk-weather-rescue:GND-conservify #PWR0111
 U 1 1 5C2924F4
 P 11925 8375
 F 0 "#PWR0111" H 11925 8125 50  0001 C CNN
@@ -3072,7 +3072,7 @@ Wire Wire Line
 	7975 7575 8825 7575
 Connection ~ 7975 7575
 $Comp
-L conservify:TPS2052B U3
+L fk-weather-rescue:TPS2052B-conservify U3
 U 1 1 5C29250E
 P 9525 7925
 F 0 "U3" H 9525 8662 60  0000 C CNN
@@ -3089,7 +3089,7 @@ Wire Wire Line
 Wire Wire Line
 	11925 8025 11925 8375
 $Comp
-L conservify:RESISTOR R12
+L fk-weather-rescue:RESISTOR-conservify R12
 U 1 1 5C292524
 P 10475 7975
 F 0 "R12" H 10275 7925 60  0000 C CNN
@@ -3110,7 +3110,7 @@ F 13 "mouser" H 6425 6675 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:3V3 #PWR0112
+L fk-weather-rescue:3V3-conservify #PWR0112
 U 1 1 5C29252B
 P 10775 7975
 F 0 "#PWR0112" H 10775 7825 50  0001 C CNN
@@ -3125,7 +3125,7 @@ Wire Wire Line
 Wire Wire Line
 	8375 7825 8825 7825
 $Comp
-L conservify:CAPACITOR_CERAMIC C20
+L fk-weather-rescue:CAPACITOR_CERAMIC-conservify C20
 U 1 1 5C292541
 P 11175 8275
 F 0 "C20" H 10925 8325 50  0000 L CNN
@@ -3146,7 +3146,7 @@ F 13 "mouser" H 9025 5625 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:CAPACITOR_CERAMIC C21
+L fk-weather-rescue:CAPACITOR_CERAMIC-conservify C21
 U 1 1 5C292552
 P 11675 8275
 F 0 "C21" H 11425 8325 50  0000 L CNN
@@ -3167,7 +3167,7 @@ F 13 "0" H 11775 8375 50  0001 C CNN "price"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:GND #PWR0113
+L fk-weather-rescue:GND-conservify #PWR0113
 U 1 1 5C292559
 P 11175 8925
 F 0 "#PWR0113" H 11175 8675 50  0001 C CNN
@@ -3218,7 +3218,7 @@ F 12 " " H 10525 7225 50  0001 C CNN "Supplier1"
 	-1   0    0    1   
 $EndComp
 $Comp
-L conservify:3V3 #PWR0114
+L fk-weather-rescue:3V3-conservify #PWR0114
 U 1 1 5C29257A
 P 10875 7175
 F 0 "#PWR0114" H 10875 7025 50  0001 C CNN
@@ -3237,11 +3237,11 @@ Wire Wire Line
 Text Label 11025 6925 0    50   ~ 0
 WEATHER_3V3
 $Comp
-L conservify:RESISTOR R11
+L fk-weather-rescue:RESISTOR-conservify R11
 U 1 1 5C29258E
 P 8175 7975
 F 0 "R11" H 8325 8075 60  0000 C CNN
-F 1 "?" H 8175 8075 60  0000 C CNN
+F 1 "10K" H 8175 8075 60  0000 C CNN
 F 2 "conservify:RES-0603" H 8175 7775 60  0001 C CNN
 F 3 "" H 8175 7975 60  0000 C CNN
 F 4 " " H 8125 7875 50  0001 C CNN "Critical"
@@ -3258,11 +3258,11 @@ F 13 "mouser" H 4125 6675 50  0001 C CNN "supplier1"
 	0    1    1    0   
 $EndComp
 $Comp
-L conservify:RESISTOR R13
+L fk-weather-rescue:RESISTOR-conservify R13
 U 1 1 5C29259F
 P 8375 8075
 F 0 "R13" H 8525 8175 60  0000 C CNN
-F 1 "?" H 8375 8175 60  0000 C CNN
+F 1 "10K" H 8375 8175 60  0000 C CNN
 F 2 "conservify:RES-0603" H 8375 7875 60  0001 C CNN
 F 3 "" H 8375 8075 60  0000 C CNN
 F 4 " " H 8325 7975 50  0001 C CNN "Critical"
@@ -3279,7 +3279,7 @@ F 13 "mouser" H 4325 6775 50  0001 C CNN "supplier1"
 	0    1    1    0   
 $EndComp
 $Comp
-L conservify:GND #PWR0115
+L fk-weather-rescue:GND-conservify #PWR0115
 U 1 1 5C2925A6
 P 8375 8425
 F 0 "#PWR0115" H 8375 8175 50  0001 C CNN
@@ -3290,7 +3290,7 @@ F 3 "" H 8375 8425 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:GND #PWR0116
+L fk-weather-rescue:GND-conservify #PWR0116
 U 1 1 5C2925AC
 P 8175 8425
 F 0 "#PWR0116" H 8175 8175 50  0001 C CNN
@@ -3307,7 +3307,7 @@ Wire Wire Line
 Text Label 8975 8775 0    50   ~ 0
 PERIPH_3V3
 $Comp
-L conservify:GND #PWR0117
+L fk-weather-rescue:GND-conservify #PWR0117
 U 1 1 5C2925B6
 P 10725 8925
 F 0 "#PWR0117" H 10725 8675 50  0001 C CNN
@@ -3318,7 +3318,7 @@ F 3 "" H 10725 8925 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:RESISTOR R14
+L fk-weather-rescue:RESISTOR-conservify R14
 U 1 1 5C2925C7
 P 9975 8775
 F 0 "R14" H 9775 8725 60  0000 C CNN
@@ -3340,7 +3340,7 @@ F 14 "mouser" H 5925 7475 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:RESISTOR R15
+L fk-weather-rescue:RESISTOR-conservify R15
 U 1 1 5C2925D9
 P 9975 8925
 F 0 "R15" H 9775 8875 60  0000 C CNN
@@ -3410,7 +3410,7 @@ $EndComp
 Wire Wire Line
 	11100 5850 11300 5850
 $Comp
-L conservify:GND #PWR?
+L fk-weather-rescue:GND-conservify #PWR?
 U 1 1 5C469739
 P 11300 5950
 AR Path="/5C276F28/5C469739" Ref="#PWR?"  Part="1" 
@@ -3429,7 +3429,7 @@ Wire Wire Line
 Wire Wire Line
 	11100 5750 11800 5750
 $Comp
-L conservify:3V3 #PWR?
+L fk-weather-rescue:3V3-conservify #PWR?
 U 1 1 5C469742
 P 11800 5325
 AR Path="/5C276F28/5C469742" Ref="#PWR?"  Part="1" 
