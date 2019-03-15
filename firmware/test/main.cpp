@@ -34,6 +34,8 @@ void setup() {
 
     clock.begin();
 
+    Log::info("test: Setup");
+
     auto failed = false;
 
     WeatherHardware hardware;
