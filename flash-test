@@ -11,7 +11,6 @@ fi
 PATH=~/tools/JLink_Linux_V640b_x86_64:$PATH
 BOOTLOADER=../bootloaders/build/zero/fk-bootloaders-samd21large.bin
 TEST=build/firmware/test/fk-weather-test.bin
-MAIN=build/firmware/module/fk-weather-standard.bin
 
 pushd build
 make -j2
@@ -24,9 +23,9 @@ exitonerror 1
 connect
 r
 sleep 100
-loadfile $TEST,0x8000
-sleep 100
 loadfile $BOOTLOADER
+sleep 100
+loadfile $TEST,0x8000
 r
 q
 EOF
@@ -35,16 +34,4 @@ sleep 1
 
 echo Tailing...
 
-flasher --tail -tail-trigger-stop "test: PASSED" --port $PORT
-
-JLinkExe -if SWD -device ATSAMD21G18 -speed 4000 -autoconnect 1 <<EOF
-exitonerror 1
-connect
-loadfile $MAIN,0x8000
-r
-q
-EOF
-
-echo Tailing...
-
-flasher --tail -tail-trigger-stop "ConfigureModule" --port $PORT
+flasher --tail --tail-trigger-pass "test: PASSED" --tail-trigger-fail "test: FAILED" --port $PORT
